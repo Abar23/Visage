@@ -1,6 +1,6 @@
 workspace "Visage"
     architecture "x86_64"
-    startproject "Visage"
+    startproject "Game"
 
     configurations
     {
@@ -16,6 +16,7 @@ workspace "Visage"
 outputDir = "%{cfg.buildcfg}_%{cfg.system}_%{cfg.architecture}"
 
 vendorIncludes = {}
+vendorIncludes["Visage"] = "Visage/src"
 vendorIncludes["Glad"] = "Visage/vendor/Glad/include"
 vendorIncludes["GLFW"] = "Visage/vendor/GLFW/include"
 vendorIncludes["stb_image"] = "Visage/vendor/stb_image"
@@ -27,7 +28,7 @@ group ""
 
     project "Visage"
         location "Visage"
-        kind "ConsoleApp"
+        kind "StaticLib"
         language "C++"
         cppdialect "C++17"
         staticruntime "on"
@@ -77,3 +78,40 @@ group ""
         filter "configurations:Release"
             runtime "Release"
             optimize "On"
+
+project "Game"
+    location "Game"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
+    
+    targetdir ("bin/" .. outputDir .. "/%{prj.name}")
+    objdir ("obj/" .. outputDir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/src/**.h"
+    }
+
+    includedirs
+    {
+        "%{wks.name}/src"
+    }
+
+    links
+    {
+        "Visage"
+    }
+
+    filter "system:windows"
+        systemversion "latest"
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
