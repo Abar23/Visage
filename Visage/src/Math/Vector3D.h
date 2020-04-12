@@ -24,6 +24,8 @@ namespace Visage
 			Vector3D Negate() const;
 			static float Dot(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Cross(const Vector3D& leftVector, const Vector3D& rightVector);
+			static Vector3D Project(const Vector3D& leftVector, const Vector3D& rightVector);
+			static Vector3D Reject(const Vector3D& leftVector, const Vector3D& rightVector);
 
 			static Vector3D Zero();
 
@@ -41,6 +43,7 @@ namespace Visage
 			Vector3D& operator=(const Vector3D& vector);
 			Vector3D& operator+=(const Vector3D& vector);
 			Vector3D& operator-=(const Vector3D& vector);
+
 			Vector3D& operator*=(const float scalar);
 			Vector3D& operator/=(const float scalar);
 		};

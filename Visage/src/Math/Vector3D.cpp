@@ -34,20 +34,30 @@ namespace Visage
 
 		Vector3D Visage::Math::Vector3D::Normalize() const
 		{
-			float oneOverMag = 1.0f / Magnitude();
-			return Vector3D(x * oneOverMag, 
-							y * oneOverMag, 
-							z * oneOverMag);
+			float magnitude = Magnitude();
+			if (magnitude > 0.0f)
+			{
+				float oneOverMag = 1.0f / Magnitude();
+				return Vector3D(x * oneOverMag,
+								y * oneOverMag,
+								z * oneOverMag);
+			}
+			else
+			{
+				return Zero();
+			}
 		}
 
 		Vector3D Visage::Math::Vector3D::Negate() const
 		{
-			return Vector3D(x * -1.0f, y * -1.0f, z * -1.0f);
+			return *this * -1;
 		}
 
 		float Visage::Math::Vector3D::Dot(const Vector3D& leftVector, const Vector3D& rightVector)
 		{
-			return leftVector.x * rightVector.x + leftVector.y * rightVector.y + leftVector.z * rightVector.z;
+			return leftVector.x * rightVector.x +
+				   leftVector.y * rightVector.y +
+				   leftVector.z * rightVector.z;
 		}
 
 		Vector3D Visage::Math::Vector3D::Cross(const Vector3D& leftVector, const Vector3D& rightVector)
@@ -55,6 +65,16 @@ namespace Visage
 			return Vector3D(leftVector.y * rightVector.z - leftVector.z * rightVector.y,
 							leftVector.z * rightVector.x - leftVector.x * rightVector.z,
 							leftVector.x * rightVector.y - leftVector.y * rightVector.x);
+		}
+
+		Vector3D Vector3D::Project(const Vector3D& leftVector, const Vector3D& rightVector)
+		{
+			return rightVector * (Dot(leftVector, rightVector) / Dot(rightVector, rightVector));
+		}
+
+		Vector3D Vector3D::Reject(const Vector3D& leftVector, const Vector3D& rightVector)
+		{
+			return leftVector - Project(leftVector, rightVector);
 		}
 
 		Vector3D Vector3D::Zero()
@@ -149,9 +169,9 @@ namespace Visage
 
 		bool operator==(const Vector3D& leftVector, const Vector3D& rightVector)
 		{
-			return FloatCompare(leftVector.x, rightVector.x) &&
-					FloatCompare(leftVector.y, rightVector.y) &&
-					FloatCompare(leftVector.z, rightVector.z);
+			return FloatIsEqual(leftVector.x, rightVector.x) &&
+				   FloatIsEqual(leftVector.y, rightVector.y) &&
+				   FloatIsEqual(leftVector.z, rightVector.z);
 		}
 
 		bool operator!=(const Vector3D& leftVector, const Vector3D& rightVector)
