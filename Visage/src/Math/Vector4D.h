@@ -27,7 +27,7 @@ namespace Visage
 			Vector4D Negate() const;
 			static Vector4D Dot(const Vector4D& leftVector, const Vector4D& rightVector);
 
-			static Vector3D Zero();
+			static Vector4D Zero();
 
 			Vector4D& operator=(const Vector4D& vector);
 			Vector4D& operator+=(const Vector4D& vector);

@@ -77,9 +77,9 @@ namespace Visage
 				   leftVector.w * rightVector.w;
 		}
 
-		Vector3D Vector4D::Zero()
+		Vector4D Vector4D::Zero()
 		{
-			return Vector3D();
+			return Vector4D();
 		}
 
 		Vector4D& Visage::Math::Vector4D::operator=(const Vector4D& vector)
