@@ -10,7 +10,7 @@ namespace Visage
 {
 	namespace Math
 	{
-        bool FloatIsEqual(float A, float B)
+        inline bool FloatIsEqual(float A, float B)
         {
             float absDiff = std::fabs(A - B);
             if (absDiff <= maxEpsilonDiff)
