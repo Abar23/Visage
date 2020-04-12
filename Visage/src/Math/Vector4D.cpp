@@ -1,5 +1,4 @@
 #include <cmath>
-
 #include "Vector4D.h"
 #include "MathFunctions.h"
 
