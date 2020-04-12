@@ -13,18 +13,18 @@ workspace "Visage"
         "MultiProcessorCompile"
     }
 
-outputDir = "%{cfg.buildcfg}_%{cfg.system}_%{cfg.architecture}"
+    outputDir = "%{cfg.buildcfg}_%{cfg.system}_%{cfg.architecture}"
 
-vendorIncludes = {}
-vendorIncludes["Visage"] = "Visage/src"
-vendorIncludes["Glad"] = "Visage/vendor/Glad/include"
-vendorIncludes["GLFW"] = "Visage/vendor/GLFW/include"
-vendorIncludes["stb_image"] = "Visage/vendor/stb_image"
+    vendorIncludes = {}
+    vendorIncludes["Visage"] = "Visage/src"
+    vendorIncludes["Glad"] = "Visage/vendor/Glad/include"
+    vendorIncludes["GLFW"] = "Visage/vendor/GLFW/include"
+    vendorIncludes["stb_image"] = "Visage/vendor/stb_image"
 
-group "Dependencies"
-    include "Visage/vendor/Glad"
-    include "Visage/vendor/GLFW"
-group ""
+    group "Dependencies"
+        include "Visage/vendor/Glad"
+        include "Visage/vendor/GLFW"
+    group ""
 
     project "Visage"
         location "Visage"
@@ -79,39 +79,39 @@ group ""
             runtime "Release"
             optimize "On"
 
-project "Game"
-    location "Game"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "on"
-    
-    targetdir ("bin/" .. outputDir .. "/%{prj.name}")
-    objdir ("obj/" .. outputDir .. "/%{prj.name}")
+    project "Game"
+        location "Game"
+        kind "ConsoleApp"
+        language "C++"
+        cppdialect "C++17"
+        staticruntime "on"
+        
+        targetdir ("bin/" .. outputDir .. "/%{prj.name}")
+        objdir ("obj/" .. outputDir .. "/%{prj.name}")
 
-    files
-    {
-        "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.h"
-    }
+        files
+        {
+            "%{prj.name}/src/**.cpp",
+            "%{prj.name}/src/**.h"
+        }
 
-    includedirs
-    {
-        "%{wks.name}/src"
-    }
+        includedirs
+        {
+            "%{wks.name}/src"
+        }
 
-    links
-    {
-        "Visage"
-    }
+        links
+        {
+            "Visage"
+        }
 
-    filter "system:windows"
-        systemversion "latest"
+        filter "system:windows"
+            systemversion "latest"
 
-    filter "configurations:Debug"
-        runtime "Debug"
-        symbols "On"
+        filter "configurations:Debug"
+            runtime "Debug"
+            symbols "On"
 
-    filter "configurations:Release"
-        runtime "Release"
-        optimize "On"
+        filter "configurations:Release"
+            runtime "Release"
+            optimize "On"
