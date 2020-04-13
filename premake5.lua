@@ -16,7 +16,6 @@ workspace "Visage"
     outputDir = "%{cfg.buildcfg}_%{cfg.system}_%{cfg.architecture}"
 
     vendorIncludes = {}
-    vendorIncludes["Visage"] = "Visage/src"
     vendorIncludes["Glad"] = "Visage/vendor/Glad/include"
     vendorIncludes["GLFW"] = "Visage/vendor/GLFW/include"
     vendorIncludes["stb_image"] = "Visage/vendor/stb_image"

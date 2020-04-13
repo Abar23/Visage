@@ -6,17 +6,17 @@ namespace Visage
 {
 	namespace Math
 	{
-		Visage::Math::Vector4D::Vector4D()
+		Vector4D::Vector4D()
 			: x(0.0f), y(0.0f), z(0.0f), w(0.0)
 		{
 		}
 
-		Visage::Math::Vector4D::Vector4D(const Vector4D& vector)
+		Vector4D::Vector4D(const Vector4D& vector)
 			: x(vector.x), y(vector.y), z(vector.z), w(vector.w)
 		{
 		}
 
-		Visage::Math::Vector4D::Vector4D(const Vector3D& vector)
+		Vector4D::Vector4D(const Vector3D& vector)
 			: x(vector.x), y(vector.y), z(vector.z), w(0.0f)
 		{
 		}

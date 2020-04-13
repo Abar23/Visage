@@ -6,22 +6,22 @@ namespace Visage
 {
 	namespace Math
 	{
-		Visage::Math::Vector2D::Vector2D()
+		Vector2D::Vector2D()
 			: x(0.0f), y(0.0f)
 		{
 		}
 
-		Visage::Math::Vector2D::Vector2D(float x, float y)
+		Vector2D::Vector2D(float x, float y)
 			: x(x), y(y)
 		{
 		}
 
-		Visage::Math::Vector2D::Vector2D(float scalar)
+		Vector2D::Vector2D(float scalar)
 			: x(scalar), y(scalar)
 		{
 		}
 
-		Visage::Math::Vector2D::Vector2D(const Vector2D& vector)
+		Vector2D::Vector2D(const Vector2D& vector)
 			: x(vector.x), y(vector.y)
 		{
 		}
