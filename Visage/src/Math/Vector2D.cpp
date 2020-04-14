@@ -176,7 +176,7 @@ namespace Visage
 
 		std::ostream& operator<<(std::ostream& stream, const Vector2D& vector)
 		{
-			stream << "Vector3D: (" << vector.x << ", " << vector.y << ")";
+			stream << "Vector2D: (" << vector.x << ", " << vector.y << ")";
 			return stream;
 		}
 	}

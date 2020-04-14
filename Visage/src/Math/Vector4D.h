@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Vector3D.h"
+#include "Vector2D.h"
 
 namespace Visage
 {
@@ -14,7 +15,8 @@ namespace Visage
 
 			Vector4D();
 			Vector4D(const Vector4D& vector);
-			Vector4D(const Vector3D& vector);
+			Vector4D(const Vector3D& vector, float w);
+			Vector4D(const Vector2D& vector, float w);
 			Vector4D(float x, float y, float z, float w);
 			Vector4D(float x, float y, float z);
 			Vector4D(const float scalar);

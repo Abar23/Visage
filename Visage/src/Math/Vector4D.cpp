@@ -16,8 +16,13 @@ namespace Visage
 		{
 		}
 
-		Vector4D::Vector4D(const Vector3D& vector)
-			: x(vector.x), y(vector.y), z(vector.z), w(0.0f)
+		Vector4D::Vector4D(const Vector3D& vector, float w)
+			: x(vector.x), y(vector.y), z(vector.z), w(w)
+		{
+		}
+
+		Vector4D::Vector4D(const Vector2D& vector, float w)
+			: x(vector.x), y(vector.y), z(0.0f), w(w)
 		{
 		}
 

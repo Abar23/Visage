@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include "Vector2D.h"
 
 namespace Visage
 {
@@ -13,6 +14,7 @@ namespace Visage
 
 			Vector3D();
 			Vector3D(const Vector3D& v) = default;
+			Vector3D(const Vector2D& vector);
 			Vector3D(float x, float y, float z);
 			Vector3D(float value);
 
@@ -22,6 +24,7 @@ namespace Visage
 			float SqrMagnitude() const;
 			Vector3D Normalize() const;
 			Vector3D Negate() const;
+
 			static float Dot(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Cross(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Project(const Vector3D& leftVector, const Vector3D& rightVector);

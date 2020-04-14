@@ -12,6 +12,11 @@ namespace Visage
 		{
 		}
 
+		Vector3D::Vector3D(const Vector2D& vector)
+			: x(vector.x), y(vector.y), z(0.0f)
+		{
+		}
+
 		Vector3D::Vector3D(float x, float y, float z)
 			: x(x), y(y), z(z)
 		{
