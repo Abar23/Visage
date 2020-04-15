@@ -12,8 +12,8 @@ namespace Visage
 		public:
 			union 
 			{
-				float matrixData[3][3];
-				Vector3D rows[3];
+				float entries[3][3];
+				Vector3D columns[3];
 			};
 
 			Matrix3D();
@@ -36,6 +36,7 @@ namespace Visage
 			static Matrix3D MakeRotationY(const float angle);
 			static Matrix3D MakeRotationZ(const float angle);
 			static Matrix3D MakeRotaion(const float angle, const Vector3D& axis);
+			static Matrix3D MakeScale(const float scale);
 			static Matrix3D MakeScale(const float scaleX, const float scaleY, const float scaleZ);
 			static Matrix3D MakeScale(const Vector3D& vector);
 			static Matrix3D Identity();
@@ -46,12 +47,12 @@ namespace Visage
 			float& operator()(const int rowIndex, const int columnIndex);
 
 			Matrix3D& operator*=(const Matrix3D& matrix);
-			Matrix3D& operator*=(const Vector3D& vector);
+			Vector3D operator*=(const Vector3D& vector);
 			Matrix3D& operator*=(const float scalar);
 		};
 
 		Matrix3D operator*(const Matrix3D& leftMatrix, const Matrix3D& rightMatrix);
-		Vector3D operator*(const Matrix3D& leftMatrix, const Vector3D& rightMatrix);
+		Vector3D operator*(const Matrix3D& matrix, const Vector3D& vector);
 		Matrix3D operator*(const Matrix3D& matrix, const float scalar);
 
 		std::ostream& operator<<(std::ostream& stream, const Matrix3D& matrix);

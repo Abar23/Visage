@@ -56,11 +56,11 @@ namespace Visage
 			float magnitude = Magnitude();
 			if (magnitude > 0.0f)
 			{
-				float oneOverMag = 1.0f / Magnitude();
-				return Vector4D(x * oneOverMag,
-								y * oneOverMag,
-								z * oneOverMag,
-								w * oneOverMag);
+				float inverseMag = 1.0f / Magnitude();
+				return Vector4D(x * inverseMag,
+								y * inverseMag,
+								z * inverseMag,
+								w * inverseMag);
 			}
 			else
 			{
@@ -178,7 +178,7 @@ namespace Visage
 
 		std::ostream& Visage::Math::operator<<(std::ostream& stream, const Vector4D& vector)
 		{
-			stream << "Vector4D: (" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")";
+			stream << "(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")";
 			return stream;
 		}
 	}

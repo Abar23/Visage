@@ -1,6 +1,6 @@
 #include <cstdint>
-#include <cmath>
 #include <cstring>
+#include "MathFunctions.h"
 #include "MathConstants.h"
 
 namespace Visage

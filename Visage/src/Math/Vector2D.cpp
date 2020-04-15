@@ -75,8 +75,8 @@ namespace Visage
 			float magnitude = Magnitude();
 			if (magnitude > 0.0f)
 			{
-				float oneOverMag = 1.0f / Magnitude();
-				return Vector2D(x * oneOverMag, y * oneOverMag);
+				float inverseMag = 1.0f / Magnitude();
+				return Vector2D(x * inverseMag, y * inverseMag);
 			}
 			else
 			{
@@ -176,7 +176,7 @@ namespace Visage
 
 		std::ostream& operator<<(std::ostream& stream, const Vector2D& vector)
 		{
-			stream << "Vector2D: (" << vector.x << ", " << vector.y << ")";
+			stream << "(" << vector.x << ", " << vector.y << ")";
 			return stream;
 		}
 	}
