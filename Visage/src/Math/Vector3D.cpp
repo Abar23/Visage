@@ -186,30 +186,26 @@ namespace Visage
 
 		Vector3D operator+(const Vector3D& leftVector, const Vector3D& rightVector)
 		{
-			return Vector3D(leftVector.x + rightVector.x, 
-							leftVector.y + rightVector.y, 
-							leftVector.z + rightVector.z);
+			Vector3D leftVectorCopy = leftVector;
+			return leftVectorCopy + rightVector;
 		}
 
 		Vector3D operator-(const Vector3D& leftVector, const Vector3D& rightVector)
 		{
-			return Vector3D(leftVector.x - rightVector.x, 
-							leftVector.y - rightVector.y, 
-							leftVector.z - rightVector.z);
+			Vector3D leftVectorCopy = leftVector;
+			return leftVectorCopy - rightVector;
 		}
 
 		Vector3D operator*(const Vector3D& vector, float scalar)
 		{
-			return Vector3D(vector.x * scalar, 
-							vector.y * scalar, 
-							vector.z * scalar);
+			Vector3D vectorCopy = vector;
+			return vectorCopy * scalar;
 		}
 
 		Vector3D operator/(const Vector3D& vector, float scalar)
 		{
-			return Vector3D(vector.x / scalar, 
-							vector.y / scalar, 
-							vector.z / scalar);
+			Vector3D vectorCopy = vector;
+			return vectorCopy / scalar;
 		}
 		std::ostream& operator<<(std::ostream& stream, const Vector3D& vector)
 		{

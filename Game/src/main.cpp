@@ -21,12 +21,13 @@ int main()
 	std::cout << vector2 << std::endl;
 	std::cout << vector3 << std::endl;
 	std::cout << vector4.Normalize().Magnitude() << std::endl;
-	std::cout << m1.MakeRotationX(30) << std::endl;
+	std::cout << m1.MakeRotationX(0) * Matrix3D::Identity() << std::endl;
+	std::cout << m1.MakeRotaion(0, Vector3D::XAxis()) * Matrix3D::Identity() << std::endl;
 
 	auto start = std::chrono::high_resolution_clock::now();
 	Matrix3D::MakeRotationX(30);
 	auto stop = std::chrono::high_resolution_clock::now();;
-	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	std::cout << duration.count() << std::endl;
 
 	return 0;

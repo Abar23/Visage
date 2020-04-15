@@ -152,26 +152,26 @@ namespace Visage
 
 		Vector2D operator+(const Vector2D& leftVector, const Vector2D& rightVector)
 		{
-			return Vector2D(leftVector.x + rightVector.x, 
-							leftVector.y + rightVector.y);
+			Vector2D leftVectorCopy = leftVector;
+			return leftVectorCopy + rightVector;
 		}
 
 		Vector2D operator-(const Vector2D& leftVector, const Vector2D& rightVector)
 		{
-			return Vector2D(leftVector.x - rightVector.x,
-							leftVector.y - rightVector.y);
+			Vector2D leftVectorCopy = leftVector;
+			return leftVectorCopy - rightVector;
 		}
 
 		Vector2D operator*(const Vector2D& vector, float scalar)
 		{
-			return Vector2D(vector.x * scalar,
-							vector.y * scalar);
+			Vector2D vectorCopy = vector;
+			return vectorCopy * scalar;
 		}
 
 		Vector2D operator/(const Vector2D& vector, float scalar)
 		{
-			return Vector2D(vector.x / scalar,
-							vector.y / scalar);
+			Vector2D vectorCopy = vector;
+			return vectorCopy / scalar;
 		}
 
 		std::ostream& operator<<(std::ostream& stream, const Vector2D& vector)
