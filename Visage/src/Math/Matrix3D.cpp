@@ -9,7 +9,7 @@ namespace Visage
 	namespace Math
 	{
 		Matrix3D::Matrix3D()
-			: entries{ 0.0f }
+			: entries{0.0f}
 		{
 		}
 
@@ -31,20 +31,28 @@ namespace Visage
 			entries[2][2] = m22;
 		}
 
-		Matrix3D::Matrix3D(const Vector3D& firstColumn, const Vector3D& secondColumn, const Vector3D& thirdColumn)
+		Matrix3D::Matrix3D(const Vector3D& firstRow, const Vector3D& secondRow, const Vector3D& thirdRow)
 		{
 			// Column-major ordering
-			entries[0][0] = firstColumn.x;
-			entries[0][1] = firstColumn.y;
-			entries[0][2] = firstColumn.z;
+			entries[0][0] = firstRow.x;
+			entries[1][0] = firstRow.y;
+			entries[2][0] = firstRow.z;
 
-			entries[1][0] = secondColumn.x;
-			entries[1][1] = secondColumn.y;
-			entries[1][2] = secondColumn.z;
+			entries[0][1] = secondRow.x;
+			entries[1][1] = secondRow.y;
+			entries[2][1] = secondRow.z;
 
-			entries[2][0] = thirdColumn.x;
-			entries[2][1] = thirdColumn.y;
-			entries[2][2] = thirdColumn.z;
+			entries[0][2] = thirdRow.x;
+			entries[1][2] = thirdRow.y;
+			entries[2][2] = thirdRow.z;
+		}
+
+		Matrix3D::Matrix3D(const float diagonal)
+			: entries{0.0f}
+		{
+			entries[0][0] = diagonal;
+			entries[1][1] = diagonal;
+			entries[2][2] = diagonal;
 		}
 
 		Matrix3D::Matrix3D(const Matrix3D& matrix)
@@ -54,19 +62,19 @@ namespace Visage
 
 		Matrix3D Matrix3D::Inverse() const
 		{
-			Vector3D firstColumn = GetColumn(0);
-			Vector3D secondColumn = GetColumn(1);
-			Vector3D thirdColumn = GetColumn(2);
+			Vector3D a = columns[0];
+			Vector3D b = columns[1];
+			Vector3D c = columns[2];
 
-			Vector3D firstRow = Vector3D::Cross(secondColumn, thirdColumn);
-			Vector3D secondRow = Vector3D::Cross(thirdColumn, firstColumn);
-			Vector3D thirdRow = Vector3D::Cross(firstColumn, secondColumn);
+			Vector3D bCrossC = Vector3D::Cross(b, c);
+			Vector3D cCrossa = Vector3D::Cross(c, a);
+			Vector3D aCrossb = Vector3D::Cross(a, b);
 
-			float inverseDet = 1.0f / Vector3D::Dot(thirdRow, thirdColumn);
+			float inverseDet = 1.0f / Vector3D::Dot(aCrossb, c);
 
-			return Matrix3D(firstRow.x * inverseDet, secondRow.x * inverseDet, thirdRow.x * inverseDet, 
-							firstRow.y * inverseDet, secondRow.y * inverseDet, thirdRow.y * inverseDet,
-							firstRow.z * inverseDet, secondRow.z * inverseDet, thirdRow.z * inverseDet);
+			return Matrix3D(bCrossC.x * inverseDet, cCrossa.x * inverseDet, aCrossb.x * inverseDet, 
+							bCrossC.y * inverseDet, cCrossa.y * inverseDet, aCrossb.y * inverseDet,
+							bCrossC.z * inverseDet, cCrossa.z * inverseDet, aCrossb.z * inverseDet);
 		}
 
 		Matrix3D Matrix3D::Transpose() const
@@ -145,11 +153,11 @@ namespace Visage
 							axisXAxisZ - sin * axis.y, axisYAxisZ + sin * axis.x, cos + z * axis.z);
 		}
 
-		Matrix3D Matrix3D::MakeScale(const float scale)
+		Matrix3D Matrix3D::MakeScale(const float uniformScale)
 		{
-			return Matrix3D(scale, 0.0f, 0.0f,
-							0.0f, scale, 0.0f,
-							0.0f, 0.0f, scale);
+			return Matrix3D(uniformScale, 0.0f, 0.0f,
+							0.0f, uniformScale, 0.0f,
+							0.0f, 0.0f, uniformScale);
 		}
 
 		Matrix3D Matrix3D::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
@@ -168,9 +176,7 @@ namespace Visage
 
 		Matrix3D Matrix3D::Identity()
 		{
-			return Matrix3D(1.0f, 0.0f, 0.0f,
-							0.0f, 1.0f, 0.0f,
-							0.0f, 0.0f, 1.0f);
+			return Matrix3D(1.0f);
 		}
 
 		Matrix3D& Matrix3D::operator=(const Matrix3D& matrix)

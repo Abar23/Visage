@@ -2,6 +2,7 @@
 #include "Math/Vector4D.h"
 #include "Math/Vector2D.h"
 #include "Math/Matrix3D.h"
+#include "Math/Matrix4D.h"
 
 #include <iostream>
 #include <chrono> 
@@ -17,6 +18,8 @@ int main()
 	Vector2D vector5(1.0f, 0.0f);
 	Matrix3D m1(1, 2, 3, 4, 5, 6, 7, 2, 9);
 	Matrix3D m2;
+	Matrix4D m3(1.0f);
+
 	std::cout << vector1 << std::endl;
 	std::cout << vector2 << std::endl;
 	std::cout << vector3 << std::endl;
