@@ -147,25 +147,25 @@ namespace Visage
 		Vector4D Visage::Math::operator+(const Vector4D& leftVector, const Vector4D& rightVector)
 		{
 			Vector4D leftVectorCopy = leftVector;
-			return leftVectorCopy + rightVector;
+			return leftVectorCopy += rightVector;
 		}
 
 		Vector4D Visage::Math::operator-(const Vector4D& leftVector, const Vector4D& rightVector)
 		{
 			Vector4D leftVectorCopy = leftVector;
-			return leftVectorCopy - rightVector;
+			return leftVectorCopy -= rightVector;
 		}
 
 		Vector4D Visage::Math::operator*(const Vector4D& vector, float scalar)
 		{
 			Vector4D vectorCopy = vector;
-			return vectorCopy * scalar;
+			return vectorCopy *= scalar;
 		}
 
 		Vector4D Visage::Math::operator/(const Vector4D& vector, float scalar)
 		{
 			Vector4D vectorCopy = vector;
-			return vectorCopy / scalar;
+			return vectorCopy /= scalar;
 		}
 
 		std::ostream& Visage::Math::operator<<(std::ostream& stream, const Vector4D& vector)

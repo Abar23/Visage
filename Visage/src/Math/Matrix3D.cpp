@@ -9,7 +9,7 @@ namespace Visage
 	namespace Math
 	{
 		Matrix3D::Matrix3D()
-			: entries{0.0f}
+			: entries{ 0.0f }
 		{
 		}
 
@@ -48,7 +48,7 @@ namespace Visage
 		}
 
 		Matrix3D::Matrix3D(const float diagonal)
-			: entries{0.0f}
+			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
 			entries[1][1] = diagonal;
@@ -57,7 +57,7 @@ namespace Visage
 
 		Matrix3D::Matrix3D(const Matrix3D& matrix)
 		{
-			std::memcpy(entries, matrix.entries, 9 * sizeof(float));
+			std::memcpy(entries, matrix.entries, sizeof(Matrix3D));
 		}
 
 		Matrix3D Matrix3D::Inverse() const
@@ -72,9 +72,9 @@ namespace Visage
 
 			float inverseDet = 1.0f / Vector3D::Dot(aCrossb, c);
 
-			return Matrix3D(bCrossC.x * inverseDet, cCrossa.x * inverseDet, aCrossb.x * inverseDet, 
-							bCrossC.y * inverseDet, cCrossa.y * inverseDet, aCrossb.y * inverseDet,
-							bCrossC.z * inverseDet, cCrossa.z * inverseDet, aCrossb.z * inverseDet);
+			return Matrix3D(bCrossC.x * inverseDet, bCrossC.y * inverseDet, bCrossC.z * inverseDet, 
+							cCrossa.x * inverseDet, cCrossa.y * inverseDet, cCrossa.z * inverseDet,
+							aCrossb.x * inverseDet, aCrossb.y * inverseDet, aCrossb.z * inverseDet);
 		}
 
 		Matrix3D Matrix3D::Transpose() const
@@ -181,18 +181,18 @@ namespace Visage
 
 		Matrix3D& Matrix3D::operator=(const Matrix3D& matrix)
 		{
-			std::memcpy(entries, matrix.entries, 9 * sizeof(float));
+			std::memcpy(entries, matrix.entries, sizeof(Matrix3D));
 			return *this;
 		}
 
 		const float& Matrix3D::operator()(const int rowIndex, const int columnIndex) const
 		{
-			return entries[rowIndex][columnIndex];
+			return entries[columnIndex][rowIndex];
 		}
 
 		float& Matrix3D::operator()(const int rowIndex, const int columnIndex)
 		{
-			return entries[rowIndex][columnIndex];
+			return entries[columnIndex][rowIndex];
 		}
 
 		Matrix3D& Matrix3D::operator*=(const Matrix3D& matrix)
@@ -256,9 +256,9 @@ namespace Visage
 
 		std::ostream& operator<<(std::ostream& stream, const Matrix3D& matrix)
 		{
-			stream << "[ " << matrix(0, 0) << ", " << matrix(0, 1) << ", " << matrix(0, 2) << " ]" << std::endl;
-			stream << "[ " << matrix(1, 0) << ", " << matrix(1, 1) << ", " << matrix(1, 2) << " ]" << std::endl;
-			stream << "[ " << matrix(2, 0) << ", " << matrix(2, 1) << ", " << matrix(2, 2) << " ]" << std::endl;
+			stream << "( " << matrix(0, 0) << ", " << matrix(0, 1) << ", " << matrix(0, 2) << std::endl;
+			stream << "  " << matrix(1, 0) << ", " << matrix(1, 1) << ", " << matrix(1, 2) << std::endl;
+			stream << "  " << matrix(2, 0) << ", " << matrix(2, 1) << ", " << matrix(2, 2) << " )";
 			return stream;
 		}
 	}
