@@ -26,8 +26,10 @@ namespace Visage
 					 const Vector4D& secondRow,
 					 const Vector4D& thirdRow,
 					 const Vector4D& fourthRow);
-			Matrix4D(const float diagonal);
+			Matrix4D(float diagonal);
 			Matrix4D(const Matrix4D& matrix);
+
+			~Matrix4D() = default;
 
 			Matrix4D Inverse() const;
 			Matrix4D Transpose() const;
@@ -38,15 +40,15 @@ namespace Visage
 			Matrix3D AffineMatrix() const;
 			Matrix3D NormalMatrix() const;
 
-			static Matrix4D MakeRotationX(const float angle);
-			static Matrix4D MakeRotationY(const float angle);
-			static Matrix4D MakeRotationZ(const float angle);
+			static Matrix4D MakeRotationX(float angle);
+			static Matrix4D MakeRotationY(float angle);
+			static Matrix4D MakeRotationZ(float angle);
 			static Matrix4D MakeRotaion(const float angle, const Vector3D& axis);
-			static Matrix4D MakeScale(const float uniformScale);
-			static Matrix4D MakeScale(const float scaleX, const float scaleY, const float scaleZ);
+			static Matrix4D MakeScale(float uniformScale);
+			static Matrix4D MakeScale(float scaleX, float scaleY, float scaleZ);
 			static Matrix4D MakeScale(const Vector3D& vector);
-			static Matrix4D MakeTranslation(const float uniformTranslation);
-			static Matrix4D MakeTranslation(const float translationX, const float translationY, const float translationZ);
+			static Matrix4D MakeTranslation(float uniformTranslation);
+			static Matrix4D MakeTranslation(float translationX, float translationY, float translationZ);
 			static Matrix4D MakeTranslation(const Vector3D& vector);
 			static Matrix4D Orthographic(float left, float right, float bottom , float top, float near, float far);
 			static Matrix4D Perspective(float fieldOfViewInDegrees, float aspectRatio, float near, float far);
@@ -54,8 +56,8 @@ namespace Visage
 
 			Matrix4D& operator=(const Matrix4D& matrix);
 
-			const float& operator()(const int rowIndex, const int columnIndex) const;
-			float& operator()(const int rowIndex, const int columnIndex);
+			const float& operator()(int rowIndex, int columnIndex) const;
+			float& operator()(int rowIndex, int columnIndex);
 
 			Matrix4D& operator*=(const Matrix4D& matrix);
 			Vector4D operator*=(const Vector4D& vector);
@@ -64,7 +66,7 @@ namespace Visage
 
 		Matrix4D operator*(const Matrix4D& leftMatrix, const Matrix4D& rightMatrix);
 		Vector4D operator*(const Matrix4D& matrix, const Vector4D& vector);
-		Matrix4D operator*(const Matrix4D& matrix, const float scalar);
+		Matrix4D operator*(const Matrix4D& matrix, float scalar);
 
 		std::ostream& operator<<(std::ostream& stream, const Matrix4D& matrix);
 	}

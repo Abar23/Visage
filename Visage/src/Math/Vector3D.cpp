@@ -156,7 +156,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vector3D& Vector3D::operator*=(const float scalar)
+		Vector3D& Vector3D::operator*=(float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
@@ -164,7 +164,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vector3D& Vector3D::operator/=(const float scalar)
+		Vector3D& Vector3D::operator/=(float scalar)
 		{
 			x /= scalar;
 			y /= scalar;

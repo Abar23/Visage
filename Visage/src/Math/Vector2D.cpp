@@ -125,14 +125,14 @@ namespace Visage
 			return *this;
 		}
 
-		Vector2D& Vector2D::operator*=(const float scalar)
+		Vector2D& Vector2D::operator*=(float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
 			return *this;
 		}
 
-		Vector2D& Vector2D::operator/=(const float scalar)
+		Vector2D& Vector2D::operator/=(float scalar)
 		{
 			x /= scalar;
 			y /= scalar;

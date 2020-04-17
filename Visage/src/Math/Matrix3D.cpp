@@ -47,7 +47,7 @@ namespace Visage
 			entries[2][2] = thirdRow.z;
 		}
 
-		Matrix3D::Matrix3D(const float diagonal)
+		Matrix3D::Matrix3D(float diagonal)
 			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
@@ -101,7 +101,7 @@ namespace Visage
 			return columns[columnIndex];
 		}
 
-		Matrix3D Matrix3D::MakeRotationX(const float angle)
+		Matrix3D Matrix3D::MakeRotationX(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -112,7 +112,7 @@ namespace Visage
 							0.0f, sin, cos);
 		}
 
-		Matrix3D Matrix3D::MakeRotationY(const float angle)
+		Matrix3D Matrix3D::MakeRotationY(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -123,7 +123,7 @@ namespace Visage
 							-sin, 0.0f, cos);
 		}
 
-		Matrix3D Matrix3D::MakeRotationZ(const float angle)
+		Matrix3D Matrix3D::MakeRotationZ(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -134,7 +134,7 @@ namespace Visage
 							0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix3D Matrix3D::MakeRotaion(const float angle, const Vector3D& axis)
+		Matrix3D Matrix3D::MakeRotaion(float angle, const Vector3D& axis)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -153,14 +153,14 @@ namespace Visage
 							axisXAxisZ - sin * axis.y, axisYAxisZ + sin * axis.x, cos + z * axis.z);
 		}
 
-		Matrix3D Matrix3D::MakeScale(const float uniformScale)
+		Matrix3D Matrix3D::MakeScale(float uniformScale)
 		{
 			return Matrix3D(uniformScale, 0.0f, 0.0f,
 							0.0f, uniformScale, 0.0f,
 							0.0f, 0.0f, uniformScale);
 		}
 
-		Matrix3D Matrix3D::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
+		Matrix3D Matrix3D::MakeScale(float scaleX, float scaleY, float scaleZ)
 		{
 			return Matrix3D(scaleX, 0.0f, 0.0f,
 							0.0f, scaleY, 0.0f,
@@ -185,12 +185,12 @@ namespace Visage
 			return *this;
 		}
 
-		const float& Matrix3D::operator()(const int rowIndex, const int columnIndex) const
+		const float& Matrix3D::operator()(int rowIndex, int columnIndex) const
 		{
 			return entries[columnIndex][rowIndex];
 		}
 
-		float& Matrix3D::operator()(const int rowIndex, const int columnIndex)
+		float& Matrix3D::operator()(int rowIndex, int columnIndex)
 		{
 			return entries[columnIndex][rowIndex];
 		}
@@ -219,7 +219,7 @@ namespace Visage
 							entries[0][2] * vector.x + entries[1][2] * vector.y + entries[2][2] * vector.z);
 		}
 
-		Matrix3D& Matrix3D::operator*=(const float scalar)
+		Matrix3D& Matrix3D::operator*=(float scalar)
 		{
 			entries[0][0] *= scalar;
 			entries[0][1] *= scalar;
@@ -248,7 +248,7 @@ namespace Visage
 			return matrixCopy *= vector;
 		}
 
-		Matrix3D operator*(const Matrix3D& matrix, const float scalar)
+		Matrix3D operator*(const Matrix3D& matrix, float scalar)
 		{
 			Matrix3D matrixCopy = matrix;
 			return matrixCopy *= scalar;

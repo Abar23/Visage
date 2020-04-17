@@ -24,8 +24,10 @@ namespace Visage
 			Matrix3D(const Vector3D& firstRow, 
 					 const Vector3D& secondRow, 
 					 const Vector3D& thirdRow);
-			Matrix3D(const float diagonal);
+			Matrix3D(float diagonal);
 			Matrix3D(const Matrix3D& matrix);
+
+			~Matrix3D() = default;
 
 			Matrix3D Inverse() const;
 			Matrix3D Transpose() const;
@@ -33,19 +35,19 @@ namespace Visage
 			Vector3D GetColumn(int columnIndex) const;
 			Vector3D GetRow(int rowIndex) const;
 
-			static Matrix3D MakeRotationX(const float angle);
-			static Matrix3D MakeRotationY(const float angle);
-			static Matrix3D MakeRotationZ(const float angle);
-			static Matrix3D MakeRotaion(const float angle, const Vector3D& axis);
-			static Matrix3D MakeScale(const float uniformScale);
-			static Matrix3D MakeScale(const float scaleX, const float scaleY, const float scaleZ);
+			static Matrix3D MakeRotationX(float angle);
+			static Matrix3D MakeRotationY(float angle);
+			static Matrix3D MakeRotationZ(float angle);
+			static Matrix3D MakeRotaion(float angle, const Vector3D& axis);
+			static Matrix3D MakeScale(float uniformScale);
+			static Matrix3D MakeScale(float scaleX, float scaleY, float scaleZ);
 			static Matrix3D MakeScale(const Vector3D& vector);
 			static Matrix3D Identity();
 
 			Matrix3D& operator=(const Matrix3D& matrix);
 			
-			const float& operator()(const int rowIndex, const int columnIndex) const;
-			float& operator()(const int rowIndex, const int columnIndex);
+			const float& operator()(int rowIndex, int columnIndex) const;
+			float& operator()(int rowIndex, int columnIndex);
 
 			Matrix3D& operator*=(const Matrix3D& matrix);
 			Vector3D operator*=(const Vector3D& vector);
@@ -54,7 +56,7 @@ namespace Visage
 
 		Matrix3D operator*(const Matrix3D& leftMatrix, const Matrix3D& rightMatrix);
 		Vector3D operator*(const Matrix3D& matrix, const Vector3D& vector);
-		Matrix3D operator*(const Matrix3D& matrix, const float scalar);
+		Matrix3D operator*(const Matrix3D& matrix, float scalar);
 
 		std::ostream& operator<<(std::ostream& stream, const Matrix3D& matrix);
 	}

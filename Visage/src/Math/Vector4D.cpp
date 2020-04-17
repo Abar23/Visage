@@ -113,7 +113,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vector4D& Visage::Math::Vector4D::operator*=(const float scalar)
+		Vector4D& Visage::Math::Vector4D::operator*=(float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
@@ -122,7 +122,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vector4D& Visage::Math::Vector4D::operator/=(const float scalar)
+		Vector4D& Visage::Math::Vector4D::operator/=(float scalar)
 		{
 			x /= scalar;
 			y /= scalar;

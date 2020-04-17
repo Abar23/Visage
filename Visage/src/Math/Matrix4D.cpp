@@ -61,7 +61,7 @@ namespace Visage
 			entries[3][3] = fourthRow.w;
 		}
 
-		Matrix4D::Matrix4D(const float diagonal)
+		Matrix4D::Matrix4D(float diagonal)
 			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
@@ -159,7 +159,7 @@ namespace Visage
 			return AffineMatrix().Inverse().Transpose();
 		}
 
-		Matrix4D Matrix4D::MakeRotationX(const float angle)
+		Matrix4D Matrix4D::MakeRotationX(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -171,7 +171,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix4D Matrix4D::MakeRotationY(const float angle)
+		Matrix4D Matrix4D::MakeRotationY(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -183,7 +183,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix4D Matrix4D::MakeRotationZ(const float angle)
+		Matrix4D Matrix4D::MakeRotationZ(float angle)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -195,7 +195,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix4D Matrix4D::MakeRotaion(const float angle, const Vector3D& axis)
+		Matrix4D Matrix4D::MakeRotaion(float angle, const Vector3D& axis)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -215,7 +215,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);		
 		}
 
-		Matrix4D Matrix4D::MakeScale(const float uniformScale)
+		Matrix4D Matrix4D::MakeScale(float uniformScale)
 		{
 			return Matrix4D(uniformScale, 0.0f, 0.0f, 0.0f,
 							0.0f, uniformScale, 0.0f, 0.0f,
@@ -223,7 +223,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix4D Matrix4D::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
+		Matrix4D Matrix4D::MakeScale(float scaleX, float scaleY, float scaleZ)
 		{
 			return Matrix4D(scaleX, 0.0f, 0.0f, 0.0f,
 							0.0f, scaleY, 0.0f, 0.0f,
@@ -239,7 +239,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix4D Matrix4D::MakeTranslation(const float uniformTranslation)
+		Matrix4D Matrix4D::MakeTranslation(float uniformTranslation)
 		{
 			return Matrix4D(0.0f, 0.0f, 0.0f, uniformTranslation,
 							0.0f, 0.0f, 0.0f, uniformTranslation,
@@ -247,7 +247,7 @@ namespace Visage
 							0.0f, 0.0f, 0.0f, 1.0f);	
 		}
 
-		Matrix4D Matrix4D::MakeTranslation(const float translationX, const float translationY, const float translationZ)
+		Matrix4D Matrix4D::MakeTranslation(float translationX, float translationY, float translationZ)
 		{
 			return Matrix4D(0.0f, 0.0f, 0.0f, translationX,
 							0.0f, 0.0f, 0.0f, translationY,
@@ -293,12 +293,12 @@ namespace Visage
 			return *this;
 		}
 
-		const float& Matrix4D::operator()(const int rowIndex, const int columnIndex) const
+		const float& Matrix4D::operator()(int rowIndex, int columnIndex) const
 		{
 			return entries[columnIndex][rowIndex];
 		}
 
-		float& Matrix4D::operator()(const int rowIndex, const int columnIndex)
+		float& Matrix4D::operator()(int rowIndex, int columnIndex)
 		{
 			return entries[columnIndex][rowIndex];
 		}
@@ -336,7 +336,7 @@ namespace Visage
 							entries[0][3] * vector.x + entries[1][3] * vector.y + entries[2][3] * vector.z + entries[3][3] * vector.w);
 		}
 
-		Matrix4D& Matrix4D::operator*=(const float scalar)
+		Matrix4D& Matrix4D::operator*=(float scalar)
 		{
 			entries[0][0] *= scalar;
 			entries[0][1] *= scalar;
@@ -373,7 +373,7 @@ namespace Visage
 			return matrixCopy *= vector;
 		}
 
-		Matrix4D operator*(const Matrix4D& matrix, const float scalar)
+		Matrix4D operator*(const Matrix4D& matrix, float scalar)
 		{
 			Matrix4D matrixCopy = matrix;
 			return matrixCopy *= scalar;

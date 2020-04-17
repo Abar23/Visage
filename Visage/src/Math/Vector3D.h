@@ -29,13 +29,10 @@ namespace Visage
 			static Vector3D Cross(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Project(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Reject(const Vector3D& leftVector, const Vector3D& rightVector);
-
 			static Vector3D Zero();
-
 			static Vector3D XAxis();
 			static Vector3D YAxis();
 			static Vector3D ZAxis();
-
 			static Vector3D Up();
 			static Vector3D Down();
 			static Vector3D Left();
@@ -47,8 +44,8 @@ namespace Visage
 			Vector3D& operator+=(const Vector3D& vector);
 			Vector3D& operator-=(const Vector3D& vector);
 
-			Vector3D& operator*=(const float scalar);
-			Vector3D& operator/=(const float scalar);
+			Vector3D& operator*=(float scalar);
+			Vector3D& operator/=(float scalar);
 		};
 
 		bool operator==(const Vector3D& leftVector, const Vector3D& rightVector);

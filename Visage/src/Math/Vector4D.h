@@ -27,16 +27,16 @@ namespace Visage
 			float SqrMagnitude() const;
 			Vector4D Normalize() const;
 			Vector4D Negate() const;
-			static Vector4D Dot(const Vector4D& leftVector, const Vector4D& rightVector);
 
+			static Vector4D Dot(const Vector4D& leftVector, const Vector4D& rightVector);
 			static Vector4D Zero();
 
 			Vector4D& operator=(const Vector4D& vector);
 			Vector4D& operator+=(const Vector4D& vector);
 			Vector4D& operator-=(const Vector4D& vector);
 
-			Vector4D& operator*=(const float scalar);
-			Vector4D& operator/=(const float scalar);
+			Vector4D& operator*=(float scalar);
+			Vector4D& operator/=(float scalar);
 		};
 
 		bool operator==(const Vector4D& leftVector, const Vector4D& rightVector);
