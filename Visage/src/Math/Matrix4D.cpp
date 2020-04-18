@@ -38,8 +38,12 @@ namespace Visage
 			entries[3][3] = m33;
 		}
 
-		Matrix4D::Matrix4D(const Vector4D& firstRow, const Vector4D& secondRow, const Vector4D& thirdRow, const Vector4D& fourthRow)
+		Matrix4D::Matrix4D(const Vector4D& firstRow, 
+						   const Vector4D& secondRow, 
+						   const Vector4D& thirdRow, 
+						   const Vector4D& fourthRow)
 		{
+			
 			entries[0][0] = firstRow.x;
 			entries[0][1] = firstRow.y;
 			entries[0][2] = firstRow.z;
@@ -77,10 +81,10 @@ namespace Visage
 
 		Matrix4D Matrix4D::Inverse() const
 		{
-			Vector3D a = reinterpret_cast<const Vector3D&>(columns[0]);
-			Vector3D b = reinterpret_cast<const Vector3D&>(columns[1]);
-			Vector3D c = reinterpret_cast<const Vector3D&>(columns[2]);
-			Vector3D d = reinterpret_cast<const Vector3D&>(columns[3]);
+			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
+			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
+			const Vector3D c = reinterpret_cast<const Vector3D&>(entries[2]);
+			const Vector3D d = reinterpret_cast<const Vector3D&>(entries[3]);
 
 			float x = entries[0][3];
 			float y = entries[1][3];
@@ -119,10 +123,10 @@ namespace Visage
 
 		float Matrix4D::Determinant() const
 		{
-			Vector3D a = reinterpret_cast<const Vector3D&>(columns[0]);
-			Vector3D b = reinterpret_cast<const Vector3D&>(columns[1]);
-			Vector3D c = reinterpret_cast<const Vector3D&>(columns[2]);
-			Vector3D d = reinterpret_cast<const Vector3D&>(columns[3]);
+			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
+			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
+			const Vector3D c = reinterpret_cast<const Vector3D&>(entries[2]);
+			const Vector3D d = reinterpret_cast<const Vector3D&>(entries[3]);
 
 			Vector3D s = Vector3D::Cross(a, b);
 			Vector3D t = Vector3D::Cross(c, d);
@@ -134,7 +138,18 @@ namespace Visage
 
 		Vector4D Matrix4D::GetColumn(int columnIndex) const
 		{
-			return columns[columnIndex];
+			return Vector4D(entries[columnIndex][0], 
+							entries[columnIndex][1], 
+							entries[columnIndex][2],
+							entries[columnIndex][3]);
+		}
+
+		void Matrix4D::SetColumn(int columnIndex, const Vector4D& vector)
+		{
+			entries[columnIndex][0] = vector.z;
+			entries[columnIndex][1] = vector.x;
+			entries[columnIndex][2] = vector.z;
+			entries[columnIndex][3] = vector.w;
 		}
 
 		Vector4D Matrix4D::GetRow(int rowIndex) const
@@ -142,9 +157,17 @@ namespace Visage
 			return Vector4D(entries[0][rowIndex], entries[1][rowIndex], entries[2][rowIndex], entries[3][rowIndex]);
 		}
 
-		Vector4D Matrix4D::AffineVector() const
+		void Matrix4D::SetRow(int rowIndex, const Vector4D& vector)
 		{
-			return columns[3];
+			entries[0][rowIndex] = vector.x;
+			entries[1][rowIndex] = vector.y;
+			entries[2][rowIndex] = vector.z;
+			entries[3][rowIndex] = vector.w;
+		}
+
+		Vector3D Matrix4D::AffineVector() const
+		{
+			return Vector3D(entries[3][0], entries[3][1], entries[3][2]);
 		}
 
 		Matrix3D Matrix4D::AffineMatrix() const
@@ -241,25 +264,25 @@ namespace Visage
 
 		Matrix4D Matrix4D::MakeTranslation(float uniformTranslation)
 		{
-			return Matrix4D(0.0f, 0.0f, 0.0f, uniformTranslation,
-							0.0f, 0.0f, 0.0f, uniformTranslation,
-							0.0f, 0.0f, 0.0f, uniformTranslation,
+			return Matrix4D(1.0f, 0.0f, 0.0f, uniformTranslation,
+							0.0f, 1.0f, 0.0f, uniformTranslation,
+							0.0f, 0.0f, 1.0f, uniformTranslation,
 							0.0f, 0.0f, 0.0f, 1.0f);	
 		}
 
 		Matrix4D Matrix4D::MakeTranslation(float translationX, float translationY, float translationZ)
 		{
-			return Matrix4D(0.0f, 0.0f, 0.0f, translationX,
-							0.0f, 0.0f, 0.0f, translationY,
-							0.0f, 0.0f, 0.0f, translationZ,
+			return Matrix4D(1.0f, 0.0f, 0.0f, translationX,
+							0.0f, 1.0f, 0.0f, translationY,
+							0.0f, 0.0f, 1.0f, translationZ,
 							0.0f, 0.0f, 0.0f, 1.0f);			
 		}
 
 		Matrix4D Matrix4D::MakeTranslation(const Vector3D& vector)
 		{
-			return Matrix4D(0.0f, 0.0f, 0.0f, vector.x,
-							0.0f, 0.0f, 0.0f, vector.y,
-							0.0f, 0.0f, 0.0f, vector.z,
+			return Matrix4D(1.0f, 0.0f, 0.0f, vector.x,
+							0.0f, 1.0f, 0.0f, vector.y,
+							0.0f, 0.0f, 1.0f, vector.z,
 							0.0f, 0.0f, 0.0f, 1.0f);	
 		}
 

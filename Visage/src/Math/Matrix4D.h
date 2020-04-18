@@ -9,12 +9,8 @@ namespace Visage
 	{
 		class Matrix4D
 		{
-		private:
-			union
-			{
-				float entries[4][4];
-				Vector4D columns[4];
-			};
+		protected:
+			float entries[4][4];
 
 		public:
 			Matrix4D();
@@ -31,12 +27,14 @@ namespace Visage
 
 			~Matrix4D() = default;
 
-			Matrix4D Inverse() const;
+			virtual Matrix4D Inverse() const;
 			Matrix4D Transpose() const;
-			float Determinant() const;
+			virtual float Determinant() const;
 			Vector4D GetColumn(int columnIndex) const;
+			void SetColumn(int columnIndex, const Vector4D& vector);
 			Vector4D GetRow(int rowIndex) const;
-			Vector4D AffineVector() const;
+			void SetRow(int rowIndex, const Vector4D& vector);
+			Vector3D AffineVector() const;
 			Matrix3D AffineMatrix() const;
 			Matrix3D NormalMatrix() const;
 

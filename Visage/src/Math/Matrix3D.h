@@ -10,11 +10,7 @@ namespace Visage
 		class Matrix3D
 		{
 		private:
-			union
-			{
-				float entries[3][3];
-				Vector3D columns[3];
-			};
+			float entries[3][3];
 
 		public:
 			Matrix3D();
@@ -33,7 +29,9 @@ namespace Visage
 			Matrix3D Transpose() const;
 			float Determinant() const;
 			Vector3D GetColumn(int columnIndex) const;
+			void SetColumn(int columnIndex, const Vector3D& vector);
 			Vector3D GetRow(int rowIndex) const;
+			void SetRow(int rowIndex, const Vector3D& vector);
 
 			static Matrix3D MakeRotationX(float angle);
 			static Matrix3D MakeRotationY(float angle);

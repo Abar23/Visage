@@ -31,7 +31,9 @@ namespace Visage
 			entries[2][2] = m22;
 		}
 
-		Matrix3D::Matrix3D(const Vector3D& firstRow, const Vector3D& secondRow, const Vector3D& thirdRow)
+		Matrix3D::Matrix3D(const Vector3D& firstRow,
+						   const Vector3D& secondRow, 
+						   const Vector3D& thirdRow)
 		{
 			// Column-major ordering
 			entries[0][0] = firstRow.x;
@@ -62,9 +64,9 @@ namespace Visage
 
 		Matrix3D Matrix3D::Inverse() const
 		{
-			Vector3D a = columns[0];
-			Vector3D b = columns[1];
-			Vector3D c = columns[2];
+			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
+			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
+			const Vector3D c = reinterpret_cast<const Vector3D&>(entries[2]);
 
 			Vector3D bCrossC = Vector3D::Cross(b, c);
 			Vector3D cCrossa = Vector3D::Cross(c, a);
@@ -91,14 +93,30 @@ namespace Visage
 				   + entries[2][0] * (entries[0][1] * entries[1][2] - entries[1][1] * entries[0][2]);
 		}
 
+		Vector3D Matrix3D::GetColumn(int columnIndex) const
+		{
+			return Vector3D(entries[columnIndex][0],
+							entries[columnIndex][1],
+							entries[columnIndex][2]);
+		}
+
+		void Matrix3D::SetColumn(int columnIndex, const Vector3D& vector)
+		{
+			entries[columnIndex][0] = vector.x;
+			entries[columnIndex][1] = vector.y;
+			entries[columnIndex][2] = vector.z;
+		}
+
 		Vector3D Matrix3D::GetRow(int rowIndex) const
 		{
 			return Vector3D(entries[0][rowIndex], entries[1][rowIndex], entries[2][rowIndex]);
 		}
 
-		Vector3D Matrix3D::GetColumn(int columnIndex) const
+		void Matrix3D::SetRow(int rowIndex, const Vector3D& vector)
 		{
-			return columns[columnIndex];
+			entries[0][rowIndex] = vector.x;
+			entries[1][rowIndex] = vector.y;
+			entries[2][rowIndex] = vector.z;
 		}
 
 		Matrix3D Matrix3D::MakeRotationX(float angle)
