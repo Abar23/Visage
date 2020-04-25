@@ -79,7 +79,7 @@ namespace Visage
 			std::memcpy(entries, matrix.entries, sizeof(Matrix4D));
 		}
 
-		Matrix4D Matrix4D::Inverse() const
+		Matrix4D Matrix4D::Inverted() const
 		{
 			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
 			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
@@ -113,12 +113,84 @@ namespace Visage
 							fourthRow.x, fourthRow.y, fourthRow.z, Vector3D::Dot(c, s));
 		}
 
-		Matrix4D Matrix4D::Transpose() const
+		Matrix4D& Matrix4D::Invert()
+		{
+			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
+			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
+			const Vector3D c = reinterpret_cast<const Vector3D&>(entries[2]);
+			const Vector3D d = reinterpret_cast<const Vector3D&>(entries[3]);
+
+			float x = entries[0][3];
+			float y = entries[1][3];
+			float z = entries[2][3];
+			float w = entries[3][3];
+
+			Vector3D s = Vector3D::Cross(a, b);
+			Vector3D t = Vector3D::Cross(c, d);
+			Vector3D u = a * y - b * x;
+			Vector3D v = c * w - d * z;
+
+			float inverseDet = 1.0f / Vector3D::Dot(s, v) - Vector3D::Dot(t, u);
+			s *= inverseDet;
+			t *= inverseDet;
+			u *= inverseDet;
+			v *= inverseDet;
+
+			Vector3D firstRow = Vector3D::Cross(b, v) + t * y;
+			Vector3D secondRow = Vector3D::Cross(v, a) - t * x;
+			Vector3D thirdRow = Vector3D::Cross(d, u) + s * w;
+			Vector3D fourthRow = Vector3D::Cross(u, c) - s * z;
+
+			entries[0][0] = firstRow.x;
+			entries[1][0] = firstRow.y;
+			entries[2][0] = firstRow.z;
+			entries[3][0] = -Vector3D::Dot(b, t);
+
+			entries[0][1] = secondRow.x;
+			entries[1][1] = secondRow.x;
+			entries[2][1] = secondRow.x;
+			entries[3][1] = -Vector3D::Dot(a, t);
+
+			entries[0][2] = thirdRow.x;
+			entries[1][2] = thirdRow.x;
+			entries[2][2] = thirdRow.x;
+			entries[3][2] = -Vector3D::Dot(d, s);
+
+			entries[0][3] = fourthRow.x;
+			entries[1][3] = fourthRow.x;
+			entries[2][3] = fourthRow.x;
+			entries[3][3] = -Vector3D::Dot(c, s);
+
+			return *this;
+		}
+
+		Matrix4D Matrix4D::Transposed() const
 		{
 			return Matrix4D(entries[0][0], entries[0][1], entries[0][2], entries[0][3],
 							entries[1][0], entries[1][1], entries[1][2], entries[1][3],
 							entries[2][0], entries[2][1], entries[2][2], entries[2][3],
 							entries[3][0], entries[3][1], entries[3][2], entries[3][3]);
+		}
+
+		Matrix4D& Matrix4D::Transpose()
+		{
+			entries[0][1] = entries[1][0];
+			entries[0][2] = entries[2][0];
+			entries[0][3] = entries[3][0];
+
+			entries[1][0] = entries[0][1];
+			entries[1][2] = entries[2][1];
+			entries[1][3] = entries[3][1];
+
+			entries[2][0] = entries[0][2];
+			entries[2][1] = entries[1][2];
+			entries[2][3] = entries[3][2];
+
+			entries[3][0] = entries[0][3];
+			entries[3][1] = entries[1][3];
+			entries[3][2] = entries[2][3];
+
+			return *this;
 		}
 
 		float Matrix4D::Determinant() const
@@ -165,9 +237,16 @@ namespace Visage
 			entries[3][rowIndex] = vector.w;
 		}
 
-		Vector3D Matrix4D::AffineVector() const
+		Vector3D Matrix4D::GetTranslation() const
 		{
 			return Vector3D(entries[3][0], entries[3][1], entries[3][2]);
+		}
+
+		void Matrix4D::SetTranslation(const Vector4D& translation)
+		{
+			entries[3][0] = translation.x;
+			entries[3][1] = translation.y;
+			entries[3][2] = translation.z;
 		}
 
 		Matrix3D Matrix4D::AffineMatrix() const
@@ -179,7 +258,7 @@ namespace Visage
 
 		Matrix3D Matrix4D::NormalMatrix() const
 		{
-			return AffineMatrix().Inverse().Transpose();
+			return AffineMatrix().Inverted().Transposed();
 		}
 
 		Matrix4D Matrix4D::MakeRotationX(float angle)
@@ -284,6 +363,18 @@ namespace Visage
 							0.0f, 1.0f, 0.0f, vector.y,
 							0.0f, 0.0f, 1.0f, vector.z,
 							0.0f, 0.0f, 0.0f, 1.0f);	
+		}
+
+		Matrix4D Matrix4D::LookAt(const Vector3D& cameraPosition, const Vector3D& targetPosition, const Vector3D& up)
+		{
+			Vector3D forwardAxis = (cameraPosition - targetPosition).Normalize();
+			Vector3D rightAxis = Vector3D::Cross(up, forwardAxis).Normalize();
+			Vector3D upAxis = Vector3D::Cross(forwardAxis, rightAxis).Normalize();
+			
+			return Matrix4D(rightAxis.x, rightAxis.y, rightAxis.z, -Vector3D::Dot(rightAxis, cameraPosition),
+							upAxis.x, upAxis.y, upAxis.z, -Vector3D::Dot(upAxis, cameraPosition),
+							forwardAxis.x, forwardAxis.y, forwardAxis.z, -Vector3D::Dot(forwardAxis, cameraPosition),
+							0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
 		Matrix4D Matrix4D::Orthographic(float left, float right, float bottom, float top, float near, float far)

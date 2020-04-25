@@ -27,14 +27,17 @@ namespace Visage
 
 			~Matrix4D() = default;
 
-			virtual Matrix4D Inverse() const;
-			Matrix4D Transpose() const;
-			virtual float Determinant() const;
+			Matrix4D Inverted() const;
+			Matrix4D& Invert();
+			Matrix4D Transposed() const;
+			Matrix4D& Transpose();
+			float Determinant() const;
 			Vector4D GetColumn(int columnIndex) const;
 			void SetColumn(int columnIndex, const Vector4D& vector);
 			Vector4D GetRow(int rowIndex) const;
 			void SetRow(int rowIndex, const Vector4D& vector);
-			Vector3D AffineVector() const;
+			Vector3D GetTranslation() const;
+			void SetTranslation(const Vector4D& translation);
 			Matrix3D AffineMatrix() const;
 			Matrix3D NormalMatrix() const;
 
@@ -48,6 +51,7 @@ namespace Visage
 			static Matrix4D MakeTranslation(float uniformTranslation);
 			static Matrix4D MakeTranslation(float translationX, float translationY, float translationZ);
 			static Matrix4D MakeTranslation(const Vector3D& vector);
+			static Matrix4D LookAt(const Vector3D& cameraPosition, const Vector3D& target, const Vector3D& up);
 			static Matrix4D Orthographic(float left, float right, float bottom , float top, float near, float far);
 			static Matrix4D Perspective(float fieldOfViewInDegrees, float aspectRatio, float near, float far);
 			static Matrix4D Identity();

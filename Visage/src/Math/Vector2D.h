@@ -20,8 +20,10 @@ namespace Visage
 
 			float Magnitude() const;
 			float SqrMagnitude() const;
-			Vector2D Normalize() const;
-			Vector2D Negate() const;
+			Vector2D Normalized() const;
+			Vector2D& Normalized();
+			Vector2D Negated() const;
+			Vector2D& Negate();
 
 			static float Dot(const Vector2D& leftVector, const Vector2D& rightVector);
 			static Vector2D Project(const Vector2D& leftVector, const Vector2D& rightVector);

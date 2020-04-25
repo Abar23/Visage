@@ -1,6 +1,7 @@
 #include <cmath>
 #include "Vector4D.h"
 #include "MathFunctions.h"
+#include "MathConstants.h"
 
 namespace Visage
 {
@@ -51,12 +52,12 @@ namespace Visage
 			return x * x + y * y + z * z + w * w;
 		}
 
-		Vector4D Vector4D::Normalize() const
+		Vector4D Vector4D::Normalized() const
 		{
 			float magnitude = Magnitude();
-			if (magnitude > 0.0f)
+			if (!FloatIsEqual(magnitude, 0.0f))
 			{
-				float inverseMag = 1.0f / Magnitude();
+				float inverseMag = 1.0f / magnitude;
 				return Vector4D(x * inverseMag,
 								y * inverseMag,
 								z * inverseMag,
@@ -68,9 +69,31 @@ namespace Visage
 			}
 		}
 
-		Vector4D Vector4D::Negate() const
+		Vector4D& Vector4D::Normalize()
 		{
-			return *this * -1;
+			float magnitude = Magnitude();
+			if (!FloatIsEqual(magnitude, 0.0f))
+			{
+				float inverseMag = 1.0f / magnitude;
+				*this *= inverseMag;
+			}
+			else
+			{
+				*this *= 0.0f;
+			}
+
+			return *this;
+		}
+
+		Vector4D Vector4D::Negated() const
+		{
+			return *this * -1.0f;
+		}
+
+		Vector4D& Vector4D::Negate()
+		{
+			*this *= -1.0f;
+			return *this;
 		}
 
 		Vector4D Vector4D::Dot(const Vector4D& leftVector, const Vector4D& rightVector)

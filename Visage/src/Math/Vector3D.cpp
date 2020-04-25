@@ -1,7 +1,7 @@
 #include <cmath>
-
 #include "Vector3D.h"
 #include "MathFunctions.h"
+#include "MathConstants.h"
 
 namespace Visage 
 {
@@ -40,9 +40,9 @@ namespace Visage
 		Vector3D Visage::Math::Vector3D::Normalize() const
 		{
 			float magnitude = Magnitude();
-			if (magnitude > 0.0f)
+			if (!FloatIsEqual(magnitude, 0.0f))
 			{
-				float inverseMag = 1.0f / Magnitude();
+				float inverseMag = 1.0f / magnitude;
 				return Vector3D(x * inverseMag,
 								y * inverseMag,
 								z * inverseMag);
@@ -53,9 +53,31 @@ namespace Visage
 			}
 		}
 
-		Vector3D Visage::Math::Vector3D::Negate() const
+		Vector3D& Vector3D::Normalized()
 		{
-			return *this * -1;
+			float magnitude = Magnitude();
+			if (!FloatIsEqual(magnitude, 0.0f))
+			{
+				float inverseMag = 1.0f / magnitude;
+				*this *= inverseMag;
+			}
+			else
+			{
+				*this *= 0.0f;
+			}
+
+			return *this;
+		}
+
+		Vector3D Visage::Math::Vector3D::Negated() const
+		{
+			return *this * -1.0f;
+		}
+
+		Vector3D& Vector3D::Negate()
+		{
+			*this *= -1.0f;
+			return *this;
 		}
 
 		float Visage::Math::Vector3D::Dot(const Vector3D& leftVector, const Vector3D& rightVector)
@@ -124,12 +146,12 @@ namespace Visage
 
 		Vector3D Vector3D::Back()
 		{
-			return Vector3D(0.0f, 1.0f, 0.0f);
+			return Vector3D(0.0f, 0.0f, 1.0f);
 		}
 
 		Vector3D Vector3D::Forward()
 		{
-			return Vector3D(0.0f, -1.0f, 0.0f);
+			return Vector3D(0.0f, 0.0f, -1.0f);
 		}
 
 		Vector3D& Vector3D::operator=(const Vector3D& vector)

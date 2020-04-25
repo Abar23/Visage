@@ -23,7 +23,9 @@ namespace Visage
 			float Magnitude() const;
 			float SqrMagnitude() const;
 			Vector3D Normalize() const;
-			Vector3D Negate() const;
+			Vector3D& Normalized();
+			Vector3D Negated() const;
+			Vector3D& Negate();
 
 			static float Dot(const Vector3D& leftVector, const Vector3D& rightVector);
 			static Vector3D Cross(const Vector3D& leftVector, const Vector3D& rightVector);

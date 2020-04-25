@@ -62,7 +62,7 @@ namespace Visage
 			std::memcpy(entries, matrix.entries, sizeof(Matrix3D));
 		}
 
-		Matrix3D Matrix3D::Inverse() const
+		Matrix3D Matrix3D::Inverted() const
 		{
 			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
 			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
@@ -79,11 +79,51 @@ namespace Visage
 							aCrossb.x * inverseDet, aCrossb.y * inverseDet, aCrossb.z * inverseDet);
 		}
 
-		Matrix3D Matrix3D::Transpose() const
+		Matrix3D& Matrix3D::Invert()
+		{
+			const Vector3D a = reinterpret_cast<const Vector3D&>(entries[0]);
+			const Vector3D b = reinterpret_cast<const Vector3D&>(entries[1]);
+			const Vector3D c = reinterpret_cast<const Vector3D&>(entries[2]);
+
+			Vector3D bCrossC = Vector3D::Cross(b, c);
+			Vector3D cCrossa = Vector3D::Cross(c, a);
+			Vector3D aCrossb = Vector3D::Cross(a, b);
+
+			float inverseDet = 1.0f / Vector3D::Dot(aCrossb, c);
+
+			entries[0][0] = bCrossC.x * inverseDet;
+			entries[0][1] = cCrossa.x * inverseDet;
+			entries[0][2] = aCrossb.x * inverseDet;
+
+			entries[1][0] = bCrossC.y * inverseDet;
+			entries[1][1] = cCrossa.y * inverseDet;
+			entries[1][2] = aCrossb.y * inverseDet;
+
+			entries[2][0] = bCrossC.z * inverseDet;
+			entries[2][1] = cCrossa.z * inverseDet;
+			entries[2][2] = aCrossb.z * inverseDet;
+			return *this;
+		}
+
+		Matrix3D Matrix3D::Transposed() const
 		{
 			return Matrix3D(entries[0][0], entries[0][1], entries[0][2], 
 							entries[1][0], entries[1][1], entries[1][2], 
 							entries[2][0], entries[2][1], entries[2][2]);
+		}
+
+		Matrix3D& Matrix3D::Transpose()
+		{
+			entries[0][1] = entries[1][0];
+			entries[0][2] = entries[2][0];
+
+			entries[1][0] = entries[0][1];
+			entries[1][2] = entries[2][1];
+
+			entries[2][0] = entries[0][2];
+			entries[2][1] = entries[2][1];
+
+			return *this;
 		}
 
 		float Matrix3D::Determinant() const
@@ -122,8 +162,8 @@ namespace Visage
 		Matrix3D Matrix3D::MakeRotationX(float angle)
 		{
 			float radians = DegreesToRad(angle);
-			float cos = std::cos(radians);
-			float sin = std::sin(radians);
+			float cos = std::cosf(radians);
+			float sin = std::sinf(radians);
 
 			return Matrix3D(1.0f, 0.0f, 0.0f,
 							0.0f, cos, -sin,
@@ -133,8 +173,8 @@ namespace Visage
 		Matrix3D Matrix3D::MakeRotationY(float angle)
 		{
 			float radians = DegreesToRad(angle);
-			float cos = std::cos(radians);
-			float sin = std::sin(radians);
+			float cos = std::cosf(radians);
+			float sin = std::sinf(radians);
 
 			return Matrix3D(cos, 0.0f, sin,
 							0.0f, 1.0f, 0.0f,
@@ -144,19 +184,19 @@ namespace Visage
 		Matrix3D Matrix3D::MakeRotationZ(float angle)
 		{
 			float radians = DegreesToRad(angle);
-			float cos = std::cos(radians);
-			float sin = std::sin(radians);
+			float cos = std::cosf(radians);
+			float sin = std::sinf(radians);
 
 			return Matrix3D(cos, -sin, 0.0f,
 							sin, cos, 0.0f,
 							0.0f, 0.0f, 1.0f);
 		}
 
-		Matrix3D Matrix3D::MakeRotaion(float angle, const Vector3D& axis)
+		Matrix3D Matrix3D::MakeRotation(float angle, const Vector3D& axis)
 		{
 			float radians = DegreesToRad(angle);
-			float cos = std::cos(radians);
-			float sin = std::sin(radians);
+			float cos = std::cosf(radians);
+			float sin = std::sinf(radians);
 			float oneMinsCos = 1.0f - cos;
 
 			float x = axis.x * oneMinsCos;

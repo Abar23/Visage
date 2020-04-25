@@ -25,8 +25,10 @@ namespace Visage
 
 			~Matrix3D() = default;
 
-			Matrix3D Inverse() const;
-			Matrix3D Transpose() const;
+			Matrix3D Inverted() const;
+			Matrix3D& Invert();
+			Matrix3D Transposed() const;
+			Matrix3D& Transpose();
 			float Determinant() const;
 			Vector3D GetColumn(int columnIndex) const;
 			void SetColumn(int columnIndex, const Vector3D& vector);
@@ -36,7 +38,7 @@ namespace Visage
 			static Matrix3D MakeRotationX(float angle);
 			static Matrix3D MakeRotationY(float angle);
 			static Matrix3D MakeRotationZ(float angle);
-			static Matrix3D MakeRotaion(float angle, const Vector3D& axis);
+			static Matrix3D MakeRotation(float angle, const Vector3D& axis);
 			static Matrix3D MakeScale(float uniformScale);
 			static Matrix3D MakeScale(float scaleX, float scaleY, float scaleZ);
 			static Matrix3D MakeScale(const Vector3D& vector);

@@ -1,6 +1,7 @@
 #include <cmath>
 #include "Vector2D.h"
 #include "MathFunctions.h"
+#include "MathConstants.h"
 
 namespace Visage
 {
@@ -70,12 +71,12 @@ namespace Visage
 			return x * x + y * y;
 		}
 
-		Vector2D Vector2D::Normalize() const
+		Vector2D Vector2D::Normalized() const
 		{
 			float magnitude = Magnitude();
-			if (magnitude > 0.0f)
+			if (!FloatIsEqual(magnitude, 0.0f))
 			{
-				float inverseMag = 1.0f / Magnitude();
+				float inverseMag = 1.0f / magnitude;
 				return Vector2D(x * inverseMag, y * inverseMag);
 			}
 			else
@@ -84,9 +85,31 @@ namespace Visage
 			}
 		}
 
-		Vector2D Vector2D::Negate() const
+		Vector2D& Vector2D::Normalized()
 		{
-			return *this * -1;
+			float magnitude = Magnitude();
+			if (!FloatIsEqual(magnitude, 0.0f))
+			{
+				float inverseMag = 1.0f / magnitude;
+				*this *= inverseMag;
+			}
+			else
+			{
+				*this *= 0.0f;
+			}
+
+			return *this;
+		}
+
+		Vector2D Vector2D::Negated() const
+		{
+			return *this * -1.0f;
+		}
+
+		Vector2D& Vector2D::Negate()
+		{
+			*this *= -1.0f;
+			return *this;
 		}
 
 		float Vector2D::Dot(const Vector2D& leftVector, const Vector2D& rightVector)
