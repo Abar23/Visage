@@ -62,7 +62,6 @@ namespace Visage
 
 		DualQuaternion DualQuaternion::Conjugate() const
 		{
-
 			return DualQuaternion(real.Conjugate(), dual.Conjugate());
 		}
 
@@ -280,7 +279,7 @@ namespace Visage
 
 		std::ostream& operator<<(std::ostream& stream, const DualQuaternion& quaternion)
 		{
-			stream << "[ " << quaternion.GetRealQuaternion() << ", " << quaternion.GetDualQuaternion() << " ]";
+			stream << "( " << quaternion.GetRealQuaternion() << ", " << quaternion.GetDualQuaternion() << " )";
 			return stream;
 		}
 	}

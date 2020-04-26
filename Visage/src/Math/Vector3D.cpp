@@ -69,6 +69,18 @@ namespace Visage
 			return *this;
 		}
 
+		Vector3D Vector3D::Renormalized() const
+		{
+			float inverseMagnitude = FastInverseSqurRootAroundOne(SqrMagnitude());
+			return Vector3D(x * inverseMagnitude, y * inverseMagnitude, z * inverseMagnitude);
+		}
+
+		Vector3D& Vector3D::Renormalize()
+		{
+			float inverseMagnitude = FastInverseSqurRootAroundOne(SqrMagnitude());
+			return *this *= inverseMagnitude;
+		}
+
 		Vector3D Visage::Math::Vector3D::Negated() const
 		{
 			return *this * -1.0f;

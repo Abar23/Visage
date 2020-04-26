@@ -24,6 +24,8 @@ namespace Visage
 			float SqrMagnitude() const;
 			Vector3D Normalize() const;
 			Vector3D& Normalized();
+			Vector3D Renormalized() const;
+			Vector3D& Renormalize();
 			Vector3D Negated() const;
 			Vector3D& Negate();
 
