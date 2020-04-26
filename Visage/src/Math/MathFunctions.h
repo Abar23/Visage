@@ -15,18 +15,16 @@ namespace Visage
 
 		inline float RadToDegrees(float angleInDegrees)
 		{
-			return angleInDegrees * (F_PI / 180.0f);
+			return angleInDegrees * (180.0f / F_PI);
 		}
 
 		inline float FastInverseSqurRootAroundOne(float value)
 		{
-			constexpr float coeffOne = 35.0f / 16.0f;
-			constexpr float coeffTwo = -35.0f / 16.0f;
-			constexpr float coeffThree = 21.0f / 16.0f;
-			constexpr float coeffFour = -5.0f / 16.0f;
-			const float value2 = value * value;
+			constexpr float coeffOne = 15.0f / 8.0f;
+			constexpr float coeffTwo = -5.0f / 4.0f;
+			constexpr float coeffThree = 3.0f / 8.0f;
 
-			return coeffOne + coeffTwo * value + coeffThree * value2 + coeffFour * value2 * value;
+			return coeffOne + coeffTwo * value + coeffThree * value * value;
 		}
 	}
 }

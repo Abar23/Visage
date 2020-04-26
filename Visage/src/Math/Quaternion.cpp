@@ -201,11 +201,7 @@ namespace Visage
 
 		Quaternion Quaternion::MakeRotation(float angleInDegrees, const Vector3D& unitVector)
 		{
-			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
-			float cosHalfAngle = std::cos(halfAngle);
-			float sinHalfAngle = std::sin(halfAngle);
-
-			return Quaternion(unitVector * sinHalfAngle, cosHalfAngle);
+			return Quaternion(unitVector, angleInDegrees);
 		}
 
 		Quaternion Quaternion::Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t)
@@ -244,10 +240,16 @@ namespace Visage
 
 		Quaternion& Quaternion::operator*=(const Quaternion& quaterion)
 		{
-			x = w * quaterion.x + x * quaterion.w + y * quaterion.z - z * quaterion.y;
-			y = w * quaterion.y + y * quaterion.w + x * quaterion.z - z * quaterion.x;
-			z = w * quaterion.z + z * quaterion.w + x * quaterion.y - y * quaterion.x;
-			w = w * quaterion.w - x * quaterion.x - y * quaterion.y - z * quaterion.z;
+			float x = this->x;
+			float y = this->y;
+			float z = this->z;
+			float w = this->w;
+			
+			this->x = w * quaterion.x + x * quaterion.w + y * quaterion.z - z * quaterion.y;
+			this->y = w * quaterion.y + y * quaterion.w + z * quaterion.x - x * quaterion.z;
+			this->z = w * quaterion.z + z * quaterion.w + x * quaterion.y - y * quaterion.x;
+			this->w = w * quaterion.w - x * quaterion.x - y * quaterion.y - z * quaterion.z;
+
 			return *this;
 		}
 
@@ -292,6 +294,11 @@ namespace Visage
 		{
 			Quaternion leftQuaterionCopy = leftQuaterion;
 			return leftQuaterionCopy *= rightQuaterion;
+		}
+
+		Vector3D operator*(const Quaternion& quaternion, const Vector3D& vector)
+		{
+			return Quaternion::TransformVector(quaternion, vector);
 		}
 
 		Quaternion operator*(const Quaternion& quaterion, float scalar)

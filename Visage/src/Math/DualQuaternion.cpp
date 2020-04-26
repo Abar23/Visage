@@ -21,23 +21,23 @@ namespace Visage
 		DualQuaternion::DualQuaternion(const Quaternion& rotation, const Vector3D& translation)
 		{
 			real = rotation;
-			dual = Quaternion(translation.x, translation.y, translation.x, 0.0f) * rotation * 0.5f;
+			dual = (Quaternion(translation.x, translation.y, translation.z, 0.0f) * real) * 0.5f;
 		}
 
 		DualQuaternion::DualQuaternion(const DualQuaternion& dualQuat)
 		{
-			real = dualQuat.GetRealQuaternion();
-			dual = dualQuat.GetDualQuaternion();
+			real = dualQuat.real;
+			dual = dualQuat.dual;
 		}
 
 		DualQuaternion DualQuaternion::Normalized() const
 		{
-			float magnitude = Quaternion::Dot(real, dual);
-			if (FloatIsEqual(magnitude, 0.0f))
+			float magnitude = Quaternion::Dot(real, real);
+			if (!FloatIsEqual(magnitude, 0.0f))
 			{
 				float inverseMag = 1.0f / magnitude;
 				return DualQuaternion(real * inverseMag,
-									 dual * inverseMag);
+									  dual * inverseMag);
 			}
 			else
 			{
@@ -48,8 +48,8 @@ namespace Visage
 
 		DualQuaternion& DualQuaternion::Normalize()
 		{
-			float magnitude = Quaternion::Dot(real, dual);
-			if (FloatIsEqual(magnitude, 0.0f))
+			float magnitude = Quaternion::Dot(real, real);
+			if (!FloatIsEqual(magnitude, 0.0f))
 			{
 				float inverseMag = 1.0f / magnitude;
 				return *this *= inverseMag;
@@ -121,6 +121,7 @@ namespace Visage
 			float xSquared = x * x;
 			float ySquared = y * y;
 			float zSquared = z * z;
+			float wSquared = w * w;
 			float xy = x * y;
 			float xz = x * z;
 			float yz = y * z;
@@ -128,17 +129,17 @@ namespace Visage
 			float wy = w * y;
 			float wz = w * z;
 
-			matrix(0, 0) = 1.0f - 2.0f * (ySquared + zSquared);
+			matrix(0, 0) = wSquared + xSquared - ySquared - zSquared;
 			matrix(1, 0) = 2.0f * (xy + wz);
 			matrix(2, 0) = 2.0f * (xz - wy);
 
 			matrix(0, 1) = 2.0f * (xy - wz);
-			matrix(1, 1) = 1.0f - 2.0f * (xSquared + zSquared);
+			matrix(1, 1) = wSquared + ySquared - xSquared - zSquared;
 			matrix(2, 1) = 2.0f * (yz + wx);
 
 			matrix(0, 2) = 2.0f * (xz + wy);
 			matrix(1, 2) = 2.0f * (yz - wx);
-			matrix(2, 2) = 1.0f - 2.0f * (xSquared + ySquared);
+			matrix(2, 2) = wSquared + zSquared - xSquared - ySquared;
 
 			Vector3D translation = GetTranslation();
 
@@ -193,6 +194,13 @@ namespace Visage
 			return DualQuaternion();
 		}
 
+		Vector3D DualQuaternion::TransformVector(const DualQuaternion& dualQuat, const Vector3D& vector)
+		{
+			DualQuaternion vectorDualQuat(Quaternion(), vector);
+			DualQuaternion result = dualQuat * vectorDualQuat;
+			return result.GetTranslation();
+		}
+
 		DualQuaternion& DualQuaternion::operator=(const DualQuaternion& dualQuat)
 		{
 			real = dualQuat.real;
@@ -202,8 +210,9 @@ namespace Visage
 
 		DualQuaternion& DualQuaternion::operator*=(const DualQuaternion& dualQuat)
 		{
-			real *= dualQuat.real;
-			dual = dualQuat.dual * real + dualQuat.real * dual;
+			real = real * dualQuat.real;
+			dual = real * dualQuat.dual + dual * dualQuat.real;
+			return *this;
 		}
 
 		DualQuaternion& DualQuaternion::operator*=(float scalar)
@@ -240,6 +249,11 @@ namespace Visage
 			return leftDualQuatCopy *= rightDualQuat;
 		}
 
+		Vector3D operator*(const DualQuaternion& dualQuat, const Vector3D& vector)
+		{
+			return DualQuaternion::TransformVector(dualQuat, vector);
+		}
+
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, float scalar)
 		{
 			DualQuaternion leftDualQuatCopy = leftDualQuat;
@@ -264,5 +278,10 @@ namespace Visage
 			return leftDualQuatCopy += rightDualQuat;
 		}
 
+		std::ostream& operator<<(std::ostream& stream, const DualQuaternion& quaternion)
+		{
+			stream << "[ " << quaternion.GetRealQuaternion() << ", " << quaternion.GetDualQuaternion() << " ]";
+			return stream;
+		}
 	}
 }

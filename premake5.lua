@@ -45,7 +45,7 @@ workspace "Visage"
         defines
         {
             "_CRT_SECURE_NO_WARNINGS",
-            "_USE_MATH_DEFINES "
+            "_USE_MATH_DEFINES"
         }
 
         includedirs
@@ -93,6 +93,11 @@ workspace "Visage"
         {
             "%{prj.name}/src/**.cpp",
             "%{prj.name}/src/**.h"
+        }
+
+        defines
+        {
+            "_USE_MATH_DEFINES"
         }
 
         includedirs

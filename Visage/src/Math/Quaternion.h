@@ -50,6 +50,7 @@ namespace Visage
 		};
 
 		Quaternion operator*(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
+		Vector3D operator*(const Quaternion& quaternion, const Vector3D& vector);
 		Quaternion operator*(const Quaternion& quaterion, float scalar);
 		Quaternion operator/(const Quaternion& quaterion, float scalar);
 		Quaternion operator+(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);

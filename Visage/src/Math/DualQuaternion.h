@@ -35,6 +35,7 @@ namespace Visage
 
 			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t);
+			static Vector3D TransformVector(const DualQuaternion& dualQuat, const Vector3D& vector);
 
 			DualQuaternion& operator=(const DualQuaternion& dualQuat);
 			DualQuaternion& operator*=(const DualQuaternion& dualQuat);
@@ -45,9 +46,12 @@ namespace Visage
 		};
 
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
+		Vector3D operator*(const DualQuaternion& dualQuat, const Vector3D& vector);
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, float scalar);
 		DualQuaternion operator/(const DualQuaternion& leftDualQuat, float scalar);
 		DualQuaternion operator-(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 		DualQuaternion operator+(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
+
+		std::ostream& operator<<(std::ostream& stream, const DualQuaternion& quaternion);
 	}
 }
