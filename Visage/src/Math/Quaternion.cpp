@@ -167,6 +167,7 @@ namespace Visage
 		Vector3D Quaternion::TransformVector(const Quaternion& quaterion, const Vector3D& vector)
 		{
 			Vector3D vectorPart(quaterion.x, quaterion.y, quaterion.z);
+			
 			return (vector * (quaterion.w * quaterion.w - vectorPart.SqrMagnitude())) +
 					vectorPart * (Vector3D::Dot(vector, vectorPart) * 2.0f) +
 					Vector3D::Cross(vectorPart, vector) * (quaterion.w * 2.0f);
@@ -226,7 +227,7 @@ namespace Visage
 				return Nlerp(leftQuaternion, rightQuaternion, t);
 			}
 			
-			std::clamp(dot, -1.0f, 1.0f);
+			dot = std::clamp(dot, -1.0f, 1.0f);
 			float theta = std::acos(dot) * t; // Angle between leftQuaternion and new quaternion at t
 			Quaternion nlerpedQuaternion = Nlerp(leftQuaternion, rightQuaternion, dot);
 			return leftQuaternion * std::cos(theta) + nlerpedQuaternion * std::sin(theta);
