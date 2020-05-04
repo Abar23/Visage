@@ -19,7 +19,7 @@ namespace Visage
 		{
 		}
 
-		Quaternion::Quaternion(const Vector3D& unitVector, float angleInDegrees)
+		Quaternion::Quaternion(const Vec3& unitVector, float angleInDegrees)
 		{
 			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
 			float cosHalfAngle = std::cos(halfAngle);
@@ -90,9 +90,9 @@ namespace Visage
 			return Quaternion(-x, -y, -z, w);
 		}
 
-		Matrix3D Quaternion::GetRotationMatrix() const
+		Mat3 Quaternion::GetRotationMatrix() const
 		{
-			Matrix3D matrix;
+			Mat3 matrix;
 
 			float xSquared = x * x;
 			float ySquared = y * y;
@@ -119,7 +119,7 @@ namespace Visage
 			return matrix;
 		}
 
-		void Quaternion::SetRotationMatrix(const Matrix3D& matrix)
+		void Quaternion::SetRotationMatrix(const Mat3& matrix)
 		{
 			float m00 = matrix(0, 0);
 			float m11 = matrix(1, 1);
@@ -164,13 +164,13 @@ namespace Visage
 			}
 		}
 
-		Vector3D Quaternion::TransformVector(const Quaternion& quaterion, const Vector3D& vector)
+		Vec3 Quaternion::TransformVector(const Quaternion& quaterion, const Vec3& vector)
 		{
-			Vector3D vectorPart(quaterion.x, quaterion.y, quaterion.z);
+			Vec3 vectorPart(quaterion.x, quaterion.y, quaterion.z);
 			
 			return (vector * (quaterion.w * quaterion.w - vectorPart.SqrMagnitude())) +
-					vectorPart * (Vector3D::Dot(vector, vectorPart) * 2.0f) +
-					Vector3D::Cross(vectorPart, vector) * (quaterion.w * 2.0f);
+					vectorPart * (Vec3::Dot(vector, vectorPart) * 2.0f) +
+					Vec3::Cross(vectorPart, vector) * (quaterion.w * 2.0f);
 		}
 
 		float Quaternion::Dot(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion)
@@ -199,7 +199,7 @@ namespace Visage
 			return Quaternion(0.0f, 0.0f, std::sin(halfAngle), std::cos(halfAngle));
 		}
 
-		Quaternion Quaternion::MakeRotation(float angleInDegrees, const Vector3D& unitVector)
+		Quaternion Quaternion::MakeRotation(float angleInDegrees, const Vec3& unitVector)
 		{
 			return Quaternion(unitVector, angleInDegrees);
 		}
@@ -296,7 +296,7 @@ namespace Visage
 			return leftQuaterionCopy *= rightQuaterion;
 		}
 
-		Vector3D operator*(const Quaternion& quaternion, const Vector3D& vector)
+		Vec3 operator*(const Quaternion& quaternion, const Vec3& vector)
 		{
 			return Quaternion::TransformVector(quaternion, vector);
 		}

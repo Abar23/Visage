@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Quaternion.h"
-#include "Vector3D.h"
-#include "Matrix4D.h"
+#include "Vec3.h"
+#include "Mat4.h"
 
 namespace Visage
 {
@@ -17,25 +17,25 @@ namespace Visage
 		public:
 			DualQuaternion();
 			DualQuaternion(const Quaternion& real, const Quaternion& dual);
-			DualQuaternion(const Quaternion& rotation, const Vector3D& translation);
+			DualQuaternion(const Quaternion& rotation, const Vec3& translation);
 			DualQuaternion(const DualQuaternion& dualQuat);
 
 			DualQuaternion Normalized() const;
 			DualQuaternion& Normalize();
 			DualQuaternion Conjugate() const;
-			Matrix3D GetRotation() const;
-			void SetRotation(const Matrix3D& matrix);
-			Vector3D GetTranslation() const;
-			void SetTranslation(const Vector3D& vector);
+			Mat3 GetRotation() const;
+			void SetRotation(const Mat3& matrix);
+			Vec3 GetTranslation() const;
+			void SetTranslation(const Vec3& vector);
 			Quaternion GetRealQuaternion() const; 
 			void SetRealQuaternion(const Quaternion& quaternion);
 			Quaternion GetDualQuaternion() const;
 			void SetDaulQuaternion(const Quaternion& quaternion);
-			Matrix4D ToTransformMatrix() const;
+			Mat4 ToTransformMatrix() const;
 
 			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t);
-			static Vector3D TransformVector(const DualQuaternion& dualQuat, const Vector3D& vector);
+			static Vec3 TransformVector(const DualQuaternion& dualQuat, const Vec3& vector);
 
 			DualQuaternion& operator=(const DualQuaternion& dualQuat);
 			DualQuaternion& operator*=(const DualQuaternion& dualQuat);
@@ -46,7 +46,7 @@ namespace Visage
 		};
 
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
-		Vector3D operator*(const DualQuaternion& dualQuat, const Vector3D& vector);
+		Vec3 operator*(const DualQuaternion& dualQuat, const Vec3& vector);
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, float scalar);
 		DualQuaternion operator/(const DualQuaternion& leftDualQuat, float scalar);
 		DualQuaternion operator-(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);

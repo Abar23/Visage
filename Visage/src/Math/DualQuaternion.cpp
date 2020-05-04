@@ -7,18 +7,19 @@ namespace Visage
 {
 	namespace Math
 	{
+
 		DualQuaternion::DualQuaternion()
 			: real(), dual()
 		{
 			dual.w = 0.0f;
 		}
-
+		
 		DualQuaternion::DualQuaternion(const Quaternion& real, const Quaternion& dual)
 			: real(real), dual(dual)
 		{
 		}
 
-		DualQuaternion::DualQuaternion(const Quaternion& rotation, const Vector3D& translation)
+		DualQuaternion::DualQuaternion(const Quaternion& rotation, const Vec3& translation)
 		{
 			real = rotation;
 			dual = (Quaternion(translation.x, translation.y, translation.z, 0.0f) * real) * 0.5f;
@@ -42,7 +43,7 @@ namespace Visage
 			else
 			{
 				return DualQuaternion(Quaternion(0.0f, 0.0f, 0.0f, 0.0f),
-									 Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+									  Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 			}
 		}
 
@@ -65,26 +66,26 @@ namespace Visage
 			return DualQuaternion(real.Conjugate(), dual.Conjugate());
 		}
 
-		Matrix3D DualQuaternion::GetRotation() const
+		Mat3 DualQuaternion::GetRotation() const
 		{
 			return real.GetRotationMatrix();
 		}
 
-		void DualQuaternion::SetRotation(const Matrix3D& matrix)
+		void DualQuaternion::SetRotation(const Mat3& matrix)
 		{
 			real.SetRotationMatrix(matrix);
 		}
 
-		Vector3D DualQuaternion::GetTranslation() const
+		Vec3 DualQuaternion::GetTranslation() const
 		{
 			Quaternion translation = dual * real.Conjugate() * 2.0f;
 			
-			return Vector3D(translation.x,
-							translation.y,
-							translation.z);
+			return Vec3(translation.x,
+						translation.y,
+						translation.z);
 		}
 
-		void DualQuaternion::SetTranslation(const Vector3D& vector)
+		void DualQuaternion::SetTranslation(const Vec3& vector)
 		{
 			dual = Quaternion(vector.x, vector.y, vector.x, 0.0f) * real * 0.5f;
 		}
@@ -109,9 +110,9 @@ namespace Visage
 			dual = quaternion;
 		}
 
-		Matrix4D DualQuaternion::ToTransformMatrix() const
+		Mat4 DualQuaternion::ToTransformMatrix() const
 		{
-			Matrix4D matrix;
+			Mat4 matrix;
 
 			float x = real.x;
 			float y = real.y;
@@ -140,7 +141,7 @@ namespace Visage
 			matrix(1, 2) = 2.0f * (yz - wx);
 			matrix(2, 2) = wSquared + zSquared - xSquared - ySquared;
 
-			Vector3D translation = GetTranslation();
+			Vec3 translation = GetTranslation();
 
 			matrix(0, 3) = translation.x;
 			matrix(1, 3) = translation.y;
@@ -169,18 +170,18 @@ namespace Visage
 				difference = leftDualQuat.Conjugate() * rightDualQuat;
 			}
 
-			Vector3D realVector = Vector3D(difference.real.x, difference.real.y, difference.real.z);
-			Vector3D dualVector = Vector3D(difference.dual.x, difference.dual.y, difference.dual.z);
+			Vec3 realVector = Vec3(difference.real.x, difference.real.y, difference.real.z);
+			Vec3 dualVector = Vec3(difference.dual.x, difference.dual.y, difference.dual.z);
 			float inverseRealVectorMag = 1.0f / realVector.Magnitude();
 
 			float angle = std::acosf(std::clamp(difference.real.w, -1.0f, 1.0f)) *2.0f;
 			float pitch = difference.dual.w * inverseRealVectorMag * -2.0f;
-			Vector3D direction = realVector * inverseRealVectorMag;
-			Vector3D moment = (dualVector - direction * pitch * difference.real.w * 0.5f) * inverseRealVectorMag;
+			Vec3 direction = realVector * inverseRealVectorMag;
+			Vec3 moment = (dualVector - direction * pitch * difference.real.w * 0.5f) * inverseRealVectorMag;
 
 			angle *= t;
 			pitch *= t;
-
+			
 			float halfAngle = 0.5f * angle;
 			float sinHalfAngle = std::sinf(halfAngle);
 			float cosHalfAngle = std::cosf(halfAngle);
@@ -193,10 +194,15 @@ namespace Visage
 			return DualQuaternion();
 		}
 
-		Vector3D DualQuaternion::TransformVector(const DualQuaternion& dualQuat, const Vector3D& vector)
+		Vec3 DualQuaternion::TransformVector(const DualQuaternion& dualQuat, const Vec3& vector)
 		{
-			DualQuaternion vectorDualQuat(Quaternion(), vector);
+			DualQuaternion vectorDualQuat;
+			vectorDualQuat.dual.x = vector.x;
+			vectorDualQuat.dual.y = vector.y;
+			vectorDualQuat.dual.z = vector.z;
+			
 			DualQuaternion result = dualQuat * vectorDualQuat;
+
 			return result.GetTranslation();
 		}
 
@@ -248,7 +254,7 @@ namespace Visage
 			return leftDualQuatCopy *= rightDualQuat;
 		}
 
-		Vector3D operator*(const DualQuaternion& dualQuat, const Vector3D& vector)
+		Vec3 operator*(const DualQuaternion& dualQuat, const Vec3& vector)
 		{
 			return DualQuaternion::TransformVector(dualQuat, vector);
 		}
