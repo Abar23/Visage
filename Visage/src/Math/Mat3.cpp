@@ -243,16 +243,6 @@ namespace Visage
 			return *this;
 		}
 
-		const float& Mat3::operator()(int rowIndex, int columnIndex) const
-		{
-			return entries[columnIndex][rowIndex];
-		}
-
-		float& Mat3::operator()(int rowIndex, int columnIndex)
-		{
-			return entries[columnIndex][rowIndex];
-		}
-
 		Mat3& Mat3::operator*=(const Mat3& matrix)
 		{
 			entries[0][0] = entries[0][0] * matrix.entries[0][0] + entries[1][0] * matrix.entries[0][1] + entries[2][0] * matrix.entries[0][2];
@@ -268,13 +258,6 @@ namespace Visage
 			entries[2][2] = entries[0][2] * matrix.entries[2][0] + entries[1][2] * matrix.entries[2][1] + entries[2][2] * matrix.entries[2][2];
 
 			return *this;
-		}
-
-		Vec3 Mat3::operator*=(const Vec3& vector)
-		{
-			return Vec3(entries[0][0] * vector.x + entries[1][0] * vector.y + entries[2][0] * vector.z,
-						entries[0][1] * vector.x + entries[1][1] * vector.y + entries[2][1] * vector.z,
-						entries[0][2] * vector.x + entries[1][2] * vector.y + entries[2][2] * vector.z);
 		}
 
 		Mat3& Mat3::operator*=(float scalar)
@@ -302,8 +285,9 @@ namespace Visage
 
 		Vec3 operator*(const Mat3& matrix, const Vec3& vector)
 		{
-			Mat3 matrixCopy = matrix;
-			return matrixCopy *= vector;
+			return Vec3(matrix(0, 0) * vector.x + matrix(1, 0) * vector.y + matrix(2, 0) * vector.z,
+						matrix(0, 1) * vector.x + matrix(1, 1) * vector.y + matrix(2, 1) * vector.z,
+						matrix(0, 2) * vector.x + matrix(1, 2) * vector.y + matrix(2, 2) * vector.z);
 		}
 
 		Mat3 operator*(const Mat3& matrix, float scalar)

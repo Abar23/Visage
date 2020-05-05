@@ -46,11 +46,17 @@ namespace Visage
 
 			Mat3& operator=(const Mat3& matrix);
 			
-			const float& operator()(int rowIndex, int columnIndex) const;
-			float& operator()(int rowIndex, int columnIndex);
+			inline const float& operator()(int rowIndex, int columnIndex) const
+			{
+				return entries[columnIndex][rowIndex];
+			}
+
+			inline float& operator()(int rowIndex, int columnIndex)
+			{
+				return entries[columnIndex][rowIndex];
+			}
 
 			Mat3& operator*=(const Mat3& matrix);
-			Vec3 operator*=(const Vec3& vector);
 			Mat3& operator*=(const float scalar);
 		};
 

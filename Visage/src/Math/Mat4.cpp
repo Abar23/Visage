@@ -45,23 +45,23 @@ namespace Visage
 		{
 			
 			entries[0][0] = firstRow.x;
-			entries[0][1] = firstRow.y;
-			entries[0][2] = firstRow.z;
-			entries[0][3] = firstRow.w;
+			entries[1][0] = firstRow.y;
+			entries[2][0] = firstRow.z;
+			entries[3][0] = firstRow.w;
 
-			entries[1][0] = secondRow.x;
+			entries[0][1] = secondRow.x;
 			entries[1][1] = secondRow.y;
-			entries[1][2] = secondRow.z;
-			entries[1][3] = secondRow.w;
+			entries[2][1] = secondRow.z;
+			entries[3][1] = secondRow.w;
 
-			entries[2][0] = thirdRow.x;
-			entries[2][1] = thirdRow.y;
+			entries[0][2] = thirdRow.x;
+			entries[1][2] = thirdRow.y;
 			entries[2][2] = thirdRow.z;
-			entries[2][3] = thirdRow.w;
+			entries[3][2] = thirdRow.w;
 
-			entries[3][0] = fourthRow.x;
-			entries[3][1] = fourthRow.y;
-			entries[3][2] = fourthRow.z;
+			entries[0][3] = fourthRow.x;
+			entries[1][3] = fourthRow.y;
+			entries[2][3] = fourthRow.z;
 			entries[3][3] = fourthRow.w;
 		}
 
@@ -147,18 +147,18 @@ namespace Visage
 			entries[3][0] = -Vec3::Dot(b, t);
 
 			entries[0][1] = secondRow.x;
-			entries[1][1] = secondRow.x;
-			entries[2][1] = secondRow.x;
+			entries[1][1] = secondRow.y;
+			entries[2][1] = secondRow.z;
 			entries[3][1] = -Vec3::Dot(a, t);
 
 			entries[0][2] = thirdRow.x;
-			entries[1][2] = thirdRow.x;
-			entries[2][2] = thirdRow.x;
+			entries[1][2] = thirdRow.y;
+			entries[2][2] = thirdRow.z;
 			entries[3][2] = -Vec3::Dot(d, s);
 
 			entries[0][3] = fourthRow.x;
-			entries[1][3] = fourthRow.x;
-			entries[2][3] = fourthRow.x;
+			entries[1][3] = fourthRow.y;
+			entries[2][3] = fourthRow.z;
 			entries[3][3] = -Vec3::Dot(c, s);
 
 			return *this;
@@ -218,15 +218,18 @@ namespace Visage
 
 		void Mat4::SetColumn(int columnIndex, const Vec4& vector)
 		{
-			entries[columnIndex][0] = vector.z;
-			entries[columnIndex][1] = vector.x;
+			entries[columnIndex][0] = vector.x;
+			entries[columnIndex][1] = vector.y;
 			entries[columnIndex][2] = vector.z;
 			entries[columnIndex][3] = vector.w;
 		}
 
 		Vec4 Mat4::GetRow(int rowIndex) const
 		{
-			return Vec4(entries[0][rowIndex], entries[1][rowIndex], entries[2][rowIndex], entries[3][rowIndex]);
+			return Vec4(entries[0][rowIndex], 
+						entries[1][rowIndex], 
+						entries[2][rowIndex], 
+						entries[3][rowIndex]);
 		}
 
 		void Mat4::SetRow(int rowIndex, const Vec4& vector)
@@ -239,7 +242,9 @@ namespace Visage
 
 		Vec3 Mat4::GetTranslation() const
 		{
-			return Vec3(entries[3][0], entries[3][1], entries[3][2]);
+			return Vec3(entries[3][0], 
+						entries[3][1], 
+						entries[3][2]);
 		}
 
 		void Mat4::SetTranslation(const Vec4& translation)
@@ -297,7 +302,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeRotaion(float angle, const Vec3& axis)
+		Mat4 Mat4::MakeRotation(float angle, const Vec3& axis)
 		{
 			float radians = DegreesToRad(angle);
 			float cos = std::cos(radians);
@@ -314,7 +319,7 @@ namespace Visage
 			return Mat4(cos + x * axis.x, axisXAxisY - sin * axis.z, axisXAxisZ + sin * axis.y, 0.0f,
 						axisXAxisY + sin * axis.z, cos + y * axis.y, axisYAxisZ - sin * axis.x, 0.0f,
 						axisXAxisZ - sin * axis.y, axisYAxisZ + sin * axis.x, cos + z * axis.z, 0.0f,
-						0.0f, 0.0f, 0.0f, 1.0f);		
+						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
 		Mat4 Mat4::MakeScale(float uniformScale)
@@ -407,16 +412,6 @@ namespace Visage
 			return *this;
 		}
 
-		const float& Mat4::operator()(int rowIndex, int columnIndex) const
-		{
-			return entries[columnIndex][rowIndex];
-		}
-
-		float& Mat4::operator()(int rowIndex, int columnIndex)
-		{
-			return entries[columnIndex][rowIndex];
-		}
-
 		Mat4& Mat4::operator*=(const Mat4& matrix)
 		{
 			entries[0][0] = entries[0][0] * matrix.entries[0][0] + entries[1][0] * matrix.entries[0][1] + entries[2][0] * matrix.entries[0][2] + entries[3][0] * matrix.entries[0][3];
@@ -440,14 +435,6 @@ namespace Visage
 			entries[3][3] = entries[0][3] * matrix.entries[3][0] + entries[1][3] * matrix.entries[3][1] + entries[2][3] * matrix.entries[3][2] + entries[3][3] * matrix.entries[3][3];
 
 			return *this;
-		}
-
-		Vec4 Mat4::operator*=(const Vec4& vector)
-		{
-			return Vec4(entries[0][0] * vector.x + entries[1][0] * vector.y + entries[2][0] * vector.z + entries[3][0] * vector.w,
-						entries[0][1] * vector.x + entries[1][1] * vector.y + entries[2][1] * vector.z + entries[3][1] * vector.w,
-						entries[0][2] * vector.x + entries[1][2] * vector.y + entries[2][2] * vector.z + entries[3][2] * vector.w,
-						entries[0][3] * vector.x + entries[1][3] * vector.y + entries[2][3] * vector.z + entries[3][3] * vector.w);
 		}
 
 		Mat4& Mat4::operator*=(float scalar)
@@ -483,8 +470,10 @@ namespace Visage
 
 		Vec4 operator*(const Mat4& matrix, const Vec4& vector)
 		{
-			Mat4 matrixCopy = matrix;
-			return matrixCopy *= vector;
+			return Vec4(matrix(0, 0) * vector.x + matrix(1, 0) * vector.y + matrix(2, 0) * vector.z + matrix(3, 0) * vector.w,
+						matrix(0, 1) * vector.x + matrix(1, 1) * vector.y + matrix(2, 1) * vector.z + matrix(3, 1) * vector.w,
+						matrix(0, 2) * vector.x + matrix(1, 2) * vector.y + matrix(2, 2) * vector.z + matrix(3, 2) * vector.w,
+						matrix(0, 3) * vector.x + matrix(1, 3) * vector.y + matrix(2, 3) * vector.z + matrix(3, 3) * vector.w);
 		}
 
 		Mat4 operator*(const Mat4& matrix, float scalar)

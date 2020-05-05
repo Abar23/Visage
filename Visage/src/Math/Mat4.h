@@ -44,25 +44,31 @@ namespace Visage
 			static Mat4 MakeRotationX(float angle);
 			static Mat4 MakeRotationY(float angle);
 			static Mat4 MakeRotationZ(float angle);
-			static Mat4 MakeRotaion(const float angle, const Vec3& axis);
+			static Mat4 MakeRotation(const float angle, const Vec3& axis);
 			static Mat4 MakeScale(float uniformScale);
 			static Mat4 MakeScale(float scaleX, float scaleY, float scaleZ);
 			static Mat4 MakeScale(const Vec3& vector);
 			static Mat4 MakeTranslation(float uniformTranslation);
 			static Mat4 MakeTranslation(float translationX, float translationY, float translationZ);
 			static Mat4 MakeTranslation(const Vec3& vector);
-			static Mat4 LookAt(const Vec3& cameraPosition, const Vec3& target, const Vec3& up);
+			static Mat4 LookAt(const Vec3& cameraPosition, const Vec3& targetPosition, const Vec3& up);
 			static Mat4 Orthographic(float left, float right, float bottom , float top, float near, float far);
 			static Mat4 Perspective(float fieldOfViewInDegrees, float aspectRatio, float near, float far);
 			static Mat4 Identity();
 
 			Mat4& operator=(const Mat4& matrix);
 
-			const float& operator()(int rowIndex, int columnIndex) const;
-			float& operator()(int rowIndex, int columnIndex);
+			inline const float& operator()(int rowIndex, int columnIndex) const
+			{
+				return entries[columnIndex][rowIndex];
+			}
+
+			inline float& operator()(int rowIndex, int columnIndex)
+			{
+				return entries[columnIndex][rowIndex];
+			}
 
 			Mat4& operator*=(const Mat4& matrix);
-			Vec4 operator*=(const Vec4& vector);
 			Mat4& operator*=(const float scalar);
 		};
 

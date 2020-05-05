@@ -14,6 +14,7 @@ using namespace Visage::Math;
 
 int main()
 {
-
+	Mat4 m(Vec4(2.0f, 2.0f, 2.0f, 2.0f), Vec4::Zero(), Vec4::Zero(), Vec4::Zero());
+	std::cout << m;
 	return 0;
 }

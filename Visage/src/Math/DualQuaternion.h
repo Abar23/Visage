@@ -31,7 +31,7 @@ namespace Visage
 			void SetRealQuaternion(const Quaternion& quaternion);
 			Quaternion GetDualQuaternion() const;
 			void SetDaulQuaternion(const Quaternion& quaternion);
-			Mat4 ToTransformMatrix() const;
+			Mat4 GetTransformationMatrix() const;
 
 			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t);

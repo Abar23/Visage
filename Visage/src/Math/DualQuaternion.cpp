@@ -110,7 +110,7 @@ namespace Visage
 			dual = quaternion;
 		}
 
-		Mat4 DualQuaternion::ToTransformMatrix() const
+		Mat4 DualQuaternion::GetTransformationMatrix() const
 		{
 			Mat4 matrix;
 
