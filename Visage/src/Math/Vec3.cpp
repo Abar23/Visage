@@ -111,6 +111,11 @@ namespace Visage
 			return leftVector - Project(leftVector, rightVector);
 		}
 
+		Vec3 Vec3::Lerp(const Vec3& leftVector, const Vec3& rightVector, float t)
+		{
+			return leftVector * (1.0f - t) + rightVector * t;
+		}
+
 		Vec3 Vec3::Zero()
 		{
 			return Vec3(0.0f, 0.0f, 0.0f);

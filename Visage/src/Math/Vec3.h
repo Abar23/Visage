@@ -32,6 +32,7 @@ namespace Visage
 			static Vec3 Cross(const Vec3& leftVector, const Vec3& rightVector);
 			static Vec3 Project(const Vec3& leftVector, const Vec3& rightVector);
 			static Vec3 Reject(const Vec3& leftVector, const Vec3& rightVector);
+			static Vec3 Lerp(const Vec3& leftVector, const Vec3& rightVector, float t);
 			static Vec3 Zero();
 			static Vec3 XAxis();
 			static Vec3 YAxis();

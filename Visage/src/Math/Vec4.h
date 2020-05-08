@@ -31,6 +31,7 @@ namespace Visage
 			Vec4& Negate();
 
 			static Vec4 Dot(const Vec4& leftVector, const Vec4& rightVector);
+			static Vec4 Lerp(const Vec4&leftVector, const Vec4& rightVector, float t);
 			static Vec4 Zero();
 
 			Vec4& operator=(const Vec4& vector);

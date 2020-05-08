@@ -140,6 +140,11 @@ namespace Visage
 			return leftVector - Project(leftVector, rightVector);
 		}
 
+		Vec2 Vec2::Lerp(const Vec2& leftVector, const Vec2& rightVector, float t)
+		{
+			return leftVector * (1.0f - t) + rightVector * t;
+		}
+
 		Vec2& Vec2::operator=(const Vec2& vector)
 		{
 			x = vector.x;

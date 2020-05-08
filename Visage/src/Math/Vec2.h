@@ -30,6 +30,7 @@ namespace Visage
 			static float Dot(const Vec2& leftVector, const Vec2& rightVector);
 			static Vec2 Project(const Vec2& leftVector, const Vec2& rightVector);
 			static Vec2 Reject(const Vec2& leftVector, const Vec2& rightVector);
+			static Vec2 Lerp(const Vec2& leftVector, const Vec2& rightVector, float t);
 			static Vec2 Zero();
 			static Vec2 XAxis();
 			static Vec2 YAxis();

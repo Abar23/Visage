@@ -106,6 +106,11 @@ namespace Visage
 				   leftVector.w * rightVector.w;
 		}
 
+		Vec4 Vec4::Lerp(const Vec4& leftVector, const Vec4& rightVector, float t)
+		{
+			return leftVector * (1.0f - t) + rightVector * t;
+		}
+
 		Vec4 Vec4::Zero()
 		{
 			return Vec4();
