@@ -15,8 +15,6 @@ namespace Visage
 
 			Vec4();
 			Vec4(const Vec4& vector);
-			Vec4(const Vec3& vector, float w);
-			Vec4(const Vec2& vector, float w);
 			Vec4(float x, float y, float z, float w);
 			Vec4(float x, float y, float z);
 			Vec4(const float scalar);

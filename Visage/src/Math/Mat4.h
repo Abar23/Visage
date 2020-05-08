@@ -37,7 +37,7 @@ namespace Visage
 			Vec4 GetRow(int rowIndex) const;
 			void SetRow(int rowIndex, const Vec4& vector);
 			Vec3 GetTranslation() const;
-			void SetTranslation(const Vec4& translation);
+			void SetTranslation(const Vec3& translation);
 			Mat3 AffineMatrix() const;
 			Mat3 NormalMatrix() const;
 

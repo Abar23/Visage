@@ -14,7 +14,6 @@ namespace Visage
 
 			Vec3();
 			Vec3(const Vec3& v) = default;
-			Vec3(const Vec2& vector);
 			Vec3(float x, float y, float z);
 			Vec3(float value);
 

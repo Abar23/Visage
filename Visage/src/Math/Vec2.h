@@ -21,7 +21,7 @@ namespace Visage
 			float Magnitude() const;
 			float SqrMagnitude() const;
 			Vec2 Normalized() const;
-			Vec2& Normalized();
+			Vec2& Normalize();
 			Vec2 Renormalized() const;
 			Vec2& Renormalize();
 			Vec2 Negated() const;

@@ -74,13 +74,13 @@ namespace Visage
 
 		Quaternion Quaternion::Inverted() const
 		{
-			return Quaternion(-x, -y, -x, w);
+			return Conjugate();
 		}
 
 		Quaternion& Quaternion::Invert()
 		{
 			x = -x;
-			y = -x;
+			y = -y;
 			z = -z;
 			return *this;
 		}
@@ -240,15 +240,12 @@ namespace Visage
 
 		Quaternion& Quaternion::operator*=(const Quaternion& quaterion)
 		{
-			float x = this->x;
-			float y = this->y;
-			float z = this->z;
-			float w = this->w;
+			Quaternion temp = *this;
 			
-			this->x = w * quaterion.x + x * quaterion.w + y * quaterion.z - z * quaterion.y;
-			this->y = w * quaterion.y + y * quaterion.w + z * quaterion.x - x * quaterion.z;
-			this->z = w * quaterion.z + z * quaterion.w + x * quaterion.y - y * quaterion.x;
-			this->w = w * quaterion.w - x * quaterion.x - y * quaterion.y - z * quaterion.z;
+			this->x = temp.w * quaterion.x + temp.x * quaterion.w + temp.y * quaterion.z - temp.z * quaterion.y;
+			this->y = temp.w * quaterion.y + temp.y * quaterion.w + temp.z * quaterion.x - temp.x * quaterion.z;
+			this->z = temp.w * quaterion.z + temp.z * quaterion.w + temp.x * quaterion.y - temp.y * quaterion.x;
+			this->w = temp.w * quaterion.w - temp.x * quaterion.x - temp.y * quaterion.y - temp.z * quaterion.z;
 
 			return *this;
 		}
@@ -326,7 +323,7 @@ namespace Visage
 		}
 		std::ostream& operator<<(std::ostream& stream, const Quaternion& quaternion)
 		{
-			stream << "(" << quaternion.w << ", [" << quaternion.x << ", " << quaternion.y << ", " << quaternion.x << "])";
+			stream << "([" << quaternion.x << ", " << quaternion.y << ", " << quaternion.z << "], " << quaternion.w << ")";
 			return stream;
 		}
 	}

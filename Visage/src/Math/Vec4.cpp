@@ -17,16 +17,6 @@ namespace Visage
 		{
 		}
 
-		Vec4::Vec4(const Vec3& vector, float w)
-			: x(vector.x), y(vector.y), z(vector.z), w(w)
-		{
-		}
-
-		Vec4::Vec4(const Vec2& vector, float w)
-			: x(vector.x), y(vector.y), z(0.0f), w(w)
-		{
-		}
-
 		Visage::Math::Vec4::Vec4(float x, float y, float z, float w)
 			: x(x), y(y), z(z), w(w)
 		{

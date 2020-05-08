@@ -114,14 +114,16 @@ namespace Visage
 
 		Mat3& Mat3::Transpose()
 		{
-			entries[0][1] = entries[1][0];
-			entries[0][2] = entries[2][0];
+			Mat3 temp = *this;
 
-			entries[1][0] = entries[0][1];
-			entries[1][2] = entries[2][1];
+			entries[0][1] = temp.entries[1][0];
+			entries[0][2] = temp.entries[2][0];
 
-			entries[2][0] = entries[0][2];
-			entries[2][1] = entries[2][1];
+			entries[1][0] = temp.entries[0][1];
+			entries[1][2] = temp.entries[2][1];
+
+			entries[2][0] = temp.entries[0][2];
+			entries[2][1] = temp.entries[1][2];
 
 			return *this;
 		}

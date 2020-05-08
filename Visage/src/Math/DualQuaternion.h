@@ -3,6 +3,7 @@
 #include "Quaternion.h"
 #include "Vec3.h"
 #include "Mat4.h"
+#include "Mat3x4.h"
 
 namespace Visage
 {
@@ -31,7 +32,8 @@ namespace Visage
 			void SetRealQuaternion(const Quaternion& quaternion);
 			Quaternion GetDualQuaternion() const;
 			void SetDaulQuaternion(const Quaternion& quaternion);
-			Mat4 GetTransformationMatrix() const;
+			Mat4 GetTransformationMat4() const;
+			Mat3x4 GetTransformationMat3x4() const;
 
 			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t);

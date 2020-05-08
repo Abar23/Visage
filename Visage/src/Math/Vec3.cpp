@@ -12,11 +12,6 @@ namespace Visage
 		{
 		}
 
-		Vec3::Vec3(const Vec2& vector)
-			: x(vector.x), y(vector.y), z(0.0f)
-		{
-		}
-
 		Vec3::Vec3(float x, float y, float z)
 			: x(x), y(y), z(z)
 		{

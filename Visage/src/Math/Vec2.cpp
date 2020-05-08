@@ -44,28 +44,29 @@ namespace Visage
 
 		Vec2 Vec2::Up()
 		{
-			return Vec2(1.0f, 0.0f);
+			return Vec2(0.0f, 1.0f);
 		}
 
 		Vec2 Vec2::Down()
 		{
-			return Vec2(-1.0f, 0.0f);
+			return Vec2(0.0f, -1.0f);
 		}
 
 		Vec2 Vec2::Left()
 		{
-			return Vec2(0.0f, -1.0f);
+			return Vec2(-1.0f, 0.0f);
 		}
 
 		Vec2 Vec2::Right()
 		{
-			return Vec2(0.0f, 1.0f);
+			return Vec2(1.0f, 0.0f);
 		}
 
 		float Vec2::Magnitude() const
 		{
 			return std::sqrt(x * x + y * y);
 		}
+
 		float Vec2::SqrMagnitude() const
 		{
 			return x * x + y * y;
@@ -85,7 +86,7 @@ namespace Visage
 			}
 		}
 
-		Vec2& Vec2::Normalized()
+		Vec2& Vec2::Normalize()
 		{
 			float magnitude = Magnitude();
 			if (!FloatIsEqual(magnitude, 0.0f))
@@ -126,7 +127,7 @@ namespace Visage
 
 		float Vec2::Dot(const Vec2& leftVector, const Vec2& rightVector)
 		{
-			return leftVector.x * rightVector.x + leftVector.y + rightVector.y;
+			return leftVector.x * rightVector.x + leftVector.y * rightVector.y;
 		}
 
 		Vec2 Vec2::Project(const Vec2& leftVector, const Vec2& rightVector)

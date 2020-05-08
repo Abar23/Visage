@@ -110,7 +110,7 @@ namespace Visage
 			dual = quaternion;
 		}
 
-		Mat4 DualQuaternion::GetTransformationMatrix() const
+		Mat4 DualQuaternion::GetTransformationMat4() const
 		{
 			Mat4 matrix;
 
@@ -151,6 +151,46 @@ namespace Visage
 			return matrix;
 		}
 
+		Mat3x4 DualQuaternion::GetTransformationMat3x4() const
+		{
+			Mat3x4 matrix;
+
+			float x = real.x;
+			float y = real.y;
+			float z = real.z;
+			float w = real.w;
+			float xSquared = x * x;
+			float ySquared = y * y;
+			float zSquared = z * z;
+			float wSquared = w * w;
+			float xy = x * y;
+			float xz = x * z;
+			float yz = y * z;
+			float wx = w * x;
+			float wy = w * y;
+			float wz = w * z;
+
+			matrix(0, 0) = wSquared + xSquared - ySquared - zSquared;
+			matrix(1, 0) = 2.0f * (xy + wz);
+			matrix(2, 0) = 2.0f * (xz - wy);
+
+			matrix(0, 1) = 2.0f * (xy - wz);
+			matrix(1, 1) = wSquared + ySquared - xSquared - zSquared;
+			matrix(2, 1) = 2.0f * (yz + wx);
+
+			matrix(0, 2) = 2.0f * (xz + wy);
+			matrix(1, 2) = 2.0f * (yz - wx);
+			matrix(2, 2) = wSquared + zSquared - xSquared - ySquared;
+
+			Vec3 translation = GetTranslation();
+
+			matrix(0, 3) = translation.x;
+			matrix(1, 3) = translation.y;
+			matrix(2, 3) = translation.z;
+
+			return matrix;
+		}
+
 		float DualQuaternion::Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat)
 		{
 			return Quaternion::Dot(leftDualQuat.real, rightDualQuat.real);
@@ -186,7 +226,7 @@ namespace Visage
 			float sinHalfAngle = std::sinf(halfAngle);
 			float cosHalfAngle = std::cosf(halfAngle);
 			Quaternion real = Quaternion(direction * sinHalfAngle, cosHalfAngle);
-			Quaternion dual = Quaternion(sinHalfAngle * moment + pitch * 0.5f * cosHalfAngle * direction,
+			Quaternion dual = Quaternion(moment * sinHalfAngle + direction * pitch * 0.5f * cosHalfAngle,
 										 -pitch * 0.5f * sinHalfAngle);
 
 			return leftDualQuat * DualQuaternion(real, dual);

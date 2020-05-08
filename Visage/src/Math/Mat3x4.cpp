@@ -86,7 +86,7 @@ namespace Visage
 
 
 			return Mat3x4(firstRow.x, firstRow.y, firstRow.z, -Vec3::Dot(b, t),
-						  secondRow.x, secondRow.y, secondRow.x, -Vec3::Dot(a, t),
+						  secondRow.x, secondRow.y, secondRow.z, -Vec3::Dot(a, t),
 						  s.x, s.y, s.z, -Vec3::Dot(d, s));
 		}
 
@@ -184,7 +184,7 @@ namespace Visage
 						entries[3][2]);
 		}
 
-		void Mat3x4::SetTranslation(const Vec4& translation)
+		void Mat3x4::SetTranslation(const Vec3& translation)
 		{
 			entries[3][0] = translation.x;
 			entries[3][1] = translation.y;

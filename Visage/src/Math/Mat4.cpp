@@ -174,21 +174,23 @@ namespace Visage
 
 		Mat4& Mat4::Transpose()
 		{
-			entries[0][1] = entries[1][0];
-			entries[0][2] = entries[2][0];
-			entries[0][3] = entries[3][0];
+			Mat4 temp = *this;
 
-			entries[1][0] = entries[0][1];
-			entries[1][2] = entries[2][1];
-			entries[1][3] = entries[3][1];
+			entries[0][1] = temp.entries[1][0];
+			entries[0][2] = temp.entries[2][0];
+			entries[0][3] = temp.entries[3][0];
 
-			entries[2][0] = entries[0][2];
-			entries[2][1] = entries[1][2];
-			entries[2][3] = entries[3][2];
+			entries[1][0] = temp.entries[0][1];
+			entries[1][2] = temp.entries[2][1];
+			entries[1][3] = temp.entries[3][1];
 
-			entries[3][0] = entries[0][3];
-			entries[3][1] = entries[1][3];
-			entries[3][2] = entries[2][3];
+			entries[2][0] = temp.entries[0][2];
+			entries[2][1] = temp.entries[1][2];
+			entries[2][3] = temp.entries[3][2];
+
+			entries[3][0] = temp.entries[0][3];
+			entries[3][1] = temp.entries[1][3];
+			entries[3][2] = temp.entries[2][3];
 
 			return *this;
 		}
@@ -247,7 +249,7 @@ namespace Visage
 						entries[3][2]);
 		}
 
-		void Mat4::SetTranslation(const Vec4& translation)
+		void Mat4::SetTranslation(const Vec3& translation)
 		{
 			entries[3][0] = translation.x;
 			entries[3][1] = translation.y;
