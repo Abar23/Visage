@@ -7,7 +7,6 @@ namespace Visage
 {
 	namespace Math
 	{
-
 		DualQuaternion::DualQuaternion()
 			: real(), dual()
 		{
@@ -196,7 +195,7 @@ namespace Visage
 			return Quaternion::Dot(leftDualQuat.real, rightDualQuat.real);
 		}
 
-		DualQuaternion DualQuaternion::Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t)
+		DualQuaternion DualQuaternion::Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, const float t)
 		{
 			float dot = Quaternion::Dot(leftDualQuat.real, rightDualQuat.real);
 			
@@ -260,14 +259,14 @@ namespace Visage
 			return *this;
 		}
 
-		DualQuaternion& DualQuaternion::operator*=(float scalar)
+		DualQuaternion& DualQuaternion::operator*=(const float scalar)
 		{
 			real *= scalar;
 			dual *= scalar;
 			return *this;
 		}
 
-		DualQuaternion& DualQuaternion::operator/=(float scalar)
+		DualQuaternion& DualQuaternion::operator/=(const float scalar)
 		{
 			real /= scalar;
 			dual /= scalar;
@@ -299,13 +298,13 @@ namespace Visage
 			return DualQuaternion::TransformVector(dualQuat, vector);
 		}
 
-		DualQuaternion operator*(const DualQuaternion& leftDualQuat, float scalar)
+		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const float scalar)
 		{
 			DualQuaternion leftDualQuatCopy = leftDualQuat;
 			return leftDualQuatCopy *= scalar;
 		}
 
-		DualQuaternion operator/(const DualQuaternion& leftDualQuat, float scalar)
+		DualQuaternion operator/(const DualQuaternion& leftDualQuat, const float scalar)
 		{
 			DualQuaternion leftDualQuatCopy = leftDualQuat;
 			return leftDualQuatCopy /= scalar;

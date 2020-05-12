@@ -36,21 +36,21 @@ namespace Visage
 			Mat3x4 GetTransformationMat3x4() const;
 
 			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
-			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, float t);
+			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, const float t);
 			static Vec3 TransformVector(const DualQuaternion& dualQuat, const Vec3& vector);
 
 			DualQuaternion& operator=(const DualQuaternion& dualQuat);
 			DualQuaternion& operator*=(const DualQuaternion& dualQuat);
-			DualQuaternion& operator*=(float scalar);
-			DualQuaternion& operator/=(float scalar);
+			DualQuaternion& operator*=(const float scalar);
+			DualQuaternion& operator/=(const float scalar);
 			DualQuaternion& operator+=(const DualQuaternion& dualQuat);
 			DualQuaternion& operator-=(const DualQuaternion& dualQuat);
 		};
 
 		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 		Vec3 operator*(const DualQuaternion& dualQuat, const Vec3& vector);
-		DualQuaternion operator*(const DualQuaternion& leftDualQuat, float scalar);
-		DualQuaternion operator/(const DualQuaternion& leftDualQuat, float scalar);
+		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const float scalar);
+		DualQuaternion operator/(const DualQuaternion& leftDualQuat, const float scalar);
 		DualQuaternion operator-(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 		DualQuaternion operator+(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
 

@@ -12,8 +12,8 @@ namespace Visage
 			float x, y;
 
 			Vec2();
-			Vec2(float x, float y);
-			Vec2(float scalar);
+			Vec2(const float x, const float y);
+			Vec2(const float scalar);
 			Vec2(const Vec2& vector);
 
 			~Vec2() = default;
@@ -30,7 +30,7 @@ namespace Visage
 			static float Dot(const Vec2& leftVector, const Vec2& rightVector);
 			static Vec2 Project(const Vec2& leftVector, const Vec2& rightVector);
 			static Vec2 Reject(const Vec2& leftVector, const Vec2& rightVector);
-			static Vec2 Lerp(const Vec2& leftVector, const Vec2& rightVector, float t);
+			static Vec2 Lerp(const Vec2& leftVector, const Vec2& rightVector, const float t);
 			static Vec2 Zero();
 			static Vec2 XAxis();
 			static Vec2 YAxis();
@@ -43,8 +43,8 @@ namespace Visage
 			Vec2& operator+=(const Vec2& vector);
 			Vec2& operator-=(const Vec2& vector);
 
-			Vec2& operator*=(float scalar);
-			Vec2& operator/=(float scalar);
+			Vec2& operator*=(const float scalar);
+			Vec2& operator/=(const float scalar);
 		};
 
 		bool operator==(const Vec2& leftVector, const Vec2& rightVector);
@@ -53,8 +53,8 @@ namespace Visage
 		Vec2 operator+(const Vec2& leftVector, const Vec2& rightVector);
 		Vec2 operator-(const Vec2& leftVector, const Vec2& rightVector);
 
-		Vec2 operator*(const Vec2& vector, float scalar);
-		Vec2 operator/(const Vec2& vector, float scalar);
+		Vec2 operator*(const Vec2& vector, const float scalar);
+		Vec2 operator/(const Vec2& vector, const float scalar);
 
 		std::ostream& operator<<(std::ostream& stream, const Vec2& vector);
 	}

@@ -17,12 +17,12 @@ namespace Visage
 		{
 		}
 
-		Visage::Math::Vec4::Vec4(float x, float y, float z, float w)
+		Visage::Math::Vec4::Vec4(const float x, const float y, const float z, const float w)
 			: x(x), y(y), z(z), w(w)
 		{
 		}
 
-		Visage::Math::Vec4::Vec4(float x, float y, float z)
+		Visage::Math::Vec4::Vec4(const float x, const float y, const float z)
 			: x(x), y(y), z(z), w(0.0f)
 		{
 		}
@@ -106,7 +106,7 @@ namespace Visage
 				   leftVector.w * rightVector.w;
 		}
 
-		Vec4 Vec4::Lerp(const Vec4& leftVector, const Vec4& rightVector, float t)
+		Vec4 Vec4::Lerp(const Vec4& leftVector, const Vec4& rightVector, const float t)
 		{
 			return leftVector * (1.0f - t) + rightVector * t;
 		}
@@ -143,7 +143,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vec4& Visage::Math::Vec4::operator*=(float scalar)
+		Vec4& Visage::Math::Vec4::operator*=(const float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
@@ -152,7 +152,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vec4& Visage::Math::Vec4::operator/=(float scalar)
+		Vec4& Visage::Math::Vec4::operator/=(const float scalar)
 		{
 			x /= scalar;
 			y /= scalar;
@@ -186,13 +186,13 @@ namespace Visage
 			return leftVectorCopy -= rightVector;
 		}
 
-		Vec4 Visage::Math::operator*(const Vec4& vector, float scalar)
+		Vec4 Visage::Math::operator*(const Vec4& vector, const float scalar)
 		{
 			Vec4 vectorCopy = vector;
 			return vectorCopy *= scalar;
 		}
 
-		Vec4 Visage::Math::operator/(const Vec4& vector, float scalar)
+		Vec4 Visage::Math::operator/(const Vec4& vector, const float scalar)
 		{
 			Vec4 vectorCopy = vector;
 			return vectorCopy /= scalar;

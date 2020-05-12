@@ -14,8 +14,8 @@ namespace Visage
 
 			Vec3();
 			Vec3(const Vec3& v) = default;
-			Vec3(float x, float y, float z);
-			Vec3(float value);
+			Vec3(const float x, const float y, const float z);
+			Vec3(const float value);
 
 			~Vec3() = default;
 
@@ -32,7 +32,7 @@ namespace Visage
 			static Vec3 Cross(const Vec3& leftVector, const Vec3& rightVector);
 			static Vec3 Project(const Vec3& leftVector, const Vec3& rightVector);
 			static Vec3 Reject(const Vec3& leftVector, const Vec3& rightVector);
-			static Vec3 Lerp(const Vec3& leftVector, const Vec3& rightVector, float t);
+			static Vec3 Lerp(const Vec3& leftVector, const Vec3& rightVector, const float t);
 			static Vec3 Zero();
 			static Vec3 XAxis();
 			static Vec3 YAxis();
@@ -48,8 +48,8 @@ namespace Visage
 			Vec3& operator+=(const Vec3& vector);
 			Vec3& operator-=(const Vec3& vector);
 
-			Vec3& operator*=(float scalar);
-			Vec3& operator/=(float scalar);
+			Vec3& operator*=(const float scalar);
+			Vec3& operator/=(const float scalar);
 		};
 
 		bool operator==(const Vec3& leftVector, const Vec3& rightVector);
@@ -58,8 +58,8 @@ namespace Visage
 		Vec3 operator+(const Vec3& leftVector, const Vec3& rightVector);
 		Vec3 operator-(const Vec3& leftVector, const Vec3& rightVector);
 
-		Vec3 operator*(const Vec3& vector, float scalar);
-		Vec3 operator/(const Vec3& vector, float scalar);
+		Vec3 operator*(const Vec3& vector, const float scalar);
+		Vec3 operator/(const Vec3& vector, const float scalar);
 
 		std::ostream& operator<<(std::ostream& stream, const Vec3& vector);
 	}

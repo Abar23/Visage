@@ -12,7 +12,7 @@ namespace Visage
 		{
 		}
 
-		Vec2::Vec2(float x, float y)
+		Vec2::Vec2(const float x, const float y)
 			: x(x), y(y)
 		{
 		}
@@ -140,7 +140,7 @@ namespace Visage
 			return leftVector - Project(leftVector, rightVector);
 		}
 
-		Vec2 Vec2::Lerp(const Vec2& leftVector, const Vec2& rightVector, float t)
+		Vec2 Vec2::Lerp(const Vec2& leftVector, const Vec2& rightVector, const float t)
 		{
 			return leftVector * (1.0f - t) + rightVector * t;
 		}
@@ -166,14 +166,14 @@ namespace Visage
 			return *this;
 		}
 
-		Vec2& Vec2::operator*=(float scalar)
+		Vec2& Vec2::operator*=(const float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
 			return *this;
 		}
 
-		Vec2& Vec2::operator/=(float scalar)
+		Vec2& Vec2::operator/=(const float scalar)
 		{
 			x /= scalar;
 			y /= scalar;
@@ -203,13 +203,13 @@ namespace Visage
 			return leftVectorCopy -= rightVector;
 		}
 
-		Vec2 operator*(const Vec2& vector, float scalar)
+		Vec2 operator*(const Vec2& vector, const float scalar)
 		{
 			Vec2 vectorCopy = vector;
 			return vectorCopy *= scalar;
 		}
 
-		Vec2 operator/(const Vec2& vector, float scalar)
+		Vec2 operator/(const Vec2& vector, const float scalar)
 		{
 			Vec2 vectorCopy = vector;
 			return vectorCopy /= scalar;

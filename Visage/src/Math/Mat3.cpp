@@ -13,9 +13,9 @@ namespace Visage
 		{
 		}
 
-		Mat3::Mat3(float m00, float m01, float m02, 
-				   float m10, float m11, float m12, 
-				   float m20, float m21, float m22)
+		Mat3::Mat3(const float m00, const float m01, const float m02, 
+				   const float m10, const float m11, const float m12, 
+				   const float m20, const float m21, const float m22)
 		{
 			// Column-major ordering
 			entries[0][0] = m00;
@@ -49,7 +49,7 @@ namespace Visage
 			entries[2][2] = thirdRow.z;
 		}
 
-		Mat3::Mat3(float diagonal)
+		Mat3::Mat3(const float diagonal)
 			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
@@ -135,35 +135,35 @@ namespace Visage
 				   + entries[2][0] * (entries[0][1] * entries[1][2] - entries[1][1] * entries[0][2]);
 		}
 
-		Vec3 Mat3::GetColumn(int columnIndex) const
+		Vec3 Mat3::GetColumn(const int columnIndex) const
 		{
 			return Vec3(entries[columnIndex][0],
 						entries[columnIndex][1],
 						entries[columnIndex][2]);
 		}
 
-		void Mat3::SetColumn(int columnIndex, const Vec3& vector)
+		void Mat3::SetColumn(const int columnIndex, const Vec3& vector)
 		{
 			entries[columnIndex][0] = vector.x;
 			entries[columnIndex][1] = vector.y;
 			entries[columnIndex][2] = vector.z;
 		}
 
-		Vec3 Mat3::GetRow(int rowIndex) const
+		Vec3 Mat3::GetRow(const int rowIndex) const
 		{
 			return Vec3(entries[0][rowIndex], entries[1][rowIndex], entries[2][rowIndex]);
 		}
 
-		void Mat3::SetRow(int rowIndex, const Vec3& vector)
+		void Mat3::SetRow(const int rowIndex, const Vec3& vector)
 		{
 			entries[0][rowIndex] = vector.x;
 			entries[1][rowIndex] = vector.y;
 			entries[2][rowIndex] = vector.z;
 		}
 
-		Mat3 Mat3::MakeRotationX(float angle)
+		Mat3 Mat3::MakeRotationX(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cosf(radians);
 			float sin = std::sinf(radians);
 
@@ -172,9 +172,9 @@ namespace Visage
 						0.0f, sin, cos);
 		}
 
-		Mat3 Mat3::MakeRotationY(float angle)
+		Mat3 Mat3::MakeRotationY(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cosf(radians);
 			float sin = std::sinf(radians);
 
@@ -183,9 +183,9 @@ namespace Visage
 						-sin, 0.0f, cos);
 		}
 
-		Mat3 Mat3::MakeRotationZ(float angle)
+		Mat3 Mat3::MakeRotationZ(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cosf(radians);
 			float sin = std::sinf(radians);
 
@@ -194,9 +194,9 @@ namespace Visage
 						0.0f, 0.0f, 1.0f);
 		}
 
-		Mat3 Mat3::MakeRotation(float angle, const Vec3& axis)
+		Mat3 Mat3::MakeRotation(const Vec3& axis, const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cosf(radians);
 			float sin = std::sinf(radians);
 			float oneMinsCos = 1.0f - cos;
@@ -213,14 +213,14 @@ namespace Visage
 						axisXAxisZ - sin * axis.y, axisYAxisZ + sin * axis.x, cos + z * axis.z);
 		}
 
-		Mat3 Mat3::MakeScale(float uniformScale)
+		Mat3 Mat3::MakeScale(const float uniformScale)
 		{
 			return Mat3(uniformScale, 0.0f, 0.0f,
 						0.0f, uniformScale, 0.0f,
 						0.0f, 0.0f, uniformScale);
 		}
 
-		Mat3 Mat3::MakeScale(float scaleX, float scaleY, float scaleZ)
+		Mat3 Mat3::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
 		{
 			return Mat3(scaleX, 0.0f, 0.0f,
 						0.0f, scaleY, 0.0f,
@@ -262,7 +262,7 @@ namespace Visage
 			return *this;
 		}
 
-		Mat3& Mat3::operator*=(float scalar)
+		Mat3& Mat3::operator*=(const float scalar)
 		{
 			entries[0][0] *= scalar;
 			entries[0][1] *= scalar;
@@ -292,7 +292,7 @@ namespace Visage
 						matrix(0, 2) * vector.x + matrix(1, 2) * vector.y + matrix(2, 2) * vector.z);
 		}
 
-		Mat3 operator*(const Mat3& matrix, float scalar)
+		Mat3 operator*(const Mat3& matrix, const float scalar)
 		{
 			Mat3 matrixCopy = matrix;
 			return matrixCopy *= scalar;

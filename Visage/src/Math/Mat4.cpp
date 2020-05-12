@@ -12,10 +12,10 @@ namespace Visage
 		{
 		}
 
-		Mat4::Mat4(float m00, float m01, float m02, float m03, 
-				   float m10, float m11, float m12, float m13, 
-				   float m20, float m21, float m22, float m23, 
-				   float m30, float m31, float m32, float m33)
+		Mat4::Mat4(const float m00, const float m01, const float m02, const float m03, 
+				   const float m10, const float m11, const float m12, const float m13, 
+				   const float m20, const float m21, const float m22, const float m23, 
+				   const float m30, const float m31, const float m32, const float m33)
 		{
 			entries[0][0] = m00;
 			entries[0][1] = m10;
@@ -65,7 +65,7 @@ namespace Visage
 			entries[3][3] = fourthRow.w;
 		}
 
-		Mat4::Mat4(float diagonal)
+		Mat4::Mat4(const float diagonal)
 			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
@@ -210,7 +210,7 @@ namespace Visage
 			return Vec3::Dot(s, v) - Vec3::Dot(t, u);
 		}
 
-		Vec4 Mat4::GetColumn(int columnIndex) const
+		Vec4 Mat4::GetColumn(const int columnIndex) const
 		{
 			return Vec4(entries[columnIndex][0], 
 						entries[columnIndex][1], 
@@ -218,7 +218,7 @@ namespace Visage
 						entries[columnIndex][3]);
 		}
 
-		void Mat4::SetColumn(int columnIndex, const Vec4& vector)
+		void Mat4::SetColumn(const int columnIndex, const Vec4& vector)
 		{
 			entries[columnIndex][0] = vector.x;
 			entries[columnIndex][1] = vector.y;
@@ -226,7 +226,7 @@ namespace Visage
 			entries[columnIndex][3] = vector.w;
 		}
 
-		Vec4 Mat4::GetRow(int rowIndex) const
+		Vec4 Mat4::GetRow(const int rowIndex) const
 		{
 			return Vec4(entries[0][rowIndex], 
 						entries[1][rowIndex], 
@@ -234,7 +234,7 @@ namespace Visage
 						entries[3][rowIndex]);
 		}
 
-		void Mat4::SetRow(int rowIndex, const Vec4& vector)
+		void Mat4::SetRow(const int rowIndex, const Vec4& vector)
 		{
 			entries[0][rowIndex] = vector.x;
 			entries[1][rowIndex] = vector.y;
@@ -268,9 +268,9 @@ namespace Visage
 			return AffineMatrix().Inverted().Transposed();
 		}
 
-		Mat4 Mat4::MakeRotationX(float angle)
+		Mat4 Mat4::MakeRotationX(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -280,9 +280,9 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeRotationY(float angle)
+		Mat4 Mat4::MakeRotationY(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -292,9 +292,9 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeRotationZ(float angle)
+		Mat4 Mat4::MakeRotationZ(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -304,9 +304,9 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeRotation(float angle, const Vec3& axis)
+		Mat4 Mat4::MakeRotation(const Vec3& axis, const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 			float oneMinsCos = 1.0f - cos;
@@ -324,7 +324,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeScale(float uniformScale)
+		Mat4 Mat4::MakeScale(const float uniformScale)
 		{
 			return Mat4(uniformScale, 0.0f, 0.0f, 0.0f,
 						0.0f, uniformScale, 0.0f, 0.0f,
@@ -332,7 +332,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeScale(float scaleX, float scaleY, float scaleZ)
+		Mat4 Mat4::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
 		{
 			return Mat4(scaleX, 0.0f, 0.0f, 0.0f,
 						0.0f, scaleY, 0.0f, 0.0f,
@@ -348,7 +348,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::MakeTranslation(float uniformTranslation)
+		Mat4 Mat4::MakeTranslation(const float uniformTranslation)
 		{
 			return Mat4(1.0f, 0.0f, 0.0f, uniformTranslation,
 						0.0f, 1.0f, 0.0f, uniformTranslation,
@@ -356,7 +356,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);	
 		}
 
-		Mat4 Mat4::MakeTranslation(float translationX, float translationY, float translationZ)
+		Mat4 Mat4::MakeTranslation(const float translationX, const float translationY, const float translationZ)
 		{
 			return Mat4(1.0f, 0.0f, 0.0f, translationX,
 						0.0f, 1.0f, 0.0f, translationY,
@@ -384,7 +384,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::Orthographic(float left, float right, float bottom, float top, float near, float far)
+		Mat4 Mat4::Orthographic(const float left, const float right, const float bottom, const float top, const float near, const float far)
 		{
 			return Mat4(2.0f / (right - left), 0.0f, 0.0f, (left + right) / (left - right),
 						0.0f, 2.0f / (top - bottom), 0.0f, (bottom + top) / (bottom - top),
@@ -392,7 +392,7 @@ namespace Visage
 						0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		Mat4 Mat4::Perspective(float fieldOfViewInDegrees, float aspectRatio, float near, float far)
+		Mat4 Mat4::Perspective(const float fieldOfViewInDegrees, const float aspectRatio, const float near, const float far)
 		{
 			float c = 1.0f / std::tan(fieldOfViewInDegrees / 2.0f);
 			float farMinusNear = far - near;
@@ -439,7 +439,7 @@ namespace Visage
 			return *this;
 		}
 
-		Mat4& Mat4::operator*=(float scalar)
+		Mat4& Mat4::operator*=(const float scalar)
 		{
 			entries[0][0] *= scalar;
 			entries[0][1] *= scalar;
@@ -478,7 +478,7 @@ namespace Visage
 						matrix(0, 3) * vector.x + matrix(1, 3) * vector.y + matrix(2, 3) * vector.z + matrix(3, 3) * vector.w);
 		}
 
-		Mat4 operator*(const Mat4& matrix, float scalar)
+		Mat4 operator*(const Mat4& matrix, const float scalar)
 		{
 			Mat4 matrixCopy = matrix;
 			return matrixCopy *= scalar;

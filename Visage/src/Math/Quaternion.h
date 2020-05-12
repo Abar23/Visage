@@ -13,8 +13,8 @@ namespace Visage
 			float x, y, z, w;
 
 			Quaternion();
-			Quaternion(float x, float y, float z, float w);
-			Quaternion(const Vec3& axis, float angleInDegrees);
+			Quaternion(const float x, const float y, const float z, const float w);
+			Quaternion(const Vec3& unitVector, const float angleInDegrees);
 			Quaternion(const Quaternion& quaternion);
 
 			~Quaternion() = default;
@@ -33,26 +33,26 @@ namespace Visage
 
 			static Vec3 TransformVector(const Quaternion& quaterion, const Vec3& vector);
 			static float Dot(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
-			static Quaternion MakeRotationX(float angleInDegrees);
-			static Quaternion MakeRotationY(float angleInDegrees);
-			static Quaternion MakeRotationZ(float angleInDegrees);
-			static Quaternion MakeRotation(float angleInDegrees, const Vec3& unitVector);
-			static Quaternion Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t);
-			static Quaternion Nlerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t);
-			static Quaternion Slerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t);
+			static Quaternion MakeRotationX(const float angleInDegrees);
+			static Quaternion MakeRotationY(const float angleInDegrees);
+			static Quaternion MakeRotationZ(const float angleInDegrees);
+			static Quaternion MakeRotation(const Vec3& unitVector, const float angleInDegrees);
+			static Quaternion Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
+			static Quaternion Nlerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
+			static Quaternion Slerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
 
 			Quaternion& operator=(const Quaternion& quaternion);
 			Quaternion& operator*=(const Quaternion& quaterion);
-			Quaternion& operator*=(float scalar);
-			Quaternion& operator/=(float scalar);
+			Quaternion& operator*=(const float scalar);
+			Quaternion& operator/=(const float scalar);
 			Quaternion& operator+=(const Quaternion& quaternion);
 			Quaternion& operator-=(const Quaternion& quaternion);
 		};
 
 		Quaternion operator*(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
 		Vec3 operator*(const Quaternion& quaternion, const Vec3& vector);
-		Quaternion operator*(const Quaternion& quaterion, float scalar);
-		Quaternion operator/(const Quaternion& quaterion, float scalar);
+		Quaternion operator*(const Quaternion& quaterion, const float scalar);
+		Quaternion operator/(const Quaternion& quaterion, const float scalar);
 		Quaternion operator+(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
 		Quaternion operator-(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
 

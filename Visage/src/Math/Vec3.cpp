@@ -12,12 +12,12 @@ namespace Visage
 		{
 		}
 
-		Vec3::Vec3(float x, float y, float z)
+		Vec3::Vec3(const float x, const float y, const float z)
 			: x(x), y(y), z(z)
 		{
 		}
 
-		Vec3::Vec3(float value)
+		Vec3::Vec3(const float value)
 			: x(value), y(value), z(value)
 		{
 		}
@@ -111,7 +111,7 @@ namespace Visage
 			return leftVector - Project(leftVector, rightVector);
 		}
 
-		Vec3 Vec3::Lerp(const Vec3& leftVector, const Vec3& rightVector, float t)
+		Vec3 Vec3::Lerp(const Vec3& leftVector, const Vec3& rightVector, const float t)
 		{
 			return leftVector * (1.0f - t) + rightVector * t;
 		}
@@ -190,7 +190,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vec3& Vec3::operator*=(float scalar)
+		Vec3& Vec3::operator*=(const float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
@@ -198,7 +198,7 @@ namespace Visage
 			return *this;
 		}
 
-		Vec3& Vec3::operator/=(float scalar)
+		Vec3& Vec3::operator/=(const float scalar)
 		{
 			x /= scalar;
 			y /= scalar;
@@ -230,13 +230,13 @@ namespace Visage
 			return leftVectorCopy -= rightVector;
 		}
 
-		Vec3 operator*(const Vec3& vector, float scalar)
+		Vec3 operator*(const Vec3& vector, const float scalar)
 		{
 			Vec3 vectorCopy = vector;
 			return vectorCopy *= scalar;
 		}
 
-		Vec3 operator/(const Vec3& vector, float scalar)
+		Vec3 operator/(const Vec3& vector, const float scalar)
 		{
 			Vec3 vectorCopy = vector;
 			return vectorCopy /= scalar;

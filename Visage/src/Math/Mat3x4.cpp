@@ -12,9 +12,9 @@ namespace Visage
 		{
 		}
 
-		Mat3x4::Mat3x4(float m00, float m01, float m02, float m03,
-					   float m10, float m11, float m12, float m13, 
-					   float m20, float m21, float m22, float m23)
+		Mat3x4::Mat3x4(const float m00, const float m01, const float m02, const float m03,
+					   const float m10, const float m11, const float m12, const float m13, 
+					   const float m20, const float m21, const float m22, const float m23)
 		{
 			entries[0][0] = m00;
 			entries[0][1] = m10;
@@ -53,7 +53,7 @@ namespace Visage
 			entries[3][2] = thirdRow.w;
 		}
 
-		Mat3x4::Mat3x4(float diagonal)
+		Mat3x4::Mat3x4(const float diagonal)
 			: entries{ 0.0f }
 		{
 			entries[0][0] = diagonal;
@@ -147,21 +147,21 @@ namespace Visage
 			return Vec3::Dot(s, c);
 		}
 
-		Vec3 Mat3x4::GetColumn(int columnIndex) const
+		Vec3 Mat3x4::GetColumn(const int columnIndex) const
 		{
 			return Vec3(entries[columnIndex][0],
 						entries[columnIndex][1],
 						entries[columnIndex][2]);
 		}
 
-		void Mat3x4::SetColumn(int columnIndex, const Vec3& vector)
+		void Mat3x4::SetColumn(const int columnIndex, const Vec3& vector)
 		{
 			entries[columnIndex][0] = vector.x;
 			entries[columnIndex][1] = vector.y;
 			entries[columnIndex][2] = vector.z;
 		}
 
-		Vec4 Mat3x4::GetRow(int rowIndex) const
+		Vec4 Mat3x4::GetRow(const int rowIndex) const
 		{
 			return Vec4(entries[0][rowIndex],
 						entries[1][rowIndex],
@@ -169,7 +169,7 @@ namespace Visage
 						entries[3][rowIndex]);
 		}
 
-		void Mat3x4::SetRow(int rowIndex, const Vec4& vector)
+		void Mat3x4::SetRow(const int rowIndex, const Vec4& vector)
 		{
 			entries[0][rowIndex] = vector.x;
 			entries[1][rowIndex] = vector.y;
@@ -208,9 +208,9 @@ namespace Visage
 			return Mat4();
 		}
 
-		Mat3x4 Mat3x4::MakeRotationX(float angle)
+		Mat3x4 Mat3x4::MakeRotationX(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -219,9 +219,9 @@ namespace Visage
 						  0.0f, sin, cos, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeRotationY(float angle)
+		Mat3x4 Mat3x4::MakeRotationY(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -230,9 +230,9 @@ namespace Visage
 						  -sin, 0.0f, cos, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeRotationZ(float angle)
+		Mat3x4 Mat3x4::MakeRotationZ(const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 
@@ -241,9 +241,9 @@ namespace Visage
 						  0.0f, 0.0f, 1.0f, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeRotation(const float angle, const Vec3& axis)
+		Mat3x4 Mat3x4::MakeRotation(const Vec3& axis, const float angleInDegrees)
 		{
-			float radians = DegreesToRad(angle);
+			float radians = DegreesToRad(angleInDegrees);
 			float cos = std::cos(radians);
 			float sin = std::sin(radians);
 			float oneMinsCos = 1.0f - cos;
@@ -260,14 +260,14 @@ namespace Visage
 						  axisXAxisZ - sin * axis.y, axisYAxisZ + sin * axis.x, cos + z * axis.z, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeScale(float uniformScale)
+		Mat3x4 Mat3x4::MakeScale(const float uniformScale)
 		{
 			return Mat3x4(uniformScale, 0.0f, 0.0f, 0.0f,
 						  0.0f, uniformScale, 0.0f, 0.0f,
 						  0.0f, 0.0f, uniformScale, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeScale(float scaleX, float scaleY, float scaleZ)
+		Mat3x4 Mat3x4::MakeScale(const float scaleX, const float scaleY, const float scaleZ)
 		{
 			return Mat3x4(scaleX, 0.0f, 0.0f, 0.0f,
 						  0.0f, scaleY, 0.0f, 0.0f,
@@ -281,14 +281,14 @@ namespace Visage
 						  0.0f, 0.0f, vector.z, 0.0f);
 		}
 
-		Mat3x4 Mat3x4::MakeTranslation(float uniformTranslation)
+		Mat3x4 Mat3x4::MakeTranslation(const float uniformTranslation)
 		{
 			return Mat3x4(1.0f, 0.0f, 0.0f, uniformTranslation,
 						  0.0f, 1.0f, 0.0f, uniformTranslation,
 						  0.0f, 0.0f, 1.0f, uniformTranslation);
 		}
 
-		Mat3x4 Mat3x4::MakeTranslation(float translationX, float translationY, float translationZ)
+		Mat3x4 Mat3x4::MakeTranslation(const float translationX, const float translationY, const float translationZ)
 		{
 			return Mat3x4(1.0f, 0.0f, 0.0f, translationX,
 						  0.0f, 1.0f, 0.0f, translationY,
@@ -313,7 +313,7 @@ namespace Visage
 						  forwardAxis.x, forwardAxis.y, forwardAxis.z, -Vec3::Dot(forwardAxis, cameraPosition));
 		}
 
-		Mat3x4 Mat3x4::Orthographic(float left, float right, float bottom, float top, float near, float far)
+		Mat3x4 Mat3x4::Orthographic(const float left, const float right, const float bottom, const float top, const float near, const float far)
 		{
 			return Mat3x4(2.0f / (right - left), 0.0f, 0.0f, (left + right) / (left - right),
 						  0.0f, 2.0f / (top - bottom), 0.0f, (bottom + top) / (bottom - top),
@@ -425,7 +425,7 @@ namespace Visage
 						matrix(0, 2) * vector.x + matrix(1, 2) * vector.y + matrix(2, 2) * vector.z);
 		}
 
-		Mat3x4 operator*(const Mat3x4& matrix, float scalar)
+		Mat3x4 operator*(const Mat3x4& matrix, const float scalar)
 		{
 			Mat3x4 matrixCopy = matrix;
 			return matrixCopy *= scalar;

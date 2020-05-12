@@ -14,12 +14,12 @@ namespace Visage
 		{
 		}
 
-		Quaternion::Quaternion(float x, float y, float z, float w)
+		Quaternion::Quaternion(const float x, const float y, const float z, const float w)
 			: x(x), y(y), z(z), w(w)
 		{
 		}
 
-		Quaternion::Quaternion(const Vec3& unitVector, float angleInDegrees)
+		Quaternion::Quaternion(const Vec3& unitVector, const float angleInDegrees)
 		{
 			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
 			float cosHalfAngle = std::cos(halfAngle);
@@ -181,40 +181,40 @@ namespace Visage
 				   leftQuaterion.w * rightQuaterion.w;
 		}
 
-		Quaternion Quaternion::MakeRotationX(float angleInDegrees)
+		Quaternion Quaternion::MakeRotationX(const float angleInDegrees)
 		{
 			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
 			return Quaternion(std::sin(halfAngle), 0.0f, 0.0f, std::cos(halfAngle));
 		}
 
-		Quaternion Quaternion::MakeRotationY(float angleInDegrees)
+		Quaternion Quaternion::MakeRotationY(const float angleInDegrees)
 		{
 			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
 			return Quaternion(0.0f, std::sin(halfAngle), 0.0f, std::cos(halfAngle));
 		}
 
-		Quaternion Quaternion::MakeRotationZ(float angleInDegrees)
+		Quaternion Quaternion::MakeRotationZ(const float angleInDegrees)
 		{
 			float halfAngle = DegreesToRad(angleInDegrees) / 2.0f;
 			return Quaternion(0.0f, 0.0f, std::sin(halfAngle), std::cos(halfAngle));
 		}
 
-		Quaternion Quaternion::MakeRotation(float angleInDegrees, const Vec3& unitVector)
+		Quaternion Quaternion::MakeRotation(const Vec3& unitVector, const float angleInDegrees)
 		{
 			return Quaternion(unitVector, angleInDegrees);
 		}
 
-		Quaternion Quaternion::Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t)
+		Quaternion Quaternion::Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t)
 		{
 			return leftQuaternion * (1.0f - t) + rightQuaternion * t;
 		}
 
-		Quaternion Quaternion::Nlerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t)
+		Quaternion Quaternion::Nlerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t)
 		{
 			return Lerp(leftQuaternion, rightQuaternion, t).Normalized();
 		}
 
-		Quaternion Quaternion::Slerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, float t)
+		Quaternion Quaternion::Slerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t)
 		{
 			float dot = Quaternion::Dot(leftQuaternion, rightQuaternion);
 
@@ -250,16 +250,16 @@ namespace Visage
 			return *this;
 		}
 
-		Quaternion& Quaternion::operator*=(float scalar)
+		Quaternion& Quaternion::operator*=(const float scalar)
 		{
 			x *= scalar;
 			y *= scalar;
 			z *= scalar;
-			w *= scalar;	
+			w *= scalar;
 			return *this;
 		}
 
-		Quaternion& Quaternion::operator/=(float scalar)
+		Quaternion& Quaternion::operator/=(const float scalar)
 		{
 			x /= scalar;
 			y /= scalar;
@@ -298,13 +298,13 @@ namespace Visage
 			return Quaternion::TransformVector(quaternion, vector);
 		}
 
-		Quaternion operator*(const Quaternion& quaterion, float scalar)
+		Quaternion operator*(const Quaternion& quaterion, const float scalar)
 		{
 			Quaternion quaterionCopy = quaterion;
 			return quaterionCopy *= scalar;
 		}
 
-		Quaternion operator/(const Quaternion& quaterion, float scalar)
+		Quaternion operator/(const Quaternion& quaterion, const float scalar)
 		{
 			Quaternion quaterionCopy = quaterion;
 			return quaterionCopy /= scalar;
