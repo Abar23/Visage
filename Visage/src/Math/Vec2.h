@@ -1,61 +1,129 @@
 #pragma once
 
 #include <ostream>
+#include <initializer_list>
+#include <array>
+#include "Swizzle.h"
+#include "MathFunctions.h"
 
 namespace Visage
 {
 	namespace Math
 	{
+		template <typename T>
 		class Vec2
 		{
 		public:
-			float x, y;
+			union
+			{
+				std::array<T, 2> data;
+
+				struct
+				{
+					T x, y;
+				};
+
+				Swizzle<Vec2, T, 0, 1> xy;
+				Swizzle<Vec2, T, 1, 0> yx;
+				Swizzle<Vec2, T, 0, 0> xx;
+				Swizzle<Vec2, T, 1, 1> yy;
+			};
 
 			Vec2();
-			Vec2(const float x, const float y);
-			Vec2(const float scalar);
-			Vec2(const Vec2& vector);
+			Vec2(const T x, const T y);
+			Vec2(const T scalar);
+			Vec2(std::initializer_list<T> args);
+			Vec2(const Vec2<T>& vector);
 
 			~Vec2() = default;
 
-			float Magnitude() const;
-			float SqrMagnitude() const;
-			Vec2 Normalized() const;
-			Vec2& Normalize();
-			Vec2 Renormalized() const;
-			Vec2& Renormalize();
-			Vec2 Negated() const;
-			Vec2& Negate();
+			T Magnitude() const;
+			T SqrMagnitude() const;
+			Vec2<T> Normalized() const;
+			Vec2<T>& Normalize();
+			Vec2<T> Renormalized() const;
+			Vec2<T>& Renormalize();
+			Vec2<T> Negated() const;
+			Vec2<T>& Negate();
 
-			static float Dot(const Vec2& leftVector, const Vec2& rightVector);
-			static Vec2 Project(const Vec2& leftVector, const Vec2& rightVector);
-			static Vec2 Reject(const Vec2& leftVector, const Vec2& rightVector);
-			static Vec2 Lerp(const Vec2& leftVector, const Vec2& rightVector, const float t);
-			static Vec2 Zero();
-			static Vec2 XAxis();
-			static Vec2 YAxis();
-			static Vec2 Up();
-			static Vec2 Down();
-			static Vec2 Left();
-			static Vec2 Right();
+			static T Dot(const Vec2<T>& leftVector, const Vec2<T>& rightVector);
+			static Vec2<T> Project(const Vec2<T>& leftVector, const Vec2<T>& rightVector);
+			static Vec2<T> Reject(const Vec2<T>& leftVector, const Vec2<T>& rightVector);
+			static Vec2<T> Lerp(const Vec2<T>& leftVector, const Vec2<T>& rightVector, const T t);
+			static Vec2<T> Zero();
+			static Vec2<T> XAxis();
+			static Vec2<T> YAxis();
+			static Vec2<T> Up();
+			static Vec2<T> Down();
+			static Vec2<T> Left();
+			static Vec2<T> Right();
 
-			Vec2& operator=(const Vec2& vector);
-			Vec2& operator+=(const Vec2& vector);
-			Vec2& operator-=(const Vec2& vector);
+			Vec2<T>& operator=(const Vec2<T>& vector);
+			Vec2<T>& operator+=(const Vec2<T>& vector);
+			Vec2<T>& operator-=(const Vec2<T>& vector);
 
-			Vec2& operator*=(const float scalar);
-			Vec2& operator/=(const float scalar);
+			Vec2<T>& operator*=(const T scalar);
+			Vec2<T>& operator/=(const T scalar);
+
+			friend bool operator==(const Vec2<T>& leftVector, const Vec2<T>& rightVector)
+			{
+				return NearEquals(leftVector.x, rightVector.x) &&
+					NearEquals(leftVector.y, rightVector.y);
+			}
+
+			friend bool operator!=(const Vec2<T>& leftVector, const Vec2<T>& rightVector)
+			{
+				return !(leftVector == rightVector);
+			}
+
+			friend Vec2<T> operator+(const Vec2<T>& leftVector, const Vec2<T>& rightVector)
+			{
+				Vec2<T> leftVectorCopy = leftVector;
+				return leftVectorCopy += rightVector;
+			}
+
+			friend Vec2<T> operator-(const Vec2<T>& leftVector, const Vec2<T>& rightVector)
+			{
+				Vec2<T> leftVectorCopy = leftVector;
+				return leftVectorCopy -= rightVector;
+			}
+
+			friend Vec2<T> operator*(const Vec2<T>& vector, const T scalar)
+			{
+				Vec2<T> vectorCopy = vector;
+				return vectorCopy *= scalar;
+			}
+
+			friend Vec2<T> operator*(const T scalar, const Vec2<T>& vector)
+			{
+				Vec2<T> vectorCopy = vector;
+				return vectorCopy *= scalar;
+			}
+
+			friend Vec2<T> operator/(const Vec2<T>& vector, const T scalar)
+			{
+				Vec2<T> vectorCopy = vector;
+				return vectorCopy /= scalar;
+			}
+
+			friend Vec2<T> operator/(const T scalar, const Vec2<T>& vector)
+			{
+				Vec2<T> vectorCopy = vector;
+				return vectorCopy /= scalar;
+			}
+
+			friend std::ostream& operator<<(std::ostream& stream, const Vec2<T>& vector)
+			{
+				stream << "(" << vector.x << ", " << vector.y << ")";
+				return stream;
+			}
 		};
-
-		bool operator==(const Vec2& leftVector, const Vec2& rightVector);
-		bool operator!=(const Vec2& leftVector, const Vec2& rightVector);
-
-		Vec2 operator+(const Vec2& leftVector, const Vec2& rightVector);
-		Vec2 operator-(const Vec2& leftVector, const Vec2& rightVector);
-
-		Vec2 operator*(const Vec2& vector, const float scalar);
-		Vec2 operator/(const Vec2& vector, const float scalar);
-
-		std::ostream& operator<<(std::ostream& stream, const Vec2& vector);
 	}
+
+	using ivec2 = Math::Vec2<int>;
+	using uvec2 = Math::Vec2<unsigned int>;
+	using vec2 = Math::Vec2<float>;
+	using dvec2 = Math::Vec2<double>;
 }
+
+#include "Vec2.inl"

@@ -1,28 +1,43 @@
 #pragma once
 
+#include <cstdint>
+#include <cstring>
 #include "MathConstants.h"
 
 namespace Visage
 {
 	namespace Math
 	{
-		bool FloatIsEqual(const float floatOne, const float floatTwo);
-
-		inline float DegreesToRad(const float angleInDegrees)
+		template <typename T>
+		bool NearEquals(const T floatOne, const T floatTwo)
 		{
-			return angleInDegrees * (F_PI / 180.0f);
+			T absDiff = std::abs(floatOne - floatTwo);
+			if (absDiff <= maxEpsilonDiff)
+			{
+				return true;
+			}
+
+			return false;
 		}
 
-		inline float RadToDegrees(const float angleInDegrees)
+		template <typename T>
+		inline T DegreesToRad(const T angleInDegrees)
 		{
-			return angleInDegrees * (180.0f / F_PI);
+			return angleInDegrees * static_cast<T>(F_PI / 180.0f);
 		}
 
-		inline float FastInverseSqurRootAroundOne(const float value)
+		template <typename T>
+		inline T RadToDegrees(const T angleInDegrees)
 		{
-			constexpr float coeffOne = 15.0f / 8.0f;
-			constexpr float coeffTwo = -5.0f / 4.0f;
-			constexpr float coeffThree = 3.0f / 8.0f;
+			return angleInDegrees * static_cast<T>(180.0f / F_PI);
+		}
+
+		template <typename T>
+		inline T FastInverseSqurRootAroundOne(const T value)
+		{
+			constexpr T coeffOne = static_cast<T>(15.0f / 8.0f);
+			constexpr T coeffTwo = static_cast<T>(-5.0f / 4.0f);
+			constexpr T coeffThree = static_cast<T>(3.0f / 8.0f);
 
 			return coeffOne + coeffTwo * value + coeffThree * value * value;
 		}

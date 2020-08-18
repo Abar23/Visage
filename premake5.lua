@@ -39,6 +39,7 @@ workspace "Visage"
         {
             "%{prj.name}/src/**.cpp",
             "%{prj.name}/src/**.h",
+            "%{prj.name}/src/**.inl",
             "%{prj.name}/vendor/stb_image/**.h",
         }
 

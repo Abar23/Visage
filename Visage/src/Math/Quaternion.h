@@ -7,55 +7,81 @@ namespace Visage
 {
 	namespace Math
 	{
+		template <typename T>
 		class Quaternion
 		{
 		public:
-			float x, y, z, w;
+			T x, y, z, w;
 
 			Quaternion();
-			Quaternion(const float x, const float y, const float z, const float w);
-			Quaternion(const Vec3& unitVector, const float angleInDegrees);
-			Quaternion(const Quaternion& quaternion);
+			Quaternion(const T x, const T y, const T z, const T w);
+			Quaternion(const Vec3<T>& unitVector, const T angleInDegrees);
+			Quaternion(const Quaternion<T>& quaternion);
 
 			~Quaternion() = default;
 
-			float Norm() const;
-			float SqrNorm() const;
-			Quaternion Normalized() const;
-			Quaternion& Normalize();
-			Quaternion Renormalized() const;
-			Quaternion& Renormalize();
-			Quaternion Inverted() const;
-			Quaternion& Invert();
-			Quaternion Conjugate() const;
-			Mat3 GetRotationMatrix() const;
-			void SetRotationMatrix(const Mat3& matrix);
+			T Norm() const;
+			T SqrNorm() const;
+			Quaternion<T> Normalized() const;
+			Quaternion<T>& Normalize();
+			Quaternion<T> Renormalized() const;
+			Quaternion<T>& Renormalize();
+			Quaternion<T> Inverted() const;
+			Quaternion<T>& Invert();
+			Quaternion<T> Conjugate() const;
+			Mat3<T> GetRotationMatrix() const;
+			void SetRotationMatrix(const Mat3<T>& matrix);
 
-			static Vec3 TransformVector(const Quaternion& quaterion, const Vec3& vector);
-			static float Dot(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
-			static Quaternion MakeRotationX(const float angleInDegrees);
-			static Quaternion MakeRotationY(const float angleInDegrees);
-			static Quaternion MakeRotationZ(const float angleInDegrees);
-			static Quaternion MakeRotation(const Vec3& unitVector, const float angleInDegrees);
-			static Quaternion Lerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
-			static Quaternion Nlerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
-			static Quaternion Slerp(const Quaternion& leftQuaternion, const Quaternion& rightQuaternion, const float t);
+			static Vec3<T> TransformVector(const Quaternion<T>& quaterion, const Vec3<T>& vector);
+			static T Dot(const Quaternion<T>& leftQuaterion, const Quaternion<T>& rightQuaterion);
+			static Quaternion<T> MakeRotationX(const T angleInDegrees);
+			static Quaternion<T> MakeRotationY(const T angleInDegrees);
+			static Quaternion<T> MakeRotationZ(const T angleInDegrees);
+			static Quaternion<T> MakeRotation(const Vec3<T>& unitVector, const T angleInDegrees);
+			static Quaternion<T> Lerp(const Quaternion<T>& leftQuaternion, const Quaternion<T>& rightQuaternion, const T t);
+			static Quaternion<T> Nlerp(const Quaternion<T>& leftQuaternion, const Quaternion<T>& rightQuaternion, const T t);
+			static Quaternion<T> Slerp(const Quaternion<T>& leftQuaternion, const Quaternion<T>& rightQuaternion, const T t);
 
-			Quaternion& operator=(const Quaternion& quaternion);
-			Quaternion& operator*=(const Quaternion& quaterion);
-			Quaternion& operator*=(const float scalar);
-			Quaternion& operator/=(const float scalar);
-			Quaternion& operator+=(const Quaternion& quaternion);
-			Quaternion& operator-=(const Quaternion& quaternion);
+			Quaternion<T>& operator=(const Quaternion<T>& quaternion);
+			Quaternion<T>& operator*=(const Quaternion<T>& quaterion);
+			Quaternion<T>& operator*=(const T scalar);
+			Quaternion<T>& operator/=(const T scalar);
+			Quaternion<T>& operator+=(const Quaternion<T>& quaternion);
+			Quaternion<T>& operator-=(const Quaternion<T>& quaternion);
+
+			friend Vec3<T> operator*(const Quaternion<T>& quaternion, const Vec3<T>& vector)
+			{
+				return Quaternion<T>::TransformVector(quaternion, vector);
+			}
 		};
 
-		Quaternion operator*(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
-		Vec3 operator*(const Quaternion& quaternion, const Vec3& vector);
-		Quaternion operator*(const Quaternion& quaterion, const float scalar);
-		Quaternion operator/(const Quaternion& quaterion, const float scalar);
-		Quaternion operator+(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
-		Quaternion operator-(const Quaternion& leftQuaterion, const Quaternion& rightQuaterion);
+		template <typename T>
+		Quaternion<T> operator*(const Quaternion<T>& leftQuaterion, const Quaternion<T>& rightQuaterion);
 
-		std::ostream& operator<<(std::ostream& stream, const Quaternion& quaternion);
+		template <typename T>
+		Quaternion<T> operator*(const Quaternion<T>& quaterion, const T scalar);
+
+		template <typename T>
+		Quaternion<T> operator*(const T scalar, const Quaternion<T>& quaterion);
+
+		template <typename T>
+		Quaternion<T> operator/(const Quaternion<T>& quaterion, const T scalar);
+
+		template <typename T>
+		Quaternion<T> operator/(const T scalar, const Quaternion<T>& quaterion);
+
+		template <typename T>
+		Quaternion<T> operator+(const Quaternion<T>& leftQuaterion, const Quaternion<T>& rightQuaterion);
+
+		template <typename T>
+		Quaternion<T> operator-(const Quaternion<T>& leftQuaterion, const Quaternion<T>& rightQuaterion);
+
+		template <typename T>
+		std::ostream& operator<<(std::ostream& stream, const Quaternion<T>& quaternion);
 	}
+
+	using quat = Math::Quaternion<float>;
+	using quatd = Math::Quaternion<double>;
 }
+
+#include "Quaternion.inl"

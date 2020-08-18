@@ -9,51 +9,77 @@ namespace Visage
 {
 	namespace Math
 	{
+		template <typename T>
 		class DualQuaternion
 		{
 		private:
-			Quaternion real;
-			Quaternion dual;
+			Quaternion<T> real;
+			Quaternion<T> dual;
 
 		public:
 			DualQuaternion();
-			DualQuaternion(const Quaternion& real, const Quaternion& dual);
-			DualQuaternion(const Quaternion& rotation, const Vec3& translation);
-			DualQuaternion(const DualQuaternion& dualQuat);
+			DualQuaternion(const Quaternion<T>& real, const Quaternion<T>& dual);
+			DualQuaternion(const Quaternion<T>& rotation, const Vec3<T>& translation);
+			DualQuaternion(const DualQuaternion<T>& dualQuat);
 
-			DualQuaternion Normalized() const;
-			DualQuaternion& Normalize();
-			DualQuaternion Conjugate() const;
-			Mat3 GetRotation() const;
-			void SetRotation(const Mat3& matrix);
-			Vec3 GetTranslation() const;
-			void SetTranslation(const Vec3& vector);
-			Quaternion GetRealQuaternion() const; 
-			void SetRealQuaternion(const Quaternion& quaternion);
-			Quaternion GetDualQuaternion() const;
-			void SetDaulQuaternion(const Quaternion& quaternion);
-			Mat4 GetTransformationMat4() const;
-			Mat3x4 GetTransformationMat3x4() const;
+			DualQuaternion<T> Normalized() const;
+			DualQuaternion<T>& Normalize();
+			DualQuaternion<T> Conjugate() const;
+			Mat3<T> GetRotation() const;
+			void SetRotation(const Mat3<T>& matrix);
+			Vec3<T> GetTranslation() const;
+			void SetTranslation(const Vec3<T>& vector);
+			Quaternion<T> GetRealQuaternion() const; 
+			void SetRealQuaternion(const Quaternion<T>& quaternion);
+			Quaternion<T> GetDualQuaternion() const;
+			void SetDaulQuaternion(const Quaternion<T>& quaternion);
+			Mat4<T> GetTransformationMat4() const;
+			Mat3x4<T> GetTransformationMat3x4() const;
 
-			static float Dot(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
-			static DualQuaternion Sclerp(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat, const float t);
-			static Vec3 TransformVector(const DualQuaternion& dualQuat, const Vec3& vector);
+			static T Dot(const DualQuaternion<T>& leftDualQuat, const DualQuaternion<T>& rightDualQuat);
+			static DualQuaternion<T> Sclerp(const DualQuaternion<T>& leftDualQuat, const DualQuaternion<T>& rightDualQuat, const T t);
+			static Vec3<T> TransformVector(const DualQuaternion<T>& dualQuat, const Vec3<T>& vector);
 
-			DualQuaternion& operator=(const DualQuaternion& dualQuat);
-			DualQuaternion& operator*=(const DualQuaternion& dualQuat);
-			DualQuaternion& operator*=(const float scalar);
-			DualQuaternion& operator/=(const float scalar);
-			DualQuaternion& operator+=(const DualQuaternion& dualQuat);
-			DualQuaternion& operator-=(const DualQuaternion& dualQuat);
+			DualQuaternion<T>& operator=(const DualQuaternion<T>& dualQuat);
+			DualQuaternion<T>& operator*=(const DualQuaternion<T>& dualQuat);
+			DualQuaternion<T>& operator*=(const T scalar);
+			DualQuaternion<T>& operator/=(const T scalar);
+			DualQuaternion<T>& operator+=(const DualQuaternion<T>& dualQuat);
+			DualQuaternion<T>& operator-=(const DualQuaternion<T>& dualQuat);
+
+			friend Vec3<T> operator*(const DualQuaternion<T>& dualQuat, const Vec3<T>& vector)
+			{
+				return DualQuaternion<T>::TransformVector(dualQuat, vector);
+			}
 		};
 
-		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
-		Vec3 operator*(const DualQuaternion& dualQuat, const Vec3& vector);
-		DualQuaternion operator*(const DualQuaternion& leftDualQuat, const float scalar);
-		DualQuaternion operator/(const DualQuaternion& leftDualQuat, const float scalar);
-		DualQuaternion operator-(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
-		DualQuaternion operator+(const DualQuaternion& leftDualQuat, const DualQuaternion& rightDualQuat);
+		template <typename T>
+		DualQuaternion<T> operator*(const DualQuaternion<T>& leftDualQuat, const DualQuaternion<T>& rightDualQuat);
 
-		std::ostream& operator<<(std::ostream& stream, const DualQuaternion& quaternion);
+		template <typename T>
+		DualQuaternion<T> operator*(const DualQuaternion<T>& dualQuat, const T scalar);
+
+		template <typename T>
+		DualQuaternion<T> operator*(const T scalar, const DualQuaternion<T>& dualQuat);
+
+		template <typename T>
+		DualQuaternion<T> operator/(const DualQuaternion<T>& dualQuat, const T scalar);
+
+		template <typename T>
+		DualQuaternion<T> operator/(const T scalar, const DualQuaternion<T>& dualQuat);
+
+		template <typename T>
+		DualQuaternion<T> operator-(const DualQuaternion<T>& leftDualQuat, const DualQuaternion<T>& rightDualQuat);
+
+		template <typename T>
+		DualQuaternion<T> operator+(const DualQuaternion<T>& leftDualQuat, const DualQuaternion<T>& rightDualQuat);
+
+		template <typename T>
+		std::ostream& operator<<(std::ostream& stream, const DualQuaternion<T>& quaternion);
 	}
+
+	using dualquat = Math::DualQuaternion<float>;
+	using dualquatd = Math::DualQuaternion<double>;
 }
+
+#include "DualQuaternion.inl"

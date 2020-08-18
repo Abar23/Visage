@@ -3,6 +3,7 @@
 #include "Math/Vec2.h"
 #include "Math/Mat3.h"
 #include "Math/Mat4.h"
+#include "Math/Mat3x4.h"
 #include "Math/Quaternion.h"
 #include "Math/MathFunctions.h"
 #include "Math/DualQuaternion.h"
@@ -10,11 +11,28 @@
 #include <chrono>
 #include <iostream>
 
-using namespace Visage::Math;
+using namespace Visage;
 
 int main()
 {
-	Mat4 m(Vec4(2.0f, 2.0f, 2.0f, 2.0f), Vec4::Zero(), Vec4::Zero(), Vec4::Zero());
-	std::cout << m;
+	vec2 v(1.2f, 0.0f);
+	std::cout << v.Normalized() << std::endl;
+	std::cout << v.Renormalized() << std::endl;
+	std::cout << v.Negated() << std::endl;
+	std::cout << v.Magnitude() << std::endl;
+	std::cout << v.SqrMagnitude() << std::endl;
+	std::cout << vec2::Dot(vec2(1.0, 0.0), vec2(-1.0, 0.0)) << std::endl;
+	std::cout << vec2::Project(vec2(0.5, 0.5), vec2(1.0, 0.0)) << std::endl;
+	std::cout << (v == vec2(0.5, 0.5)) << std::endl;
+	vec3 b = { 1, 2, 3 };
+	vec4 g = { 1, 2, 3, 4 };
+
+	vec2 c(v.yx);
+	ivec2 h(1, 2);
+	v.xy += c;
+	v = v * 4.0f;
+	c = v.xx;
+	std::cout << (c == v) << std::endl;
+
 	return 0;
 }
