@@ -33,7 +33,7 @@ int main()
 	std::cout << (sizeof(p) / sizeof(float)) << std::endl;
 
 	mat4 m(1.0f);
-	m.SetTranslation(c.xyx);
-
+	m.SetTranslation(c.yyy);
+	std::cout << m;
 	return 0;
 }

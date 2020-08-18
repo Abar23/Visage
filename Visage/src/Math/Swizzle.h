@@ -2,7 +2,6 @@
 
 #include <array>
 #include <ostream>
-#include <assert.h>
 
 namespace Visage
 {
@@ -18,8 +17,6 @@ namespace Visage
 		public:
 			vectorType<T>& operator=(const vectorType<T>& vector)
 			{
-				assert(vector.data.size() == numberOfElements);
-
 				T indices[Indices...];
 
 				for (unsigned int i = 0; i < this->data.size(); i++)
