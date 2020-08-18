@@ -2,21 +2,24 @@
 
 #include <array>
 #include <ostream>
+#include <assert.h>
 
 namespace Visage
 {
 	namespace Math
 	{
 
-		template <template <typename> class vectorType, typename T, int... Indices>
+		template <template <typename> class vectorType, typename T, int numberOfElements, int... Indices>
 		class Swizzle
 		{
 		private:
-			std::array<T, sizeof...(Indices)> data;
+			std::array<T, numberOfElements> data;
 
 		public:
 			vectorType<T>& operator=(const vectorType<T>& vector)
 			{
+				assert(vector.data.size() == numberOfElements);
+
 				T indices[Indices...];
 
 				for (unsigned int i = 0; i < this->data.size(); i++)

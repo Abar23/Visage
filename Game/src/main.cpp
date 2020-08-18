@@ -29,10 +29,11 @@ int main()
 
 	vec2 c(v.yx);
 	ivec2 h(1, 2);
-	v.xy += c;
-	v = v * 4.0f;
-	c = v.xx;
-	std::cout << (c == v) << std::endl;
+	vec3 p = c.yyx;
+	std::cout << (sizeof(p) / sizeof(float)) << std::endl;
+
+	mat4 m(1.0f);
+	m.SetTranslation(c.xyx);
 
 	return 0;
 }
