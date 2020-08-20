@@ -12,8 +12,24 @@ namespace Visage
 	{
 		template <typename T>
 		Mat3<T>::Mat3()
-			: entries{ 0 }
+			: data{ 0 }
 		{
+		}
+
+		template<typename T>
+		Mat3<T>::Mat3(std::initializer_list<T> args)
+		{
+			int column = 0, row = 0;
+			for (auto& element : args)
+			{
+				this->data[column][row] = element;
+				column++;
+				if (column == 3)
+				{
+					column = 0;
+					row++;
+				}
+			}
 		}
 
 		template <typename T>
@@ -22,17 +38,17 @@ namespace Visage
 				      const T m20, const T m21, const T m22)
 		{
 			// Column-major ordering
-			entries[0][0] = m00;
-			entries[0][1] = m10;
-			entries[0][2] = m20;
+			data[0][0] = m00;
+			data[0][1] = m10;
+			data[0][2] = m20;
 
-			entries[1][0] = m01;
-			entries[1][1] = m11;
-			entries[1][2] = m21;
+			data[1][0] = m01;
+			data[1][1] = m11;
+			data[1][2] = m21;
 
-			entries[2][0] = m02;
-			entries[2][1] = m12;
-			entries[2][2] = m22;
+			data[2][0] = m02;
+			data[2][1] = m12;
+			data[2][2] = m22;
 		}
 
 		template <typename T>
@@ -41,40 +57,40 @@ namespace Visage
 				      const Vec3<T>& thirdRow)
 		{
 			// Column-major ordering
-			entries[0][0] = firstRow.x;
-			entries[1][0] = firstRow.y;
-			entries[2][0] = firstRow.z;
+			data[0][0] = firstRow.x;
+			data[1][0] = firstRow.y;
+			data[2][0] = firstRow.z;
 
-			entries[0][1] = secondRow.x;
-			entries[1][1] = secondRow.y;
-			entries[2][1] = secondRow.z;
+			data[0][1] = secondRow.x;
+			data[1][1] = secondRow.y;
+			data[2][1] = secondRow.z;
 
-			entries[0][2] = thirdRow.x;
-			entries[1][2] = thirdRow.y;
-			entries[2][2] = thirdRow.z;
+			data[0][2] = thirdRow.x;
+			data[1][2] = thirdRow.y;
+			data[2][2] = thirdRow.z;
 		}
 
 		template <typename T>
 		Mat3<T>::Mat3(const T diagonal)
-			: entries{ 0 }
+			: data{ 0 }
 		{
-			entries[0][0] = diagonal;
-			entries[1][1] = diagonal;
-			entries[2][2] = diagonal;
+			data[0][0] = diagonal;
+			data[1][1] = diagonal;
+			data[2][2] = diagonal;
 		}
 
 		template <typename T>
 		Mat3<T>::Mat3(const Mat3<T>& matrix)
 		{
-			std::memcpy(entries, matrix.entries, sizeof(Mat3<T>));
+			std::memcpy(data, matrix.data, sizeof(Mat3<T>));
 		}
 
 		template <typename T>
 		Mat3<T> Mat3<T>::Inverted() const
 		{
-			const Vec3<T> a = reinterpret_cast<const Vec3<T>&>(entries[0]);
-			const Vec3<T> b = reinterpret_cast<const Vec3<T>&>(entries[1]);
-			const Vec3<T> c = reinterpret_cast<const Vec3<T>&>(entries[2]);
+			const Vec3<T> a = reinterpret_cast<const Vec3<T>&>(data[0]);
+			const Vec3<T> b = reinterpret_cast<const Vec3<T>&>(data[1]);
+			const Vec3<T> c = reinterpret_cast<const Vec3<T>&>(data[2]);
 
 			Vec3<T> bCrossC = Vec3<T>::Cross(b, c);
 			Vec3<T> cCrossa = Vec3<T>::Cross(c, a);
@@ -90,9 +106,9 @@ namespace Visage
 		template <typename T>
 		Mat3<T>& Mat3<T>::Invert()
 		{
-			const Vec3<T> a = reinterpret_cast<const Vec3<T>&>(entries[0]);
-			const Vec3<T> b = reinterpret_cast<const Vec3<T>&>(entries[1]);
-			const Vec3<T> c = reinterpret_cast<const Vec3<T>&>(entries[2]);
+			const Vec3<T> a = reinterpret_cast<const Vec3<T>&>(data[0]);
+			const Vec3<T> b = reinterpret_cast<const Vec3<T>&>(data[1]);
+			const Vec3<T> c = reinterpret_cast<const Vec3<T>&>(data[2]);
 
 			Vec3<T> bCrossC = Vec3<T>::Cross(b, c);
 			Vec3<T> cCrossa = Vec3<T>::Cross(c, a);
@@ -100,17 +116,17 @@ namespace Visage
 
 			T inverseDet = static_cast<T>(1) / Vec3<T>::Dot(aCrossb, c);
 
-			entries[0][0] = bCrossC.x * inverseDet;
-			entries[0][1] = cCrossa.x * inverseDet;
-			entries[0][2] = aCrossb.x * inverseDet;
+			data[0][0] = bCrossC.x * inverseDet;
+			data[0][1] = cCrossa.x * inverseDet;
+			data[0][2] = aCrossb.x * inverseDet;
 
-			entries[1][0] = bCrossC.y * inverseDet;
-			entries[1][1] = cCrossa.y * inverseDet;
-			entries[1][2] = aCrossb.y * inverseDet;
+			data[1][0] = bCrossC.y * inverseDet;
+			data[1][1] = cCrossa.y * inverseDet;
+			data[1][2] = aCrossb.y * inverseDet;
 
-			entries[2][0] = bCrossC.z * inverseDet;
-			entries[2][1] = cCrossa.z * inverseDet;
-			entries[2][2] = aCrossb.z * inverseDet;
+			data[2][0] = bCrossC.z * inverseDet;
+			data[2][1] = cCrossa.z * inverseDet;
+			data[2][2] = aCrossb.z * inverseDet;
 
 			return *this;
 		}
@@ -118,9 +134,9 @@ namespace Visage
 		template <typename T>
 		Mat3<T> Mat3<T>::Transposed() const
 		{
-			return Mat3<T>(entries[0][0], entries[0][1], entries[0][2], 
-						entries[1][0], entries[1][1], entries[1][2], 
-						entries[2][0], entries[2][1], entries[2][2]);
+			return Mat3<T>(data[0][0], data[0][1], data[0][2], 
+						data[1][0], data[1][1], data[1][2], 
+						data[2][0], data[2][1], data[2][2]);
 		}
 
 		template <typename T>
@@ -128,14 +144,14 @@ namespace Visage
 		{
 			Mat3<T> temp = *this;
 
-			entries[0][1] = temp.entries[1][0];
-			entries[0][2] = temp.entries[2][0];
+			data[0][1] = temp.data[1][0];
+			data[0][2] = temp.data[2][0];
 
-			entries[1][0] = temp.entries[0][1];
-			entries[1][2] = temp.entries[2][1];
+			data[1][0] = temp.data[0][1];
+			data[1][2] = temp.data[2][1];
 
-			entries[2][0] = temp.entries[0][2];
-			entries[2][1] = temp.entries[1][2];
+			data[2][0] = temp.data[0][2];
+			data[2][1] = temp.data[1][2];
 
 			return *this;
 		}
@@ -143,39 +159,39 @@ namespace Visage
 		template <typename T>
 		T Mat3<T>::Determinant() const
 		{
-			return entries[0][0] * (entries[1][1] * entries[2][2] - entries[2][1] * entries[1][2])
-				   + entries[1][0] * (entries[2][1] * entries[0][2] - entries[0][1] * entries[2][2])
-				   + entries[2][0] * (entries[0][1] * entries[1][2] - entries[1][1] * entries[0][2]);
+			return data[0][0] * (data[1][1] * data[2][2] - data[2][1] * data[1][2])
+				   + data[1][0] * (data[2][1] * data[0][2] - data[0][1] * data[2][2])
+				   + data[2][0] * (data[0][1] * data[1][2] - data[1][1] * data[0][2]);
 		}
 
 		template <typename T>
 		Vec3<T> Mat3<T>::GetColumn(const int columnIndex) const
 		{
-			return Vec3<T>(entries[columnIndex][0],
-						   entries[columnIndex][1],
-						   entries[columnIndex][2]);
+			return Vec3<T>(data[columnIndex][0],
+						   data[columnIndex][1],
+						   data[columnIndex][2]);
 		}
 
 		template <typename T>
 		void Mat3<T>::SetColumn(const int columnIndex, const Vec3<T>& vector)
 		{
-			entries[columnIndex][0] = vector.x;
-			entries[columnIndex][1] = vector.y;
-			entries[columnIndex][2] = vector.z;
+			data[columnIndex][0] = vector.x;
+			data[columnIndex][1] = vector.y;
+			data[columnIndex][2] = vector.z;
 		}
 
 		template <typename T>
 		Vec3<T> Mat3<T>::GetRow(const int rowIndex) const
 		{
-			return Vec3<T>(entries[0][rowIndex], entries[1][rowIndex], entries[2][rowIndex]);
+			return Vec3<T>(data[0][rowIndex], data[1][rowIndex], data[2][rowIndex]);
 		}
 
 		template <typename T>
 		void Mat3<T>::SetRow(const int rowIndex, const Vec3<T>& vector)
 		{
-			entries[0][rowIndex] = vector.x;
-			entries[1][rowIndex] = vector.y;
-			entries[2][rowIndex] = vector.z;
+			data[0][rowIndex] = vector.x;
+			data[1][rowIndex] = vector.y;
+			data[2][rowIndex] = vector.z;
 		}
 
 		template <typename T>
@@ -267,36 +283,36 @@ namespace Visage
 		template <typename T>
 		Mat3<T>& Mat3<T>::operator=(const Mat3<T>& matrix)
 		{
-			std::memcpy(entries, matrix.entries, sizeof(Mat3<T>));
+			std::memcpy(data, matrix.data, sizeof(Mat3<T>));
 			return *this;
 		}
 
 		template<typename T>
 		inline const T& Mat3<T>::operator()(const int rowIndex, const int columnIndex) const
 		{
-			return entries[columnIndex][rowIndex];
+			return data[columnIndex][rowIndex];
 		}
 
 		template<typename T>
 		inline T& Mat3<T>::operator()(const int rowIndex, const int columnIndex)
 		{
-			return entries[columnIndex][rowIndex];
+			return data[columnIndex][rowIndex];
 		}
 
 		template <typename T>
 		Mat3<T>& Mat3<T>::operator*=(const Mat3<T>& matrix)
 		{
-			entries[0][0] = entries[0][0] * matrix.entries[0][0] + entries[1][0] * matrix.entries[0][1] + entries[2][0] * matrix.entries[0][2];
-			entries[1][0] = entries[0][0] * matrix.entries[1][0] + entries[1][0] * matrix.entries[1][1] + entries[2][0] * matrix.entries[1][2];
-			entries[2][0] = entries[0][0] * matrix.entries[2][0] + entries[1][0] * matrix.entries[2][1] + entries[2][0] * matrix.entries[2][2];
+			data[0][0] = data[0][0] * matrix.data[0][0] + data[1][0] * matrix.data[0][1] + data[2][0] * matrix.data[0][2];
+			data[1][0] = data[0][0] * matrix.data[1][0] + data[1][0] * matrix.data[1][1] + data[2][0] * matrix.data[1][2];
+			data[2][0] = data[0][0] * matrix.data[2][0] + data[1][0] * matrix.data[2][1] + data[2][0] * matrix.data[2][2];
 
-			entries[0][1] = entries[0][1] * matrix.entries[0][0] + entries[1][1] * matrix.entries[0][1] + entries[2][1] * matrix.entries[0][2];
-			entries[1][1] = entries[0][1] * matrix.entries[1][0] + entries[1][1] * matrix.entries[1][1] + entries[2][1] * matrix.entries[1][2];
-			entries[2][1] = entries[0][1] * matrix.entries[2][0] + entries[1][1] * matrix.entries[2][1] + entries[2][1] * matrix.entries[2][2];
+			data[0][1] = data[0][1] * matrix.data[0][0] + data[1][1] * matrix.data[0][1] + data[2][1] * matrix.data[0][2];
+			data[1][1] = data[0][1] * matrix.data[1][0] + data[1][1] * matrix.data[1][1] + data[2][1] * matrix.data[1][2];
+			data[2][1] = data[0][1] * matrix.data[2][0] + data[1][1] * matrix.data[2][1] + data[2][1] * matrix.data[2][2];
 
-			entries[0][2] = entries[0][2] * matrix.entries[0][0] + entries[1][2] * matrix.entries[0][1] + entries[2][2] * matrix.entries[0][2];
-			entries[1][2] = entries[0][2] * matrix.entries[1][0] + entries[1][2] * matrix.entries[1][1] + entries[2][2] * matrix.entries[1][2];
-			entries[2][2] = entries[0][2] * matrix.entries[2][0] + entries[1][2] * matrix.entries[2][1] + entries[2][2] * matrix.entries[2][2];
+			data[0][2] = data[0][2] * matrix.data[0][0] + data[1][2] * matrix.data[0][1] + data[2][2] * matrix.data[0][2];
+			data[1][2] = data[0][2] * matrix.data[1][0] + data[1][2] * matrix.data[1][1] + data[2][2] * matrix.data[1][2];
+			data[2][2] = data[0][2] * matrix.data[2][0] + data[1][2] * matrix.data[2][1] + data[2][2] * matrix.data[2][2];
 
 			return *this;
 		}
@@ -304,17 +320,17 @@ namespace Visage
 		template <typename T>
 		Mat3<T>& Mat3<T>::operator*=(const T scalar)
 		{
-			entries[0][0] *= scalar;
-			entries[0][1] *= scalar;
-			entries[0][2] *= scalar;
+			data[0][0] *= scalar;
+			data[0][1] *= scalar;
+			data[0][2] *= scalar;
 
-			entries[1][0] *= scalar;
-			entries[1][1] *= scalar;
-			entries[1][2] *= scalar;
+			data[1][0] *= scalar;
+			data[1][1] *= scalar;
+			data[1][2] *= scalar;
 
-			entries[2][0] *= scalar;
-			entries[2][1] *= scalar;
-			entries[2][2] *= scalar;
+			data[2][0] *= scalar;
+			data[2][1] *= scalar;
+			data[2][2] *= scalar;
 			
 			return *this;
 		}

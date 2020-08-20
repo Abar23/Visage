@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
+#include "Vec4.h"
 #include "Mat3.h"
 
 namespace Visage
@@ -11,7 +12,12 @@ namespace Visage
 		class Quaternion
 		{
 		public:
-			T x, y, z, w;
+			union
+			{
+				T x, y, z, w;
+
+				Vec4<T> components;
+			};
 
 			Quaternion();
 			Quaternion(const T x, const T y, const T z, const T w);

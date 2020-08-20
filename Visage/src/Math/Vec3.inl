@@ -16,12 +16,6 @@ namespace Visage
 		{
 		}
 
-		template <typename T>
-		Vec3<T>::Vec3(const T x, const T y, const T z)
-			: x(x), y(y), z(z)
-		{
-		}
-
 		template<typename T>
 		Vec3<T>::Vec3(std::initializer_list<T> args)
 		{
@@ -30,6 +24,12 @@ namespace Visage
 			{
 				this->data.at(index++) = *begin;
 			}
+		}
+
+		template <typename T>
+		Vec3<T>::Vec3(const T x, const T y, const T z)
+			: x(x), y(y), z(z)
+		{
 		}
 
 		template <typename T>

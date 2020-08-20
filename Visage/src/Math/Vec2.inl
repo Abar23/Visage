@@ -15,6 +15,16 @@ namespace Visage
 		{
 		}
 
+		template<typename T>
+		Vec2<T>::Vec2(std::initializer_list<T> args)
+		{
+			int index = 0;
+			for (auto begin = args.begin(); begin != args.end(); ++begin)
+			{
+				this->data.at(index++) = *begin;
+			}
+		}
+
 		template <typename T>
 		Vec2<T>::Vec2(const T x, const T y)
 			: x(x), y(y)
@@ -25,16 +35,6 @@ namespace Visage
 		Vec2<T>::Vec2(const T scalar)
 			: x(scalar), y(scalar)
 		{
-		}
-
-		template<typename T>
-		Vec2<T>::Vec2(std::initializer_list<T> args)
-		{
-			int index = 0;
-			for (auto begin = args.begin(); begin != args.end(); ++begin)
-			{
-				this->data.at(index++) = *begin;
-			}
 		}
 
 		template <typename T>

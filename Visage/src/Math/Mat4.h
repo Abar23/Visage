@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <initializer_list>
 #include "Vec4.h"
 #include "Mat3.h"
 
@@ -10,11 +12,16 @@ namespace Visage
 		template <typename T>
 		class Mat4
 		{
-		private:
-			T entries[4][4];
-
 		public:
+			union
+			{
+				T data[4][4];
+
+				Vec4<T> columns[4];
+			};
+
 			Mat4();
+			Mat4(std::initializer_list<T> args);
 			Mat4(const T m00, const T m01, const T m02, const T m03,
 				 const T m10, const T m11, const T m12, const T m13,
 				 const T m20, const T m21, const T m22, const T m23,

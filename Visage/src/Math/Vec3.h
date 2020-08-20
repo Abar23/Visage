@@ -21,15 +21,15 @@ namespace Visage
 					T x, y, z;
 				};
 
-				Swizzle<Vec2, T, 2, 0, 0> xx;
-				Swizzle<Vec2, T, 2, 0, 1> xy;
-				Swizzle<Vec2, T, 2, 0, 2> xz;
-				Swizzle<Vec2, T, 2, 1, 0> yx;
-				Swizzle<Vec2, T, 2, 1, 1> yy;
-				Swizzle<Vec2, T, 2, 1, 2> yz;
-				Swizzle<Vec2, T, 2, 2, 0> zx;
-				Swizzle<Vec2, T, 2, 2, 1> zy;
-				Swizzle<Vec2, T, 2, 2, 2> zz;
+				Swizzle<Vec2, T, 3, 0, 0> xx;
+				Swizzle<Vec2, T, 3, 0, 1> xy;
+				Swizzle<Vec2, T, 3, 0, 2> xz;
+				Swizzle<Vec2, T, 3, 1, 0> yx;
+				Swizzle<Vec2, T, 3, 1, 1> yy;
+				Swizzle<Vec2, T, 3, 1, 2> yz;
+				Swizzle<Vec2, T, 3, 2, 0> zx;
+				Swizzle<Vec2, T, 3, 2, 1> zy;
+				Swizzle<Vec2, T, 3, 2, 2> zz;
 
 				Swizzle<Vec3, T, 3, 0, 0, 0> xxx;
 				Swizzle<Vec3, T, 3, 0, 0, 1> xxy;
@@ -144,8 +144,8 @@ namespace Visage
 
 			Vec3();
 			Vec3(const Vec3<T>& v) = default;
-			Vec3(const T x, const T y, const T z);
 			Vec3(std::initializer_list<T> args);
+			Vec3(const T x, const T y, const T z);
 			Vec3(const T value);
 
 			~Vec3() = default;

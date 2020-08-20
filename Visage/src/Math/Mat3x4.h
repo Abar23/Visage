@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <initializer_list>
 #include "Vec4.h"
 #include "Mat3.h"
 #include "Mat4.h"
@@ -11,21 +13,26 @@ namespace Visage
 		template <typename T>
 		class Mat3x4
 		{
-		private:
-			T entries[4][3];
-
 		public:
-			Mat3x4<T>();
-			Mat3x4<T>(const T m00, const T m01, const T m02, const T m03,
+			union
+			{
+				T data[4][3];
+
+				Vec3<T> columns[4];
+			};
+
+			Mat3x4();
+			Mat3x4(std::initializer_list<T> args);
+			Mat3x4(const T m00, const T m01, const T m02, const T m03,
 				   const T m10, const T m11, const T m12, const T m13,
 				   const T m20, const T m21, const T m22, const T m23);
-			Mat3x4<T>(const Vec4<T>& firstRow,
+			Mat3x4(const Vec4<T>& firstRow,
 				   const Vec4<T>& secondRow,
 				   const Vec4<T>& thirdRow);
-			Mat3x4<T>(T diagonal);
-			Mat3x4<T>(const Mat3x4<T>& matrix);
+			Mat3x4(T diagonal);
+			Mat3x4(const Mat3x4<T>& matrix);
 
-			~Mat3x4<T>() = default;
+			~Mat3x4() = default;
 
 			Mat3x4<T> Inverted() const;
 			Mat3x4<T>& Invert();

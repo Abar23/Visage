@@ -60,9 +60,9 @@ namespace Visage
 			};
 
 			Vec2();
+			Vec2(std::initializer_list<T> args);
 			Vec2(const T x, const T y);
 			Vec2(const T scalar);
-			Vec2(std::initializer_list<T> args);
 			Vec2(const Vec2<T>& vector);
 
 			~Vec2() = default;

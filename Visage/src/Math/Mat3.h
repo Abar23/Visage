@@ -1,5 +1,6 @@
 #pragma once
 
+#include <initializer_list>
 #include "Vec3.h"
 
 namespace Visage
@@ -9,11 +10,16 @@ namespace Visage
 		template <typename T>
 		class Mat3
 		{
-		private:
-			T entries[3][3];
-
 		public:
+			union
+			{
+				T data[3][3];
+
+				Vec3<T> columns[3];
+			};
+
 			Mat3();
+			Mat3(std::initializer_list<T> args);
 			Mat3(const T m00, const T m01, const T m02,
 				 const T m10, const T m11, const T m12,
 				 const T m20, const T m21, const T m22);
