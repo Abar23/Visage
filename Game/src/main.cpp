@@ -11,20 +11,20 @@ int main()
 
 	Visage::mat3 m(c.xyy, c.yxy, c.yyx);
 
-	v = c.xxyy;
-
 	Visage::mat4 t(c.xyyy, c.xxyy, c.xxxx, c.yyyy);
 
 	Visage::mat3 k = { 1, 2, 3, 
 					   4, 5, 6, 
 					   7, 8, 9};
-	Visage::mat3x4 l = { 1, 2, 3, 4, 
-						 5, 6, 7, 8, 
-						 9, 10, 11, 12};
-	Visage::mat4 b = { 1, 2, 3, 4, 
-					   5, 6, 7, 8, 
-					   9, 10, 11, 12, 
-					   13, 14, 15, 16 };
+	Visage::mat3x4 l(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+	Visage::mat4 b = { 1, 1, 1, 1, 
+					   1, 1, 1, 1, 
+					   1, 1, 1, 1, 
+					   1, 1, 1, 1 };
+
+	//k.SetRow(0, Visage::vec3(9, 9, 9));
+
+	std::cout << b * b << std::endl;
 
 	return 0;
 }

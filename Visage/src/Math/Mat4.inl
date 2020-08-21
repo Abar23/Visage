@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <cstdint>
 #include "MathFunctions.h"
 #include "Mat4.h"
 
@@ -18,7 +19,7 @@ namespace Visage
 		template<typename T>
 		Mat4<T>::Mat4(std::initializer_list<T> args)
 		{
-			int column = 0, row = 0;
+			std::uint8_t column = 0, row = 0;
 			for (auto &element : args)
 			{
 				this->data[column][row] = element;
@@ -37,6 +38,7 @@ namespace Visage
 				      const T m20, const T m21, const T m22, const T m23, 
 				      const T m30, const T m31, const T m32, const T m33)
 		{
+			// Column-major ordering
 			data[0][0] = m00;
 			data[0][1] = m10;
 			data[0][2] = m20;
@@ -241,19 +243,13 @@ namespace Visage
 		template <typename T>
 		Vec4<T> Mat4<T>::GetColumn(const int columnIndex) const
 		{
-			return Vec4<T>(data[columnIndex][0], 
-						   data[columnIndex][1], 
-						   data[columnIndex][2],
-						   data[columnIndex][3]);
+			return columnIndex[columnIndex];
 		}
 
 		template <typename T>
 		void Mat4<T>::SetColumn(const int columnIndex, const Vec4<T>& vector)
 		{
-			data[columnIndex][0] = vector.x;
-			data[columnIndex][1] = vector.y;
-			data[columnIndex][2] = vector.z;
-			data[columnIndex][3] = vector.w;
+			columns[columnIndex] = vector;
 		}
 
 		template <typename T>
@@ -277,17 +273,13 @@ namespace Visage
 		template <typename T>
 		Vec3<T> Mat4<T>::GetTranslation() const
 		{
-			return Vec3<T>(data[3][0], 
-						   data[3][1], 
-						   data[3][2]);
+			return columns[3];
 		}
 
 		template <typename T>
 		void Mat4<T>::SetTranslation(const Vec3<T>& translation)
 		{
-			data[3][0] = translation.x;
-			data[3][1] = translation.y;
-			data[3][2] = translation.z;
+			columns[3] = translation;
 		}
 
 		template <typename T>
@@ -480,25 +472,27 @@ namespace Visage
 		template <typename T>
 		Mat4<T>& Mat4<T>::operator*=(const Mat4<T>& matrix)
 		{
-			data[0][0] = data[0][0] * matrix.data[0][0] + data[1][0] * matrix.data[0][1] + data[2][0] * matrix.data[0][2] + data[3][0] * matrix.data[0][3];
-			data[1][0] = data[0][0] * matrix.data[1][0] + data[1][0] * matrix.data[1][1] + data[2][0] * matrix.data[1][2] + data[3][0] * matrix.data[1][3];
-			data[2][0] = data[0][0] * matrix.data[2][0] + data[1][0] * matrix.data[2][1] + data[2][0] * matrix.data[2][2] + data[3][0] * matrix.data[2][3];
-			data[3][0] = data[0][0] * matrix.data[3][0] + data[1][0] * matrix.data[3][1] + data[2][0] * matrix.data[3][2] + data[3][0] * matrix.data[3][3];
+			Mat4<T> temp = *this;
 
-			data[0][1] = data[0][1] * matrix.data[0][0] + data[1][1] * matrix.data[0][1] + data[2][1] * matrix.data[0][2] + data[3][1] * matrix.data[0][3];
-			data[1][1] = data[0][1] * matrix.data[1][0] + data[1][1] * matrix.data[1][1] + data[2][1] * matrix.data[1][2] + data[3][1] * matrix.data[1][3];
-			data[2][1] = data[0][1] * matrix.data[2][0] + data[1][1] * matrix.data[2][1] + data[2][1] * matrix.data[2][2] + data[3][1] * matrix.data[2][3];
-			data[3][1] = data[0][1] * matrix.data[3][0] + data[1][1] * matrix.data[3][1] + data[2][1] * matrix.data[3][2] + data[3][1] * matrix.data[3][3];
+			data[0][0] = temp.data[0][0] * matrix.data[0][0] + temp.data[1][0] * matrix.data[0][1] + temp.data[2][0] * matrix.data[0][2] + temp.data[3][0] * matrix.data[0][3];
+			data[1][0] = temp.data[0][0] * matrix.data[1][0] + temp.data[1][0] * matrix.data[1][1] + temp.data[2][0] * matrix.data[1][2] + temp.data[3][0] * matrix.data[1][3];
+			data[2][0] = temp.data[0][0] * matrix.data[2][0] + temp.data[1][0] * matrix.data[2][1] + temp.data[2][0] * matrix.data[2][2] + temp.data[3][0] * matrix.data[2][3];
+			data[3][0] = temp.data[0][0] * matrix.data[3][0] + temp.data[1][0] * matrix.data[3][1] + temp.data[2][0] * matrix.data[3][2] + temp.data[3][0] * matrix.data[3][3];
 
-			data[0][2] = data[0][2] * matrix.data[0][0] + data[1][2] * matrix.data[0][1] + data[2][2] * matrix.data[0][2] + data[3][2] * matrix.data[0][3];
-			data[1][2] = data[0][2] * matrix.data[1][0] + data[1][2] * matrix.data[1][1] + data[2][2] * matrix.data[1][2] + data[3][2] * matrix.data[1][3];
-			data[2][2] = data[0][2] * matrix.data[2][0] + data[1][2] * matrix.data[2][1] + data[2][2] * matrix.data[2][2] + data[3][2] * matrix.data[2][3];
-			data[3][2] = data[0][2] * matrix.data[3][0] + data[1][2] * matrix.data[3][1] + data[2][2] * matrix.data[3][2] + data[3][2] * matrix.data[3][3];
+			data[0][1] = temp.data[0][1] * matrix.data[0][0] + temp.data[1][1] * matrix.data[0][1] + temp.data[2][1] * matrix.data[0][2] + temp.data[3][1] * matrix.data[0][3];
+			data[1][1] = temp.data[0][1] * matrix.data[1][0] + temp.data[1][1] * matrix.data[1][1] + temp.data[2][1] * matrix.data[1][2] + temp.data[3][1] * matrix.data[1][3];
+			data[2][1] = temp.data[0][1] * matrix.data[2][0] + temp.data[1][1] * matrix.data[2][1] + temp.data[2][1] * matrix.data[2][2] + temp.data[3][1] * matrix.data[2][3];
+			data[3][1] = temp.data[0][1] * matrix.data[3][0] + temp.data[1][1] * matrix.data[3][1] + temp.data[2][1] * matrix.data[3][2] + temp.data[3][1] * matrix.data[3][3];
 
-			data[0][3] = data[0][3] * matrix.data[0][0] + data[1][3] * matrix.data[0][1] + data[2][3] * matrix.data[0][2] + data[3][3] * matrix.data[0][3];
-			data[1][3] = data[0][3] * matrix.data[1][0] + data[1][3] * matrix.data[1][1] + data[2][3] * matrix.data[1][2] + data[3][3] * matrix.data[1][3];
-			data[2][3] = data[0][3] * matrix.data[2][0] + data[1][3] * matrix.data[2][1] + data[2][3] * matrix.data[2][2] + data[3][3] * matrix.data[2][3];
-			data[3][3] = data[0][3] * matrix.data[3][0] + data[1][3] * matrix.data[3][1] + data[2][3] * matrix.data[3][2] + data[3][3] * matrix.data[3][3];
+			data[0][2] = temp.data[0][2] * matrix.data[0][0] + temp.data[1][2] * matrix.data[0][1] + temp.data[2][2] * matrix.data[0][2] + temp.data[3][2] * matrix.data[0][3];
+			data[1][2] = temp.data[0][2] * matrix.data[1][0] + temp.data[1][2] * matrix.data[1][1] + temp.data[2][2] * matrix.data[1][2] + temp.data[3][2] * matrix.data[1][3];
+			data[2][2] = temp.data[0][2] * matrix.data[2][0] + temp.data[1][2] * matrix.data[2][1] + temp.data[2][2] * matrix.data[2][2] + temp.data[3][2] * matrix.data[2][3];
+			data[3][2] = temp.data[0][2] * matrix.data[3][0] + temp.data[1][2] * matrix.data[3][1] + temp.data[2][2] * matrix.data[3][2] + temp.data[3][2] * matrix.data[3][3];
+
+			data[0][3] = temp.data[0][3] * matrix.data[0][0] + temp.data[1][3] * matrix.data[0][1] + temp.data[2][3] * matrix.data[0][2] + temp.data[3][3] * matrix.data[0][3];
+			data[1][3] = temp.data[0][3] * matrix.data[1][0] + temp.data[1][3] * matrix.data[1][1] + temp.data[2][3] * matrix.data[1][2] + temp.data[3][3] * matrix.data[1][3];
+			data[2][3] = temp.data[0][3] * matrix.data[2][0] + temp.data[1][3] * matrix.data[2][1] + temp.data[2][3] * matrix.data[2][2] + temp.data[3][3] * matrix.data[2][3];
+			data[3][3] = temp.data[0][3] * matrix.data[3][0] + temp.data[1][3] * matrix.data[3][1] + temp.data[2][3] * matrix.data[3][2] + temp.data[3][3] * matrix.data[3][3];
 
 			return *this;
 		}
@@ -506,25 +500,10 @@ namespace Visage
 		template <typename T>
 		Mat4<T>& Mat4<T>::operator*=(const T scalar)
 		{
-			data[0][0] *= scalar;
-			data[0][1] *= scalar;
-			data[0][2] *= scalar;
-			data[0][3] *= scalar;
-
-			data[1][0] *= scalar;
-			data[1][1] *= scalar;
-			data[1][2] *= scalar;
-			data[1][3] *= scalar;
-
-			data[2][0] *= scalar;
-			data[2][1] *= scalar;
-			data[2][2] *= scalar;
-			data[2][3] *= scalar;
-
-			data[3][0] *= scalar;
-			data[3][1] *= scalar;
-			data[3][2] *= scalar;
-			data[3][3] *= scalar;
+			columns[0] *= scalar;
+			columns[1] *= scalar;
+			columns[2] *= scalar;
+			columns[3] *= scalar;
 
 			return *this;
 		}

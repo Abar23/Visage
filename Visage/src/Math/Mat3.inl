@@ -3,6 +3,7 @@
 #include <utility>
 #include <cstring>
 #include <cmath>
+#include <cstdint>
 #include "MathFunctions.h"
 #include "Mat3.h"
 
@@ -19,10 +20,10 @@ namespace Visage
 		template<typename T>
 		Mat3<T>::Mat3(std::initializer_list<T> args)
 		{
-			int column = 0, row = 0;
+			std::uint8_t column = 0, row = 0;
 			for (auto& element : args)
 			{
-				this->data[column][row] = element;
+				data[column][row] = element;
 				column++;
 				if (column == 3)
 				{
@@ -135,8 +136,8 @@ namespace Visage
 		Mat3<T> Mat3<T>::Transposed() const
 		{
 			return Mat3<T>(data[0][0], data[0][1], data[0][2], 
-						data[1][0], data[1][1], data[1][2], 
-						data[2][0], data[2][1], data[2][2]);
+						   data[1][0], data[1][1], data[1][2], 
+						   data[2][0], data[2][1], data[2][2]);
 		}
 
 		template <typename T>
@@ -167,23 +168,21 @@ namespace Visage
 		template <typename T>
 		Vec3<T> Mat3<T>::GetColumn(const int columnIndex) const
 		{
-			return Vec3<T>(data[columnIndex][0],
-						   data[columnIndex][1],
-						   data[columnIndex][2]);
+			return columns[columnIndex];
 		}
 
 		template <typename T>
 		void Mat3<T>::SetColumn(const int columnIndex, const Vec3<T>& vector)
 		{
-			data[columnIndex][0] = vector.x;
-			data[columnIndex][1] = vector.y;
-			data[columnIndex][2] = vector.z;
+			columns[columnIndex] = vector;
 		}
 
 		template <typename T>
 		Vec3<T> Mat3<T>::GetRow(const int rowIndex) const
 		{
-			return Vec3<T>(data[0][rowIndex], data[1][rowIndex], data[2][rowIndex]);
+			return Vec3<T>(data[0][rowIndex],
+						   data[1][rowIndex],
+						   data[2][rowIndex]);
 		}
 
 		template <typename T>
@@ -302,17 +301,19 @@ namespace Visage
 		template <typename T>
 		Mat3<T>& Mat3<T>::operator*=(const Mat3<T>& matrix)
 		{
-			data[0][0] = data[0][0] * matrix.data[0][0] + data[1][0] * matrix.data[0][1] + data[2][0] * matrix.data[0][2];
-			data[1][0] = data[0][0] * matrix.data[1][0] + data[1][0] * matrix.data[1][1] + data[2][0] * matrix.data[1][2];
-			data[2][0] = data[0][0] * matrix.data[2][0] + data[1][0] * matrix.data[2][1] + data[2][0] * matrix.data[2][2];
+			Mat3<T> temp = *this;
 
-			data[0][1] = data[0][1] * matrix.data[0][0] + data[1][1] * matrix.data[0][1] + data[2][1] * matrix.data[0][2];
-			data[1][1] = data[0][1] * matrix.data[1][0] + data[1][1] * matrix.data[1][1] + data[2][1] * matrix.data[1][2];
-			data[2][1] = data[0][1] * matrix.data[2][0] + data[1][1] * matrix.data[2][1] + data[2][1] * matrix.data[2][2];
+			data[0][0] = temp.data[0][0] * matrix.data[0][0] + temp.data[1][0] * matrix.data[0][1] + temp.data[2][0] * matrix.data[0][2];
+			data[1][0] = temp.data[0][0] * matrix.data[1][0] + temp.data[1][0] * matrix.data[1][1] + temp.data[2][0] * matrix.data[1][2];
+			data[2][0] = temp.data[0][0] * matrix.data[2][0] + temp.data[1][0] * matrix.data[2][1] + temp.data[2][0] * matrix.data[2][2];
 
-			data[0][2] = data[0][2] * matrix.data[0][0] + data[1][2] * matrix.data[0][1] + data[2][2] * matrix.data[0][2];
-			data[1][2] = data[0][2] * matrix.data[1][0] + data[1][2] * matrix.data[1][1] + data[2][2] * matrix.data[1][2];
-			data[2][2] = data[0][2] * matrix.data[2][0] + data[1][2] * matrix.data[2][1] + data[2][2] * matrix.data[2][2];
+			data[0][1] = temp.data[0][1] * matrix.data[0][0] + temp.data[1][1] * matrix.data[0][1] + temp.data[2][1] * matrix.data[0][2];
+			data[1][1] = temp.data[0][1] * matrix.data[1][0] + temp.data[1][1] * matrix.data[1][1] + temp.data[2][1] * matrix.data[1][2];
+			data[2][1] = temp.data[0][1] * matrix.data[2][0] + temp.data[1][1] * matrix.data[2][1] + temp.data[2][1] * matrix.data[2][2];
+
+			data[0][2] = temp.data[0][2] * matrix.data[0][0] + temp.data[1][2] * matrix.data[0][1] + temp.data[2][2] * matrix.data[0][2];
+			data[1][2] = temp.data[0][2] * matrix.data[1][0] + temp.data[1][2] * matrix.data[1][1] + temp.data[2][2] * matrix.data[1][2];
+			data[2][2] = temp.data[0][2] * matrix.data[2][0] + temp.data[1][2] * matrix.data[2][1] + temp.data[2][2] * matrix.data[2][2];
 
 			return *this;
 		}
@@ -320,17 +321,9 @@ namespace Visage
 		template <typename T>
 		Mat3<T>& Mat3<T>::operator*=(const T scalar)
 		{
-			data[0][0] *= scalar;
-			data[0][1] *= scalar;
-			data[0][2] *= scalar;
-
-			data[1][0] *= scalar;
-			data[1][1] *= scalar;
-			data[1][2] *= scalar;
-
-			data[2][0] *= scalar;
-			data[2][1] *= scalar;
-			data[2][2] *= scalar;
+			columns[0] *= scalar;
+			columns[1] *= scalar;
+			columns[2] *= scalar;
 			
 			return *this;
 		}

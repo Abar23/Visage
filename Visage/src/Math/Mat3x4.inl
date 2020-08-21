@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <cstdint>
 #include "MathFunctions.h"
 #include "Mat3x4.h"
 
@@ -17,7 +18,7 @@ namespace Visage
 		template<typename T>
 		Mat3x4<T>::Mat3x4(std::initializer_list<T> args)
 		{
-			int column = 0, row = 0;
+			std::uint8_t column = 0, row = 0;
 			for (auto& element : args)
 			{
 				this->data[column][row] = element;
@@ -35,6 +36,7 @@ namespace Visage
 					      const T m10, const T m11, const T m12, const T m13, 
 					      const T m20, const T m21, const T m22, const T m23)
 		{
+			// Column-major ordering
 			data[0][0] = m00;
 			data[0][1] = m10;
 			data[0][2] = m20;
@@ -210,17 +212,13 @@ namespace Visage
 		template <typename T>
 		Vec3<T> Mat3x4<T>::GetTranslation() const
 		{
-			return Vec3<T>(data[3][0],
-						data[3][1],
-						data[3][2]);
+			return columns[3];
 		}
 
 		template <typename T>
 		void Mat3x4<T>::SetTranslation(const Vec3<T>& translation)
 		{
-			data[3][0] = translation.x;
-			data[3][1] = translation.y;
-			data[3][2] = translation.z;
+			columns[3] = translation;
 		}
 
 		template <typename T>
@@ -395,20 +393,22 @@ namespace Visage
 		template <typename T>
 		Mat3x4<T>& Mat3x4<T>::operator*=(const Mat3x4<T>& matrix)
 		{
-			data[0][0] = data[0][0] * matrix.data[0][0] + data[1][0] * matrix.data[0][1] + data[2][0] * matrix.data[0][2];
-			data[1][0] = data[0][0] * matrix.data[1][0] + data[1][0] * matrix.data[1][1] + data[2][0] * matrix.data[1][2];
-			data[2][0] = data[0][0] * matrix.data[2][0] + data[1][0] * matrix.data[2][1] + data[2][0] * matrix.data[2][2];
-			data[3][0] = data[0][0] * matrix.data[3][0] + data[1][0] * matrix.data[3][1] + data[2][0] * matrix.data[3][2] + data[3][0];
+			Mat3x4<T> temp = *this;
 
-			data[0][1] = data[0][1] * matrix.data[0][0] + data[1][1] * matrix.data[0][1] + data[2][1] * matrix.data[0][2];
-			data[1][1] = data[0][1] * matrix.data[1][0] + data[1][1] * matrix.data[1][1] + data[2][1] * matrix.data[1][2];
-			data[2][1] = data[0][1] * matrix.data[2][0] + data[1][1] * matrix.data[2][1] + data[2][1] * matrix.data[2][2];
-			data[3][1] = data[0][1] * matrix.data[3][0] + data[1][1] * matrix.data[3][1] + data[2][1] * matrix.data[3][2] + data[3][1];
+			data[0][0] = temp.data[0][0] * matrix.data[0][0] + temp.data[1][0] * matrix.data[0][1] + temp.data[2][0] * matrix.data[0][2];
+			data[1][0] = temp.data[0][0] * matrix.data[1][0] + temp.data[1][0] * matrix.data[1][1] + temp.data[2][0] * matrix.data[1][2];
+			data[2][0] = temp.data[0][0] * matrix.data[2][0] + temp.data[1][0] * matrix.data[2][1] + temp.data[2][0] * matrix.data[2][2];
+			data[3][0] = temp.data[0][0] * matrix.data[3][0] + temp.data[1][0] * matrix.data[3][1] + temp.data[2][0] * matrix.data[3][2] + temp.data[3][0];
 
-			data[0][2] = data[0][2] * matrix.data[0][0] + data[1][2] * matrix.data[0][1] + data[2][2] * matrix.data[0][2];
-			data[1][2] = data[0][2] * matrix.data[1][0] + data[1][2] * matrix.data[1][1] + data[2][2] * matrix.data[1][2];
-			data[2][2] = data[0][2] * matrix.data[2][0] + data[1][2] * matrix.data[2][1] + data[2][2] * matrix.data[2][2];
-			data[3][2] = data[0][2] * matrix.data[3][0] + data[1][2] * matrix.data[3][1] + data[2][2] * matrix.data[3][2] + data[3][2];
+			data[0][1] = temp.data[0][1] * matrix.data[0][0] + temp.data[1][1] * matrix.data[0][1] + temp.data[2][1] * matrix.data[0][2];
+			data[1][1] = temp.data[0][1] * matrix.data[1][0] + temp.data[1][1] * matrix.data[1][1] + temp.data[2][1] * matrix.data[1][2];
+			data[2][1] = temp.data[0][1] * matrix.data[2][0] + temp.data[1][1] * matrix.data[2][1] + temp.data[2][1] * matrix.data[2][2];
+			data[3][1] = temp.data[0][1] * matrix.data[3][0] + temp.data[1][1] * matrix.data[3][1] + temp.data[2][1] * matrix.data[3][2] + temp.data[3][1];
+
+			data[0][2] = temp.data[0][2] * matrix.data[0][0] + temp.data[1][2] * matrix.data[0][1] + temp.data[2][2] * matrix.data[0][2];
+			data[1][2] = temp.data[0][2] * matrix.data[1][0] + temp.data[1][2] * matrix.data[1][1] + temp.data[2][2] * matrix.data[1][2];
+			data[2][2] = temp.data[0][2] * matrix.data[2][0] + temp.data[1][2] * matrix.data[2][1] + temp.data[2][2] * matrix.data[2][2];
+			data[3][2] = temp.data[0][2] * matrix.data[3][0] + temp.data[1][2] * matrix.data[3][1] + temp.data[2][2] * matrix.data[3][2] + temp.data[3][2];
 
 			return *this;
 		}
@@ -416,21 +416,10 @@ namespace Visage
 		template <typename T>
 		Mat3x4<T>& Mat3x4<T>::operator*=(const T scalar)
 		{
-			data[0][0] *= scalar;
-			data[0][1] *= scalar;
-			data[0][2] *= scalar;
-
-			data[1][0] *= scalar;
-			data[1][1] *= scalar;
-			data[1][2] *= scalar;
-
-			data[2][0] *= scalar;
-			data[2][1] *= scalar;
-			data[2][2] *= scalar;
-
-			data[3][0] *= scalar;
-			data[3][1] *= scalar;
-			data[3][2] *= scalar;
+			columns[0] *= scalar;
+			columns[1] *= scalar;
+			columns[2] *= scalar;
+			columns[3] *= scalar;
 
 			return *this;
 		}
@@ -473,7 +462,29 @@ namespace Visage
 		template <typename T>
 		Mat4<T> operator*(const Mat4<T>& leftMatrix, const Mat3x4<T>& rightMatrix)
 		{
-			return rightMatrix * leftMatrix;
+			Mat4<T> result;
+
+			result(0, 0) = leftMatrix(0, 0) * rightMatrix(0, 0) + leftMatrix(0, 1) * rightMatrix(1, 0) + leftMatrix(0, 2) * rightMatrix(2, 0);
+			result(0, 1) = leftMatrix(0, 0) * rightMatrix(0, 1) + leftMatrix(0, 1) * rightMatrix(1, 1) + leftMatrix(0, 2) * rightMatrix(2, 1);
+			result(0, 2) = leftMatrix(0, 0) * rightMatrix(0, 2) + leftMatrix(0, 1) * rightMatrix(1, 2) + leftMatrix(0, 2) * rightMatrix(2, 2);
+			result(0, 3) = leftMatrix(0, 0) * rightMatrix(0, 3) + leftMatrix(0, 1) * rightMatrix(1, 3) + leftMatrix(0, 2) * rightMatrix(2, 3) + leftMatrix(0, 3);
+
+			result(1, 0) = leftMatrix(1, 0) * rightMatrix(0, 0) + leftMatrix(1, 1) * rightMatrix(1, 0) + leftMatrix(1, 2) * rightMatrix(2, 0);
+			result(1, 1) = leftMatrix(1, 0) * rightMatrix(0, 1) + leftMatrix(1, 1) * rightMatrix(1, 1) + leftMatrix(1, 2) * rightMatrix(2, 1);
+			result(1, 2) = leftMatrix(1, 0) * rightMatrix(0, 2) + leftMatrix(1, 1) * rightMatrix(1, 2) + leftMatrix(1, 2) * rightMatrix(2, 2);
+			result(1, 3) = leftMatrix(1, 0) * rightMatrix(0, 3) + leftMatrix(1, 1) * rightMatrix(1, 3) + leftMatrix(1, 2) * rightMatrix(2, 3) + leftMatrix(1, 3);
+
+			result(2, 0) = leftMatrix(2, 0) * rightMatrix(0, 0) + leftMatrix(2, 1) * rightMatrix(1, 0) + leftMatrix(2, 2) * rightMatrix(2, 0);
+			result(2, 1) = leftMatrix(2, 0) * rightMatrix(0, 1) + leftMatrix(2, 1) * rightMatrix(1, 1) + leftMatrix(2, 2) * rightMatrix(2, 1);
+			result(2, 2) = leftMatrix(2, 0) * rightMatrix(0, 2) + leftMatrix(2, 1) * rightMatrix(1, 2) + leftMatrix(2, 2) * rightMatrix(2, 2);
+			result(2, 3) = leftMatrix(2, 0) * rightMatrix(0, 3) + leftMatrix(2, 1) * rightMatrix(1, 3) + leftMatrix(2, 2) * rightMatrix(2, 3) + leftMatrix(2, 3);
+
+			result(3, 0) = leftMatrix(3, 0) * rightMatrix(0, 0) + leftMatrix(3, 1) * rightMatrix(1, 0) + leftMatrix(3, 2) * rightMatrix(2, 0);
+			result(3, 1) = leftMatrix(3, 0) * rightMatrix(0, 1) + leftMatrix(3, 1) * rightMatrix(1, 1) + leftMatrix(3, 2) * rightMatrix(2, 1);
+			result(3, 2) = leftMatrix(3, 0) * rightMatrix(0, 2) + leftMatrix(3, 1) * rightMatrix(1, 2) + leftMatrix(3, 2) * rightMatrix(2, 2);
+			result(3, 3) = leftMatrix(3, 0) * rightMatrix(0, 3) + leftMatrix(3, 1) * rightMatrix(1, 3) + leftMatrix(3, 2) * rightMatrix(2, 3) + leftMatrix(3, 3);
+
+			return result;
 		}
 
 		template <typename T>
