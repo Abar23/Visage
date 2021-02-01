@@ -9,7 +9,7 @@ namespace Visage
 	namespace Math
 	{
 		template <typename T>
-		bool NearEquals(const T floatOne, const T floatTwo)
+		inline bool NearEquals(const T floatOne, const T floatTwo)
 		{
 			T absDiff = std::abs(floatOne - floatTwo);
 			if (absDiff <= maxEpsilonDiff)

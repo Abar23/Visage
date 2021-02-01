@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "MathFunctions.h"
 #include "MathConstants.h"
-#include "Quaternion.h"
 
 namespace Visage
 {

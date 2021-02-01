@@ -59,8 +59,8 @@ workspace "Visage"
 
         links
         {
-            "Glad",
             "GLFW",
+            "Glad",
             "opengl32.lib"
         }
 
@@ -75,6 +75,11 @@ workspace "Visage"
         filter "configurations:Debug"
             runtime "Debug"
             symbols "On"
+
+            defines
+            {
+                "DEBUG"
+            }
 
         filter "configurations:Release"
             runtime "Release"
@@ -103,7 +108,10 @@ workspace "Visage"
 
         includedirs
         {
-            "%{wks.name}/src"
+            "%{wks.name}/src",
+            "%{vendorIncludes.Glad}",
+            "%{vendorIncludes.GLFW}",
+            "%{vendorIncludes.stb_image}"
         }
 
         links
@@ -117,6 +125,11 @@ workspace "Visage"
         filter "configurations:Debug"
             runtime "Debug"
             symbols "On"
+
+            defines
+            {
+                "DEBUG"
+            }
 
         filter "configurations:Release"
             runtime "Release"

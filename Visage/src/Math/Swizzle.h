@@ -7,7 +7,6 @@ namespace Visage
 {
 	namespace Math
 	{
-
 		template <template <typename> class vectorType, typename T, int numberOfElements, int... Indices>
 		class Swizzle
 		{
@@ -25,6 +24,16 @@ namespace Visage
 				}
 
 				return *(vectorType<T>*)this;
+			}
+
+			unsigned int NumberOfBytes()
+			{
+				return sizeof...(Indices) * sizeof(T);
+			}
+
+			unsigned int NumberOfElements()
+			{
+				return sizeof...(Indices);
 			}
 
 			inline operator vectorType<T>() const

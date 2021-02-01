@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cstdint>
 #include "MathFunctions.h"
-#include "Mat4.h"
 
 namespace Visage
 {

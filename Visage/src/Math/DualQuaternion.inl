@@ -4,7 +4,6 @@
 #include <cmath>
 #include <algorithm>
 #include "MathFunctions.h"
-#include "DualQuaternion.h"
 
 namespace Visage
 {

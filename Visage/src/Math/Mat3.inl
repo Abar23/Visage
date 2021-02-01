@@ -5,7 +5,6 @@
 #include <cmath>
 #include <cstdint>
 #include "MathFunctions.h"
-#include "Mat3.h"
 
 namespace Visage
 {

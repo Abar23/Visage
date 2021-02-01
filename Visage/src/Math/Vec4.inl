@@ -4,7 +4,6 @@
 #include <cmath>
 #include "MathFunctions.h"
 #include "MathConstants.h"
-#include "Vec4.h"
 
 namespace Visage
 {

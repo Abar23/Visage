@@ -3,14 +3,13 @@
 #include <cstring>
 #include <cstdint>
 #include "MathFunctions.h"
-#include "Mat3x4.h"
 
 namespace Visage
 {
 	namespace Math
 	{
 		template <typename T>
-		Mat3x4<T>::Mat3x4<T>()
+		Mat3x4<T>::Mat3x4()
 			: data{ 0 }
 		{
 		}
@@ -32,7 +31,7 @@ namespace Visage
 		}
 
 		template <typename T>
-		Mat3x4<T>::Mat3x4<T>(const T m00, const T m01, const T m02, const T m03,
+		Mat3x4<T>::Mat3x4(const T m00, const T m01, const T m02, const T m03,
 					      const T m10, const T m11, const T m12, const T m13, 
 					      const T m20, const T m21, const T m22, const T m23)
 		{
@@ -55,7 +54,7 @@ namespace Visage
 		}
 
 		template <typename T>
-		Mat3x4<T>::Mat3x4<T>(const Vec4<T>& firstRow,
+		Mat3x4<T>::Mat3x4(const Vec4<T>& firstRow,
 					      const Vec4<T>& secondRow, 
 					      const Vec4<T>& thirdRow)
 		{
@@ -76,7 +75,7 @@ namespace Visage
 		}
 
 		template <typename T>
-		Mat3x4<T>::Mat3x4<T>(const T diagonal)
+		Mat3x4<T>::Mat3x4(const T diagonal)
 			: data{ 0 }
 		{
 			data[0][0] = diagonal;
@@ -85,7 +84,7 @@ namespace Visage
 		}
 
 		template <typename T>
-		Mat3x4<T>::Mat3x4<T>(const Mat3x4<T>& matrix)
+		Mat3x4<T>::Mat3x4(const Mat3x4<T>& matrix)
 		{
 			std::memcpy(data, matrix.data, sizeof(Mat3x4<T>));
 		}

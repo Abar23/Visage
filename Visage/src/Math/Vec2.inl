@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <cmath>
 #include "MathConstants.h"
-#include "Vec2.h"
 
 namespace Visage
 {
