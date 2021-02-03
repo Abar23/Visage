@@ -16,7 +16,7 @@ namespace Visage
 		public:
 			vectorType<T>& operator=(const vectorType<T>& vector)
 			{
-				T indices[Indices...];
+				T indices[sizeof...(Indices)] = {Indices...};
 
 				for (unsigned int i = 0; i < this->data.size(); i++)
 				{

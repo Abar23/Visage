@@ -19,7 +19,7 @@ workspace "Visage"
     vendorIncludes["Glad"] = "Visage/vendor/Glad/include"
     vendorIncludes["GLFW"] = "Visage/vendor/GLFW/include"
     vendorIncludes["stb_image"] = "Visage/vendor/stb_image"
-
+    
     group "Dependencies"
         include "Visage/vendor/Glad"
         include "Visage/vendor/GLFW"
@@ -46,7 +46,8 @@ workspace "Visage"
         defines
         {
             "_CRT_SECURE_NO_WARNINGS",
-            "_USE_MATH_DEFINES"
+            "_USE_MATH_DEFINES",
+            "GLFW_INCLUDE_NONE"
         }
 
         includedirs
@@ -63,14 +64,6 @@ workspace "Visage"
             "Glad",
             "opengl32.lib"
         }
-
-        filter "system:windows"
-            systemversion "latest"
-
-            defines
-            {
-                "GLFW_INCLUDE_NONE"
-            }
 
         filter "configurations:Debug"
             runtime "Debug"

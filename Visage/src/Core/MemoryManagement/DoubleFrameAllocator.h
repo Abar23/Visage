@@ -16,29 +16,27 @@ namespace Visage
 
 		public:
 			DoubleFrameAllocator() = delete;
-			DoubleFrameAllocator(const DoubleFrameAllocator&) = delete;
-			DoubleFrameAllocator& operator=(const DoubleFrameAllocator&) = delete;
 
 			DoubleFrameAllocator(std::size_t sizeOfBuffers);
 
 			~DoubleFrameAllocator();
 
-			inline void DoubleFrameAllocator::SwapBuffers()
+			inline void SwapBuffers()
 			{
 				activeBuffer = (activeBuffer == 0) ? 1 : 0;
 			}
 
-			inline void DoubleFrameAllocator::ClearCurrentBuffer()
+			inline void ClearCurrentBuffer()
 			{
 				stacks[activeBuffer].ClearStack();
 			}
 
-			inline std::size_t DoubleFrameAllocator::GetMemoryUsed()
+			inline std::size_t GetMemoryUsed()
 			{
 				return stacks[0].GetMemoryUsed() + stacks[1].GetMemoryUsed();
 			}
 
-			inline std::size_t DoubleFrameAllocator::GetNumberOfAllocations()
+			inline std::size_t GetNumberOfAllocations()
 			{
 				return stacks[0].GetNumberOfAllocations() + stacks[1].GetNumberOfAllocations();
 			}

@@ -26,7 +26,7 @@ namespace Visage
 		DualQuaternion<T>::DualQuaternion(const Quaternion<T>& rotation, const Vec3<T>& translation)
 		{
 			real = rotation;
-			dual = (Quaternion(translation.x, translation.y, translation.z, 0) * real) * static_cast<T>(0.5);
+			dual = (Quaternion<T>(translation.x, translation.y, translation.z, 0) * real) * static_cast<T>(0.5);
 		}
 
 		template <typename T>
@@ -39,7 +39,7 @@ namespace Visage
 		template <typename T>
 		DualQuaternion<T> DualQuaternion<T>::Normalized() const
 		{
-			assert(!NearEquals(Magnitude(), static_cast<T>(0)));
+			assert(!NearEquals(Dot(), static_cast<T>(0)));
 
 			T inverseMag = static_cast<T>(1) / Quaternion<T>::Dot(real, real);
 
@@ -50,7 +50,7 @@ namespace Visage
 		template <typename T>
 		DualQuaternion<T>& DualQuaternion<T>::Normalize()
 		{
-			assert(!NearEquals(Magnitude(), static_cast<T>(0)));
+			assert(!NearEquals(Dot(), static_cast<T>(0)));
 
 			T inverseMag = static_cast<T>(1) / Quaternion<T>::Dot(real, real);
 

@@ -21,9 +21,6 @@ namespace Visage
 			virtual void Deallocate(void*& pointer) = 0;
 			
 		public:
-			AbstractAllocator(const AbstractAllocator&) = delete;
-			AbstractAllocator& operator=(const AbstractAllocator&) = delete;
-
 			AbstractAllocator()
 				: startOfBuffer(nullptr), numberOfAllocations(0), memoryUsed(0)
 			{ }

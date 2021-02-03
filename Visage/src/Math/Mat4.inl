@@ -12,8 +12,7 @@ namespace Visage
 		template <typename T>
 		Mat4<T>::Mat4()
 			: data{ 0 } 
-		{
-		}
+		{ }
 
 		template<typename T>
 		Mat4<T>::Mat4(std::initializer_list<T> args)
@@ -226,23 +225,23 @@ namespace Visage
 		template <typename T>
 		float Mat4<T>::Determinant() const
 		{
-			const Vec3 a = reinterpret_cast<const Vec3&>(data[0]);
-			const Vec3 b = reinterpret_cast<const Vec3&>(data[1]);
-			const Vec3 c = reinterpret_cast<const Vec3&>(data[2]);
-			const Vec3 d = reinterpret_cast<const Vec3&>(data[3]);
+			const Vec3<T> a = reinterpret_cast<const Vec3<T>&>(data[0]);
+			const Vec3<T> b = reinterpret_cast<const Vec3<T>&>(data[1]);
+			const Vec3<T> c = reinterpret_cast<const Vec3<T>&>(data[2]);
+			const Vec3<T> d = reinterpret_cast<const Vec3<T>&>(data[3]);
 
-			Vec3 s = Vec3::Cross(a, b);
-			Vec3 t = Vec3::Cross(c, d);
-			Vec3 u = a * data[1][3] - b * data[0][3];
-			Vec3 v = c * data[3][3] - d * data[2][3];
+			Vec3<T> s = Vec3<T>::Cross(a, b);
+			Vec3<T> t = Vec3<T>::Cross(c, d);
+			Vec3<T> u = a * data[1][3] - b * data[0][3];
+			Vec3<T> v = c * data[3][3] - d * data[2][3];
 
-			return Vec3::Dot(s, v) - Vec3::Dot(t, u);
+			return Vec3<T>::Dot(s, v) - Vec3<T>::Dot(t, u);
 		}
 
 		template <typename T>
 		Vec4<T> Mat4<T>::GetColumn(const int columnIndex) const
 		{
-			return columnIndex[columnIndex];
+			return columns[columnIndex];
 		}
 
 		template <typename T>

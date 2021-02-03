@@ -45,8 +45,6 @@ namespace Visage
 
 		public:
 			FreeListAllocator() = delete;
-			FreeListAllocator(const FreeListAllocator&) = delete;
-			FreeListAllocator& operator=(const FreeListAllocator&) = delete;
 
 			FreeListAllocator(std::size_t size);
 

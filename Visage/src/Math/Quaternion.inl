@@ -109,7 +109,7 @@ namespace Visage
 		template <typename T>
 		Mat3<T> Quaternion<T>::GetRotationMatrix() const
 		{
-			Mat3 matrix;
+			Mat3<T> matrix;
 
 			T xSquared = x * x;
 			T ySquared = y * y;
@@ -243,14 +243,14 @@ namespace Visage
 		template <typename T>
 		Quaternion<T> Quaternion<T>::Slerp(const Quaternion<T>& leftQuaternion, const Quaternion<T>& rightQuaternion, const T t)
 		{
-			floaTt dot = Quaternion<T>::Dot(leftQuaternion, rightQuaternion);
+			float dot = Quaternion<T>::Dot(leftQuaternion, rightQuaternion);
 
 			if (dot > dotThreshhold)
 			{
 				return Nlerp(leftQuaternion, rightQuaternion, t);
 			}
 			
-			dot = std::clamp(dot, static_cast(-1), static_cast<T>(1));
+			dot = std::clamp(dot, static_cast<T>(-1), static_cast<T>(1));
 			T theta = std::acos(dot) * t; // Angle between leftQuaternion and new quaternion at t
 			Quaternion<T> nlerpedQuaternion = Nlerp(leftQuaternion, rightQuaternion, dot);
 			return leftQuaternion * std::cos(theta) + nlerpedQuaternion * std::sin(theta);

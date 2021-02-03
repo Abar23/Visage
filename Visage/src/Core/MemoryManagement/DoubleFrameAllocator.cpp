@@ -5,7 +5,7 @@ namespace Visage
 	namespace Core
 	{		
 		DoubleFrameAllocator::DoubleFrameAllocator(std::size_t sizeOfBuffers)
-			: stacks{sizeOfBuffers, sizeOfBuffers}, activeBuffer(0)
+			: stacks{{sizeOfBuffers}, {sizeOfBuffers}}, activeBuffer(0)
 		{ }
 		
 		DoubleFrameAllocator::~DoubleFrameAllocator()

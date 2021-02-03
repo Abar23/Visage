@@ -186,7 +186,7 @@ namespace Visage
 
 		template <typename T>
 		Vec3<T> Vec3<T>::Forward()
-		{<T>
+		{
 			return Vec3<T>(0, 0, -1);
 		}
 

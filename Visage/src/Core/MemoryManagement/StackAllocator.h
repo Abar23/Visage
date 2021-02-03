@@ -32,8 +32,6 @@ namespace Visage
 
 		public:
 			StackAllocator() = delete;
-			StackAllocator(const StackAllocator&) = delete;
-			StackAllocator& operator=(const StackAllocator&) = delete;
 
 			StackAllocator(std::size_t size);
 

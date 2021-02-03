@@ -26,8 +26,6 @@ namespace Visage
 
 		public:
 			PoolAllocator() = delete;
-			PoolAllocator(const PoolAllocator&) = delete;
-			PoolAllocator& operator=(const PoolAllocator&) = delete;
 
 			PoolAllocator(std::size_t objectsPerBlock);
 
