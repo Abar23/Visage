@@ -5,6 +5,7 @@
 #include "Core/MemoryManagement/DoubleFrameAllocator.h"
 #include "Core/MemoryManagement/FreeListAllocator.h"
 #include "Math/Vec2.h"
+#include "Rendering/RenderWindow.h"
 #include <chrono>
 #include <iostream>
 
@@ -90,6 +91,10 @@ int main()
 
 		j = doubleFrameAllocator.NewWithArgs<int>(i);
 	}
+
+
+	Visage::Rendering::RenderWindow window;
+	window.Run();
 
 	return 0;
 }

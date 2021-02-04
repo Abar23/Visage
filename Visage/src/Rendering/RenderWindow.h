@@ -16,7 +16,6 @@ namespace Visage
 			RenderWindow();
 			~RenderWindow();
 			
-			
 			void Run();
 		};
 	}

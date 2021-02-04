@@ -16,7 +16,7 @@ namespace Visage
 			}
 
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 			window = glfwCreateWindow(640, 400, "Test window", NULL, NULL);
 
@@ -45,7 +45,7 @@ namespace Visage
 		{
 			while (!glfwWindowShouldClose(window))
 			{
-				glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+				glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
 				glfwPollEvents();

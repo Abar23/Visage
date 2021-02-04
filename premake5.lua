@@ -112,6 +112,18 @@ workspace "Visage"
             "Visage"
         }
 
+        filter "system:linux"
+            systemversion "latest"
+
+            links
+            {
+                "Glad",
+                "GLFW",
+                "dl",
+                "pthread",
+                "X11"
+            }
+
         filter "system:windows"
             systemversion "latest"
 
