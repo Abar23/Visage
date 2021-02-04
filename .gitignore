@@ -9,4 +9,6 @@
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+**.vscode
+
 Makefile

@@ -60,6 +60,36 @@ namespace Visage
 			{
 				return *(reinterpret_cast<vectorType<T>*>(this)) /= scalar;
 			}
+
+			friend vectorType<T> operator+(const Swizzle& leftSwizzle, const Swizzle& rightSwizzle)
+			{
+				vectorType<T> leftSwizzleCopy = leftSwizzle;
+				return leftSwizzleCopy += rightSwizzle;
+			}
+
+			friend vectorType<T> operator-(const Swizzle& leftSwizzle, const Swizzle& rightSwizzle)
+			{
+				vectorType<T> leftSwizzleCopy = leftSwizzle;
+				return leftSwizzleCopy -= rightSwizzle;
+			}
+
+			friend vectorType<T> operator*(const Swizzle& leftSwizzle, const T scalar)
+			{
+				vectorType<T> leftSwizzleCopy = leftSwizzle;
+				return leftSwizzleCopy *= scalar;
+			}
+
+			friend vectorType<T> operator/(const Swizzle& leftSwizzle, const T scalar)
+			{
+				vectorType<T> leftSwizzleCopy = leftSwizzle;
+				return leftSwizzleCopy /= scalar;
+			}
+
+			friend std::ostream& operator<<(std::ostream& stream, Swizzle& swizzle)
+			{
+				stream << static_cast<vectorType<T>>(swizzle);
+				return stream;
+			}
 		};
 	}
 }
