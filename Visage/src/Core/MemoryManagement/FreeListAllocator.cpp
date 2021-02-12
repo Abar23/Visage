@@ -6,9 +6,9 @@ namespace Visage
 	namespace Core
 	{
 		Visage::Core::FreeListAllocator::FreeListAllocator(std::size_t size)
-			: AbstractAllocator(size)
+			: AbstractAllocator(size) 
 		{
-			assert(size >= sizeof(ListNode));
+			assert(size >= listNodeSize);
 
 			freeListHead = reinterpret_cast<ListNode*>(startOfBuffer);
 			freeListHead->size = size;
@@ -22,98 +22,84 @@ namespace Visage
 
 		void* FreeListAllocator::Allocate(std::size_t size, std::uint8_t align)
 		{
-			std::size_t neededSize = size + align + sizeof(AllocatonHeader);
+			void* alignedAddress = nullptr;
 
-			ListNode* freeNode = nullptr;
-			ListNode* previousNode = nullptr;
-			ListNode* currentNode = freeListHead;
-			while (currentNode != nullptr)
+			if (freeListHead != nullptr) // should replace with assert to catch out of memory isse if freelist will not be able to expand
 			{
-				if (neededSize <= currentNode->size)
+				std::size_t neededSize = size + allocationHeaderSize; // replace align with adjustment
+
+				std::uint8_t adjustmentForHeader = 0;
+				ListNode* freeNode = nullptr;
+				ListNode* previousNode = nullptr;
+				ListNode* currentNode = freeListHead;
+				while (currentNode != nullptr)
 				{
-					freeNode = currentNode;
-					break;
+					if (neededSize <= currentNode->size)
+					{
+						adjustmentForHeader = AlignedPointerWithHeaderAdjustment(currentNode, align, allocationHeaderSize);
+						std::size_t addressAlignmentOffset = adjustmentForHeader - allocationHeaderSize;
+						if (addressAlignmentOffset + neededSize <= currentNode->size)
+						{
+							freeNode = currentNode;
+							break;
+						}
+					}
+
+					previousNode = currentNode;
+					currentNode = currentNode->nextListNode;
 				}
 
-				previousNode = currentNode;
-				currentNode = currentNode->nextListNode;
-			}
+				alignedAddress = AddToPointer(freeNode, adjustmentForHeader);
+				void* headerAddress = freeNode;
 
-			if (freeNode == nullptr)
-			{
-				currentNode = IncreaseMemory(neededSize);
-				freeNode = currentNode;
-				freeListHead = currentNode;
-			}
-
-			std::uint8_t adjustmentForHeader = AlignedPointerWithHeaderAdjustment(freeNode, align, sizeof(AllocatonHeader));
-			void* alignedAddress = AddToPointer(freeNode, adjustmentForHeader);
-			void* headerAddress = SubtractFromPointer(alignedAddress, sizeof(AllocatonHeader));
-
-			std::size_t totalAllocationSize = 0;
-			if (freeNode->size >= neededSize + sizeof(ListNode))
-			{
-				totalAllocationSize = size + adjustmentForHeader;
-				ListNode* newListNode = new (AddToPointer(alignedAddress, size)) ListNode(freeNode->size - totalAllocationSize, nullptr);
-					
-				if (previousNode == nullptr)
+				std::size_t totalAllocationSize = 0;
+				if (freeNode->size >= neededSize + listNodeSize)
 				{
-					newListNode->nextListNode = currentNode->nextListNode;
-					freeListHead = newListNode;
+					totalAllocationSize = size + adjustmentForHeader;
+					ListNode* newListNode = new (AddToPointer(alignedAddress, size)) ListNode(freeNode->size - totalAllocationSize, nullptr);
+						
+					if (previousNode == nullptr)
+					{
+						newListNode->nextListNode = currentNode->nextListNode;
+						freeListHead = newListNode;
+					}
+					else
+					{
+						previousNode->nextListNode = newListNode;
+						newListNode->nextListNode = currentNode->nextListNode;
+					}
 				}
 				else
 				{
-					previousNode->nextListNode = newListNode;
-					newListNode->nextListNode = currentNode->nextListNode;
+					totalAllocationSize = freeNode->size;
+
+					if (freeNode == freeListHead)
+					{
+						freeListHead = freeNode->nextListNode;
+					}
+					else
+					{
+						previousNode->nextListNode = freeNode->nextListNode;
+					}
 				}
-				currentNode->nextListNode = nullptr;
+
+				AllocatonHeader* header = new (headerAddress) AllocatonHeader(totalAllocationSize, adjustmentForHeader);
+
+				memoryUsed += totalAllocationSize;
+				numberOfAllocations++;
 			}
-			else
-			{
-				totalAllocationSize = freeNode->size;
-
-				if (freeListHead == freeNode)
-				{
-					freeListHead = nullptr;
-				}
-			}
-
-			AllocatonHeader* header = new (headerAddress) AllocatonHeader(totalAllocationSize, adjustmentForHeader);
-
-			memoryUsed += totalAllocationSize;
-			numberOfAllocations++;
 
 			return alignedAddress;
 		}
 
 		void FreeListAllocator::Deallocate(void*& pointer)
 		{
-			AllocatonHeader* header = reinterpret_cast<AllocatonHeader*>(SubtractFromPointer(pointer, sizeof(AllocatonHeader)));
-			ListNode* newNode = reinterpret_cast<ListNode*>(SubtractFromPointer(pointer, header->adjustment));
-
-			memoryUsed -= newNode->size;
+			AllocatonHeader* header = reinterpret_cast<AllocatonHeader*>(SubtractFromPointer(pointer, allocationHeaderSize));
+			memoryUsed -= header->size;
 			numberOfAllocations--;
 
+			ListNode* newNode = reinterpret_cast<ListNode*>(header);
 			AddNodeAndMergeRight(newNode);
-		}
-
-		FreeListAllocator::ListNode* FreeListAllocator::IncreaseMemory(std::uint8_t neededSpace)
-		{
-			void* newMemory = nullptr;
-			if (neededSpace > size) // Replace with configurable memory increments later, if the incremented size is too small add the size of the object coming in
-			{
-				newMemory = new std::uint8_t[size + neededSpace];
-			}
-			else
-			{
-				newMemory = new std::uint8_t[size];
-			}
-
-			ListNode* newNode = new (newMemory) ListNode(size, nullptr);
-
-			addedMemory.push_back(newMemory);
-
-			return newNode;
 		}
 
 		void FreeListAllocator::AddNodeAndMergeRight(ListNode* newNode)
@@ -142,8 +128,8 @@ namespace Visage
 						currentNode = currentNode->nextListNode;
 					}
 
-					newNode->nextListNode = previousNode->nextListNode;
 					previousNode->nextListNode = newNode;
+					newNode->nextListNode = currentNode;
 					MergeWithRightNode(newNode);
 					MergeWithRightNode(previousNode);
 				}

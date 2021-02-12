@@ -30,9 +30,10 @@ namespace Visage
 			};
 			
 			ListNode* freeListHead;
-			std::vector<void*> addedMemory;
 
-			ListNode* IncreaseMemory(std::uint8_t neededSpace);
+			static const std::size_t allocationHeaderSize = sizeof(AllocatonHeader);
+
+			static const std::size_t listNodeSize = sizeof(ListNode);
 
 			void AddNodeAndMergeRight(ListNode* newNode);
 
