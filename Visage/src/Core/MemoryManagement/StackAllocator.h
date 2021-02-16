@@ -25,6 +25,8 @@ namespace Visage
 				void* previousAddress;
 			#endif
 
+			static const std::size_t allocationHeaderSize = sizeof(AllocationHeader);
+
 		protected:
 			void* Allocate(std::size_t size, std::uint8_t align) override;
 

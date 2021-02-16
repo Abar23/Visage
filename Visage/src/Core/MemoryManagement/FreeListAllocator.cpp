@@ -68,7 +68,7 @@ namespace Visage
 				if (freeNode != nullptr) // Not enough memory to allocate object
 				{
 					alignedAddress = AddToPointer(freeNode, adjustmentForHeader);
-					void* headerAddress = freeNode;
+					void* headerAddress = SubtractFromPointer(alignedAddress, allocationHeaderSize);
 					std::size_t totalAllocationSize = 0;
 					if (freeNode->size >= neededSize + listNodeSize)
 					{

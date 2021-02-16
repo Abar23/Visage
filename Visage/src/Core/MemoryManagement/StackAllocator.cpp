@@ -27,13 +27,13 @@ namespace Visage
 		void* StackAllocator::Allocate(std::size_t size, std::uint8_t align)
 		{
 			void* alignedAddress = nullptr;
-			std::uint8_t adjustment = AlignedPointerWithHeaderAdjustment(topOfStackMarker, align, sizeof(AllocationHeader));
+			std::uint8_t adjustment = AlignedPointerWithHeaderAdjustment(topOfStackMarker, align, allocationHeaderSize);
 
 			if (memoryUsed + size + adjustment <= this->size)
 			{
 				alignedAddress = AddToPointer(topOfStackMarker, adjustment);
 
-				AllocationHeader* header = reinterpret_cast<AllocationHeader*>(SubtractFromPointer(alignedAddress, sizeof(AllocationHeader)));
+				AllocationHeader* header = reinterpret_cast<AllocationHeader*>(SubtractFromPointer(alignedAddress, allocationHeaderSize));
 				header->adjustment = adjustment;
 
 				topOfStackMarker = AddToPointer(alignedAddress, size);
@@ -51,7 +51,7 @@ namespace Visage
 
 		void StackAllocator::Deallocate(void*& pointer)
 		{
-			AllocationHeader* header = reinterpret_cast<AllocationHeader*>(SubtractFromPointer(pointer, sizeof(AllocationHeader)));
+			AllocationHeader* header = reinterpret_cast<AllocationHeader*>(SubtractFromPointer(pointer, allocationHeaderSize));
 
 			#ifdef DEBUG
 				assert(previousAddress == pointer);
