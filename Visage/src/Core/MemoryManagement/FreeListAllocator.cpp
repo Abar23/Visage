@@ -1,5 +1,6 @@
 #include "FreeListAllocator.h"
 #include "MemoryUtils.h"
+#include <cstring>
 
 namespace Visage
 {
