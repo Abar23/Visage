@@ -11,17 +11,9 @@
 
 int main()
 {
-	Visage::Core::FreeListAllocator list(1000 * 1000 * 1000);
-	int* integer1 = list.New<int>();
-	int* integer2 = list.New<int>();
-	int* integer3 = list.New<int>();
-	list.Delete<int>(integer2);
-	int* integer4 = list.New<int>();
-	int* integer5 = list.New<int>();
-	list.Delete<int>(integer5);
-	list.Delete<int>(integer3);
-	list.Delete<int>(integer4);
-	list.Delete<int>(integer1);
+	Visage::Core::FreeListAllocator list(80);
+	char* c = list.NewWithArgs<char>('c');
+	int* integer1 = list.NewWithArgs<int>(2);
 
 
 	// Record start time

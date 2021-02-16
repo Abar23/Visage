@@ -51,6 +51,8 @@ namespace Visage
 
 			~FreeListAllocator();
 
+			void* DefragmentList();
+
 			template <typename T>
 			T* New()
 			{
