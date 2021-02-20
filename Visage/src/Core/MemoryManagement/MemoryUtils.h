@@ -38,7 +38,7 @@ namespace Visage
 
 				std::uint8_t numberOfAlignments = (requiredSpace / align);
 
-				if (requiredSpace - (static_cast<std::size_t>(numberOfAlignments) * align) > 0)
+				if (requiredSpace  > static_cast<std::size_t>(numberOfAlignments) * align)
 				{
 					numberOfAlignments += 1;
 				}

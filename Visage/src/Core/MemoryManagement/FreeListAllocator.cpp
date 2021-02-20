@@ -21,20 +21,21 @@ namespace Visage
 			freeListHead = nullptr;
 		}
 
-		void* FreeListAllocator::DefragmentList()
+		void FreeListAllocator::Defragment()
 		{
-			void* movedPointer = nullptr;
 			if (freeListHead != nullptr && freeListHead->nextListNode != nullptr)
 			{
 				ListNode* nextFreeNode = freeListHead->nextListNode;
-				std::size_t sizeOfFreeListHead = freeListHead->size;
 				AllocatonHeader* headerOfAllocatedElement = reinterpret_cast<AllocatonHeader*>(AddToPointer(freeListHead, freeListHead->size));
-				movedPointer = AddToPointer(std::memcpy(freeListHead, headerOfAllocatedElement, headerOfAllocatedElement->size), headerOfAllocatedElement->adjustment);
-				freeListHead = reinterpret_cast<ListNode*>(AddToPointer(freeListHead, headerOfAllocatedElement->size));
+				std::size_t sizeOfAllocatedElement = headerOfAllocatedElement->size;
+				std::uint8_t adjustmentForAllocatedElement = headerOfAllocatedElement->adjustment;
+				AddToPointer(std::memcpy(freeListHead, headerOfAllocatedElement, sizeOfAllocatedElement), adjustmentForAllocatedElement);
+				
+				std::size_t sizeOfFreeListHead = freeListHead->size;
+				freeListHead = reinterpret_cast<ListNode*>(AddToPointer(freeListHead, sizeOfAllocatedElement));
 				freeListHead->size = sizeOfFreeListHead + nextFreeNode->size;
 				freeListHead->nextListNode = nextFreeNode->nextListNode;
 			}
-			return movedPointer;
 		}
 
 		void* FreeListAllocator::Allocate(std::size_t size, std::uint8_t align)
@@ -43,7 +44,7 @@ namespace Visage
 
 			if (freeListHead != nullptr) // should replace with assert to catch out of memory issue if freelist will not be able to expand
 			{
-				std::size_t neededSize = size + allocationHeaderSize; // replace align with adjustment
+				std::size_t sizeOfNewElement = size + allocationHeaderSize; // replace align with adjustment
 
 				std::uint8_t adjustmentForHeader = 0;
 				ListNode* freeNode = nullptr;
@@ -51,11 +52,11 @@ namespace Visage
 				ListNode* currentNode = freeListHead;
 				while (currentNode != nullptr)
 				{
-					if (neededSize <= currentNode->size)
+					if (sizeOfNewElement <= currentNode->size)
 					{
 						adjustmentForHeader = AlignedPointerWithHeaderAdjustment(currentNode, align, allocationHeaderSize);
-						std::size_t addressAlignmentOffset = adjustmentForHeader - allocationHeaderSize;
-						if (addressAlignmentOffset + neededSize <= currentNode->size)
+						std::size_t totalSizeNeededForNewElement = (adjustmentForHeader - allocationHeaderSize) + sizeOfNewElement;
+						if (totalSizeNeededForNewElement <= currentNode->size)
 						{
 							freeNode = currentNode;
 							break;
@@ -69,9 +70,9 @@ namespace Visage
 				if (freeNode != nullptr) // Not enough memory to allocate object
 				{
 					alignedAddress = AddToPointer(freeNode, adjustmentForHeader);
-					void* headerAddress = SubtractFromPointer(alignedAddress, allocationHeaderSize);
+					void* headerAddress = freeNode;
 					std::size_t totalAllocationSize = 0;
-					if (freeNode->size >= neededSize + listNodeSize)
+					if (freeNode->size >= sizeOfNewElement + listNodeSize)
 					{
 						totalAllocationSize = size + adjustmentForHeader;
 						ListNode* newListNode = new (AddToPointer(alignedAddress, size)) ListNode(freeNode->size - totalAllocationSize, nullptr);
@@ -103,6 +104,8 @@ namespace Visage
 
 					AllocatonHeader* header = new (headerAddress) AllocatonHeader(totalAllocationSize, adjustmentForHeader);
 
+					*(reinterpret_cast<std::uint8_t*>(alignedAddress) - 1) = header->adjustment;
+
 					memoryUsed += totalAllocationSize;
 					numberOfAllocations++;
 				}
@@ -113,11 +116,12 @@ namespace Visage
 
 		void FreeListAllocator::Deallocate(void*& pointer)
 		{
-			AllocatonHeader* header = reinterpret_cast<AllocatonHeader*>(SubtractFromPointer(pointer, allocationHeaderSize));
-			memoryUsed -= header->size;
+			std::uint8_t adjustmentForHeader = *(reinterpret_cast<std::uint8_t*>(pointer) - 1);
+			std::size_t sizeOfAllocatedElement = *reinterpret_cast<std::size_t*>(SubtractFromPointer(pointer, adjustmentForHeader));
+			memoryUsed -= sizeOfAllocatedElement;
 			numberOfAllocations--;
 
-			ListNode* newNode = reinterpret_cast<ListNode*>(header);
+			ListNode* newNode = reinterpret_cast<ListNode*>(SubtractFromPointer(pointer, adjustmentForHeader));
 			AddNodeAndMergeRight(newNode);
 		}
 
@@ -128,30 +132,27 @@ namespace Visage
 				freeListHead = newNode;
 				freeListHead->nextListNode = nullptr;
 			}
+			else if (reinterpret_cast<std::uintptr_t>(newNode) < reinterpret_cast<std::uintptr_t>(freeListHead))
+			{
+				newNode->nextListNode = freeListHead;
+				freeListHead = newNode;
+				MergeWithRightNode(freeListHead);
+			}
 			else
 			{
-				if (reinterpret_cast<std::uintptr_t>(newNode) < reinterpret_cast<std::uintptr_t>(freeListHead))
-				{
-					newNode->nextListNode = freeListHead;
-					freeListHead = newNode;
-					MergeWithRightNode(freeListHead);
-				}
-				else
-				{
-					ListNode* previousNode = nullptr;
-					ListNode* currentNode = freeListHead;
+				ListNode* previousNode = nullptr;
+				ListNode* currentNode = freeListHead;
 
-					while (reinterpret_cast<std::uintptr_t>(currentNode) < reinterpret_cast<std::uintptr_t>(newNode) && currentNode != nullptr)
-					{
-						previousNode = currentNode;
-						currentNode = currentNode->nextListNode;
-					}
-
-					previousNode->nextListNode = newNode;
-					newNode->nextListNode = currentNode;
-					MergeWithRightNode(newNode);
-					MergeWithRightNode(previousNode);
+				while (reinterpret_cast<std::uintptr_t>(currentNode) < reinterpret_cast<std::uintptr_t>(newNode) && currentNode != nullptr)
+				{
+					previousNode = currentNode;
+					currentNode = currentNode->nextListNode;
 				}
+
+				previousNode->nextListNode = newNode;
+				newNode->nextListNode = currentNode;
+				MergeWithRightNode(newNode);
+				MergeWithRightNode(previousNode);
 			}
 		}
 
