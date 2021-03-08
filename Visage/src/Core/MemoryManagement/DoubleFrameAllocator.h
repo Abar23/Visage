@@ -19,8 +19,6 @@ namespace Visage
 
 			DoubleFrameAllocator(std::size_t sizeOfBuffers);
 
-			~DoubleFrameAllocator();
-
 			inline void SwapBuffers()
 			{
 				activeBuffer = (activeBuffer == 0) ? 1 : 0;

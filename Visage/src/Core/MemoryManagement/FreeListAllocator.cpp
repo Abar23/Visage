@@ -16,25 +16,26 @@ namespace Visage
 			freeListHead->nextListNode = nullptr;
 		}
 
-		FreeListAllocator::~FreeListAllocator()
-		{
-			freeListHead = nullptr;
-		}
-
 		void FreeListAllocator::Defragment()
 		{
-			if (freeListHead != nullptr && freeListHead->nextListNode != nullptr)
+			if (freeListHead != nullptr && AddToPointer(freeListHead, freeListHead->size) < AddToPointer(startOfBuffer, sizeOfBuffer))
 			{
 				ListNode* nextFreeNode = freeListHead->nextListNode;
 				AllocatonHeader* headerOfAllocatedElement = reinterpret_cast<AllocatonHeader*>(AddToPointer(freeListHead, freeListHead->size));
 				std::size_t sizeOfAllocatedElement = headerOfAllocatedElement->size;
 				std::uint8_t adjustmentForAllocatedElement = headerOfAllocatedElement->adjustment;
 				AddToPointer(std::memcpy(freeListHead, headerOfAllocatedElement, sizeOfAllocatedElement), adjustmentForAllocatedElement);
-				
+
 				std::size_t sizeOfFreeListHead = freeListHead->size;
 				freeListHead = reinterpret_cast<ListNode*>(AddToPointer(freeListHead, sizeOfAllocatedElement));
-				freeListHead->size = sizeOfFreeListHead + nextFreeNode->size;
-				freeListHead->nextListNode = nextFreeNode->nextListNode;
+				freeListHead->size = sizeOfFreeListHead;
+				freeListHead->nextListNode = nullptr;
+
+				if (nextFreeNode != nullptr)
+				{
+					freeListHead->size += nextFreeNode->size;
+					freeListHead->nextListNode = nextFreeNode->nextListNode;
+				}
 			}
 		}
 

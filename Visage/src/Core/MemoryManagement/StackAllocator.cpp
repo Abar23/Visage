@@ -15,21 +15,12 @@ namespace Visage
 			#endif
 		}
 
-		StackAllocator::~StackAllocator()
-		{
-			this->topOfStackMarker = nullptr;
-
-			#ifdef DEBUG
-				this->previousAddress = nullptr;
-			#endif
-		}
-
 		void* StackAllocator::Allocate(std::size_t size, std::uint8_t align)
 		{
 			void* alignedAddress = nullptr;
 			std::uint8_t adjustment = AlignedPointerWithHeaderAdjustment(topOfStackMarker, align, allocationHeaderSize);
 
-			if (memoryUsed + size + adjustment <= this->size)
+			if (memoryUsed + size + adjustment <= sizeOfBuffer)
 			{
 				alignedAddress = AddToPointer(topOfStackMarker, adjustment);
 

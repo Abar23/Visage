@@ -29,8 +29,6 @@ namespace Visage
 
 			PoolAllocator(std::size_t objectsPerBlock);
 
-			~PoolAllocator();
-
 			T* New()
 			{
 				return new (Allocate(sizeof(T), alignof(T))) T;

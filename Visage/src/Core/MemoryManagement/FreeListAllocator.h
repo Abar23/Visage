@@ -49,8 +49,6 @@ namespace Visage
 
 			FreeListAllocator(std::size_t size);
 
-			~FreeListAllocator();
-
 			void Defragment();
 
 			template <typename T>

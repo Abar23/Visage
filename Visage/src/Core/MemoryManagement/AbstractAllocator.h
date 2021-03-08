@@ -12,7 +12,7 @@ namespace Visage
 		class AbstractAllocator
 		{
 		protected:
-			std::size_t size = 0;
+			std::size_t sizeOfBuffer = 0;
 			std::size_t numberOfAllocations;
 			std::size_t memoryUsed;
 			void* startOfBuffer;
@@ -26,7 +26,7 @@ namespace Visage
 			{ }
 
 			AbstractAllocator(std::size_t size)
-				: size(size), numberOfAllocations(0), memoryUsed(0)
+				: sizeOfBuffer(size), numberOfAllocations(0), memoryUsed(0)
 			{
 				startOfBuffer = new std::uint8_t[size];
 			}

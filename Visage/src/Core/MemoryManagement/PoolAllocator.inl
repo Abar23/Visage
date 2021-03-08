@@ -13,8 +13,8 @@ namespace Visage
 		{ 
 			assert(sizeof(T) >= sizeof(ChunkNode));
 
-			size = (objectsPerBlock * sizeof(T)) + alignof(T);
-			startOfBuffer = new std::uint8_t[size];
+			sizeOfBuffer = (objectsPerBlock * sizeof(T)) + alignof(T);
+			startOfBuffer = new std::uint8_t[sizeOfBuffer];
 			
 			std::uint8_t adjustment = AlignedPointerAdjustment(startOfBuffer, alignof(T));
 			freeChunkNodeList = reinterpret_cast<ChunkNode*>(AddToPointer(startOfBuffer, adjustment));
@@ -27,12 +27,6 @@ namespace Visage
 				currentChunkNode = nextChunk;
 			}
 			currentChunkNode->nextFreeChunk = nullptr;
-		}
-
-		template <typename T>
-		PoolAllocator<T>::~PoolAllocator()
-		{
-			freeChunkNodeList = nullptr;
 		}
 
 		template <typename T>

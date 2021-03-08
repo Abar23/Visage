@@ -8,24 +8,11 @@ namespace Visage
 {
 	namespace Core
 	{
-		class StackAllocator : public AbstractAllocator
+		class LinearAllocator : public AbstractAllocator
 		{
 		private:
-			struct AllocationHeader {
-				std::uint8_t adjustment;
-
-				#ifdef DEBUG
-					void* previousAddress;
-				#endif
-			}; 
-
-			void* topOfStackMarker;
-
-			#ifdef DEBUG
-				void* previousAddress;
-			#endif
-
-			static const std::size_t allocationHeaderSize = sizeof(AllocationHeader);
+			void* currentPosition;
+			void* endOfBuffer;
 
 		protected:
 			void* Allocate(std::size_t size, std::uint8_t align) override;
@@ -33,13 +20,11 @@ namespace Visage
 			void Deallocate(void*& pointer) override;
 
 		public:
-			StackAllocator() = delete;
+			LinearAllocator() = delete;
 
-			StackAllocator(std::size_t size);
+			LinearAllocator(std::size_t size);
 
-			void ClearStack();
-
-			void* GetTopOfStack();
+			void Reset();
 
 			template <typename T>
 			T* New()
@@ -62,7 +47,7 @@ namespace Visage
 				{
 					numberOfElementsForOneWord += 1;
 				}
-				
+
 				T* baseArrayAddress = reinterpret_cast<T*>(Allocate((arrayLength + numberOfElementsForOneWord) * sizeof(T), alignof(T))) + numberOfElementsForOneWord;
 				*(reinterpret_cast<std::size_t*>(baseArrayAddress) - 1) = arrayLength;
 
@@ -70,29 +55,8 @@ namespace Visage
 				{
 					new (&baseArrayAddress[i]) T;
 				}
-				
+
 				return baseArrayAddress;
-			}
-
-			template <typename T>
-			void Delete(T* objectToDelete)
-			{
-				objectToDelete->~T();
-				Deallocate(reinterpret_cast<void*&>(objectToDelete));
-			}
-
-			template <typename T>
-			void DeleteArray(T* arrayToDelete)
-			{
-				std::size_t arrayLength = *(reinterpret_cast<std::size_t*>(arrayToDelete) - 1);
-
-				for (std::size_t i = 0; i < arrayLength; i++)
-				{
-					arrayToDelete[i].~T();
-				}
-
-				arrayToDelete = reinterpret_cast<T*>(reinterpret_cast<std::size_t*>(arrayToDelete) - 1);
-				Deallocate(reinterpret_cast<void*&>(arrayToDelete));
 			}
 		};
 	}
